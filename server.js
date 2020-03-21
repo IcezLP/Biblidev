@@ -1,5 +1,6 @@
 const express = require('express');
 const next = require('next');
+const logger = require('./lib/logger');
 
 const server = express();
 const app = next({ dev: process.env.NODE_ENV !== 'production' });
@@ -19,7 +20,7 @@ app
 
     server.listen(process.env.SERVER_PORT, (error) => {
       if (error) throw error;
-      else console.log(`Server ready on port http://localhost:${process.env.SERVER_PORT}`);
+      else logger.info(`Serveur prêt sur http://localhost:${process.env.SERVER_PORT}`);
     });
   })
   .catch((error) => {

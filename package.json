@@ -18,11 +18,13 @@
   "dependencies": {
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
+    "moment": "^2.24.0",
     "mongoose": "^5.9.5",
     "next": "^9.3.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "sass": "^1.26.3"
+    "sass": "^1.26.3",
+    "winston": "^3.2.1"
   },
   "devDependencies": {
     "babel-eslint": "^10.1.0",
