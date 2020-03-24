@@ -6,6 +6,7 @@ module.exports = {
     MONGO_URI: process.env.MONGO_URI,
     SITE_NAME: process.env.SITE_NAME,
     SITE_URL: process.env.SITE_URL,
+    TOKEN_SECRET: process.env.TOKEN_SECRET,
   },
   webpack(config) {
     config.module.rules.push({
