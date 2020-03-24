@@ -7,12 +7,17 @@ const database = require('./database');
 const routes = require('./routes');
 
 const server = express();
-const app = next({ dev: process.env.NODE_ENV !== 'production' });
+const dev = process.env.NODE_ENV !== 'production';
+const app = next({ dev });
 const handle = app.getRequestHandler();
 
 app
   .prepare()
   .then(() => {
+    // Urls à bloquées
+    const URL_STOP = ['/routes/*', '/logs/*'];
+
+    // Urls à redirigées
     const URL_MAP = {
       '/connexion': '/auth/login',
     };
@@ -24,9 +29,19 @@ app
     // Parse application/x-www-form-urlencoded
     server.use(express.urlencoded({ extended: true }));
 
+    if (!dev) {
+      // Ajout de req.hostname et req.ip
+      server.set('trust proxy', 1);
+    }
+
     database(process.env.MONGO_URI);
     routes(server);
 
+    server.all(URL_STOP, (req, res) => {
+      return app.render(req, res, '/_error');
+    });
+
+    // Affichage des pages
     server.get('*', (req, res) => {
       const url = URL_MAP[req.path];
 
