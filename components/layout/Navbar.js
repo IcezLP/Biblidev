@@ -19,13 +19,8 @@ export default () => {
       <span className="navbar__break" />
       <ul className="navbar__menu" data-open={isOpen}>
         <li className="navbar__link">
-          <Link href="#">
-            <a>Blog</a>
-          </Link>
-        </li>
-        <li className="navbar__link">
-          <Link href="#">
-            <a>Utilisateur</a>
+          <Link href="/auth/login" as="/connexion">
+            <a>Connexion</a>
           </Link>
         </li>
       </ul>

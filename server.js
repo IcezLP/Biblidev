@@ -11,6 +11,10 @@ const handle = app.getRequestHandler();
 app
   .prepare()
   .then(() => {
+    const URL_MAP = {
+      '/connexion': '/auth/login',
+    };
+
     // Parse application/json
     server.use(express.json());
     // Parse application/x-www-form-urlencoded
@@ -20,6 +24,12 @@ app
     routes(server);
 
     server.get('*', (req, res) => {
+      const url = URL_MAP[req.path];
+
+      if (url) {
+        return app.render(req, res, url);
+      }
+
       return handle(req, res);
     });
 
