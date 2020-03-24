@@ -11,11 +11,15 @@
     "url": "https://github.com/IcezLP/biblidev/issues"
   },
   "scripts": {
-    "dev": "nodemon server.js",
+    "dev": "concurrently \"nodemon server.js\" \"npm run sass:watch\"",
     "start": "node server.js",
-    "build": "next build"
+    "build": "npm run sass:build && next build",
+    "sass:build": "sass stylesheets/main.scss:public/css/main.css",
+    "sass:watch": "sass --watch stylesheets/main.scss:public/css/main.css"
   },
   "dependencies": {
+    "@svgr/webpack": "^5.3.0",
+    "classnames": "^2.2.6",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "moment": "^2.24.0",
