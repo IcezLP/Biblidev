@@ -5,7 +5,9 @@ class CustomDocument extends Document {
   render() {
     return (
       <Html lang="fr">
-        <Head />
+        <Head>
+          <link rel="stylesheet" href="css/main.css" />
+        </Head>
         <body>
           <Main />
           <NextScript />

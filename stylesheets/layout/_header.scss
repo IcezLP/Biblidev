@@ -1,0 +1,110 @@
+// Navbar
+.navbar {
+  display: -webkit-box;
+  display: flex;
+  width: 100%;
+  -webkit-box-align: center;
+  align-items: center;
+  -webkit-box-pack: justify;
+  justify-content: space-between;
+  padding: 0 50px;
+  box-shadow: 0 2px 8px #f0f1f2;
+  flex-wrap: wrap;
+  overflow: hidden;
+  max-height: 64px;
+  -webkit-transition: max-height 0.5s cubic-bezier(0, 1, 0, 1);
+  transition: max-height 0.5s cubic-bezier(0, 1, 0, 1);
+
+
+  &[data-expanded="true"] {
+    max-height: 100vh;
+    -webkit-transition: max-height 0.6s ease-in-out;
+    transition: max-height 0.6s ease-in-out;
+  }
+
+  // Logo
+  @at-root #{&}__logo {
+    width: 100px;
+    height: 64px;
+    cursor: pointer;
+
+    @at-root #{&svg} {
+      height: 100%;
+      max-width: 100%;
+    }
+  }
+
+  // Menu button
+  @at-root #{&}__toggle {
+    display: none;
+    background-color: transparent;
+    border: none;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+    color: rgba(0, 0, 0, 0.65);
+
+    @include sm {
+      display: block;
+    }
+  }
+
+  @include sm {
+    @at-root #{&}__break {
+      flex-basis: 100%;
+      width: 0;
+    }
+  }
+
+  // Menu
+  @at-root #{&}__menu {
+    list-style: none;
+    display: -webkit-box;
+    display: flex;
+
+    @include sm {
+      // display: none;
+      width: 100%;
+      padding: 0;
+      -webkit-box-orient: horizontal;
+      -webkit-box-direction: normal;
+      flex-direction: row;
+      flex-wrap: wrap;
+    }
+
+    // Menu item
+    .navbar__link {
+      font-weight: 300;
+      font-size: 14px;
+      border: 1px solid transparent;
+      -webkit-transition: border-color .2s ease;
+      transition: border-color .2s ease;
+
+      @include sm {
+        -webkit-box-flex: 100%;
+        flex: 100%;
+      }
+
+      &:not(:last-child) {
+        margin-right: 10px;
+      }
+
+      &:hover {
+        border-color: rgba(0, 0, 0, 0.35);
+      }
+
+      // Link
+      @at-root #{&a} {
+        text-decoration: none;
+        color: rgba(0, 0, 0, 0.65);
+        display: block;
+        text-align: center;
+        padding: 7px;
+
+        @include sm {
+          padding: 10px;
+        }
+      }
+    }
+  }
+}

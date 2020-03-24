@@ -7,7 +7,9 @@ class CustomApp extends App {
     const { Component, pageProps } = this.props;
     return (
       <>
-        <Navbar {...pageProps} />
+        <header>
+          <Navbar {...pageProps} />
+        </header>
         <Component {...pageProps} />
       </>
     );
