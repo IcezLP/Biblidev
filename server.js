@@ -1,5 +1,7 @@
 const express = require('express');
 const next = require('next');
+const compression = require('compression');
+const helmet = require('helmet');
 const logger = require('./lib/logger');
 const database = require('./database');
 const routes = require('./routes');
@@ -15,6 +17,8 @@ app
       '/connexion': '/auth/login',
     };
 
+    server.use(helmet());
+    server.use(compression());
     // Parse application/json
     server.use(express.json());
     // Parse application/x-www-form-urlencoded
