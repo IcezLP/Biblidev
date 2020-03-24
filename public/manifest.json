@@ -1,0 +1,64 @@
+{
+  "short_name": "Biblidev",
+  "name": "Biblidev",
+  "description": "Une collection de ressources prêtes à être utilisées pour du développement web, web design",
+  "start_url": "/",
+  "display": "standalone",
+  "theme_color": "#17499f",
+  "background_color": "#ffffff",
+  "icons": [{
+      "src": "images/icons/favicon.ico",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "images/icons/16x16.png",
+      "sizes": "16x16",
+      "type": "image/png"
+    },
+    {
+      "src": "images/icons/24x24.png",
+      "sizes": "24x24",
+      "type": "image/png"
+    },
+    {
+      "src": "images/icons/32x32.png",
+      "sizes": "32x32",
+      "type": "image/png"
+    },
+    {
+      "src": "images/icons/64x64.png",
+      "sizes": "64x64",
+      "type": "image/png"
+    },
+    {
+      "src": "images/icons/96x96.png",
+      "sizes": "96x96",
+      "type": "image/png"
+    },
+    {
+      "src": "images/icons/180x180.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    },
+    {
+      "src": "images/icons/192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "images/icons/196x196.png",
+      "sizes": "196x196",
+      "type": "image/png"
+    },
+    {
+      "src": "images/icons/228x228.png",
+      "sizes": "228x228",
+      "type": "image/png"
+    },
+    {
+      "src": "images/icons/512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
