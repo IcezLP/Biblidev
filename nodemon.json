@@ -1,4 +1,4 @@
 {
   "verbose": true,
-  "ignore": ["components/*", "pages/*", "stylesheets/*"]
+  "ignore": ["components/*", "pages/*", "stylesheets/*", "hooks/*"]
 }
