@@ -10,7 +10,9 @@ export default () => {
     <nav className="navbar" data-expanded={isOpen}>
       <div className="navbar__logo">
         <Link href="/">
-          <Logo />
+          <a>
+            <Logo />
+          </a>
         </Link>
       </div>
       <button type="button" className="navbar__toggle" onClick={() => setIsOpen(!isOpen)}>
