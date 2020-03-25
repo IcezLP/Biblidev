@@ -6,6 +6,7 @@ module.exports = {
     jest: true,
   },
   plugins: ['react', 'jsx-a11y', 'import', 'prettier'],
+  ignorePatterns: ['node_modules/'],
   rules: {
     camelcase: 'off',
     'no-console': 'off',
