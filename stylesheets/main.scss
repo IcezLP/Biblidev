@@ -6,7 +6,6 @@
 @import './abstracts/mixins';
 
 // Vendors
-@import './vendors/normalize';
 @import './vendors/nprogress';
 
 // Base stuff
@@ -16,6 +15,7 @@
 
 // Layout
 @import './layout/header';
+@import './layout/admin';
 
 // Components
 @import './components/form';

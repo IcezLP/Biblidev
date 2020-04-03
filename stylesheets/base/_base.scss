@@ -1,14 +1,9 @@
-html {
-  box-sizing: border-box;
-  font-family: 'Roboto', sans-serif;
-}
+#layout {
+  z-index: 1;
+  background-color: transparent;
+  padding-top: 64px;
 
-body {
-  background-color: #f8f8f8;
-}
-
-*,
-*::after,
-*::before {
-  box-sizing: inherit;
+  &.layout__admin {
+    padding-top: 98px;
+  }
 }
