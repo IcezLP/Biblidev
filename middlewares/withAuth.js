@@ -45,7 +45,7 @@ export default (
       const { user } = this.props;
 
       // Si aucun utilisateur n'est connecté ou qu'il n'est pas admin
-      if (adminRequired && !user && !user.isAdmin) {
+      if ((adminRequired && !user) || (adminRequired && user && !user.isAdmin)) {
         return <p>Page introuvable</p>;
       }
 
