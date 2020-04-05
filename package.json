@@ -20,7 +20,7 @@
   "dependencies": {
     "@svgr/webpack": "^5.3.0",
     "@zeit/next-css": "^1.0.1",
-    "antd": "^4.1.0",
+    "antd": "^3.26.15",
     "aws-sdk": "^2.652.0",
     "axios": "^0.19.2",
     "babel-plugin-import": "^1.13.0",
@@ -28,6 +28,7 @@
     "classnames": "^2.2.6",
     "cloudinary": "^1.21.0",
     "compression": "^1.7.4",
+    "crypto": "^1.0.1",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "helmet": "^3.22.0",
