@@ -1,9 +1,12 @@
 const router = require('express').Router();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const { kebabCase } = require('lodash');
+const crypto = require('crypto');
 const User = require('../database/models/User');
 const Token = require('../database/models/Token');
 const loginFieldsValidation = require('../validation/auth/login');
+const registerFieldsValidation = require('../validation/auth/register');
 
 /**
  * Connecter un utilisateur
@@ -58,6 +61,82 @@ router.post('/login', async (req, res) => {
       message: null,
     });
   } catch (error) {
+    // Si une erreur inconnue arrive
+    return res.status(400).json({
+      status: 'error',
+      data: {},
+      message: 'Une erreur est survenue, veuillez réessayer',
+    });
+  }
+});
+
+/**
+ * Inscrire un utilisateur
+ *
+ * @async
+ * @route POST /api/auth/register
+ * @public
+ */
+router.post('/register', async (req, res) => {
+  // Vérifie les champs du formulaire
+  const errors = await registerFieldsValidation(req.body, User);
+
+  // Si le formulaire contient des erreurs
+  if (Object.keys(errors).length !== 0) {
+    return res.status(400).json({
+      status: 'error',
+      data: errors,
+      message: null,
+    });
+  }
+
+  try {
+    // Déstructure les données reçu pour éviter l'injection de données non voulues
+    const { username, email, password } = req.body;
+    // Génère un slug à partir du nom d'utilisateur pour avoir des urls propres
+    const slug = kebabCase(username);
+    // Hash le mot de passe pour qu'il ne soit pas affiché en clair dans la db
+    const hash = await bcrypt.hash(password, 10);
+    // Génère un token pour la validation de l'email
+    const token = crypto.randomBytes(32).toString('hex');
+    // Récupère la date au format timestamp
+    const date = new Date();
+    // Génère un avatar via l'API de http://avatars.adorable.io/
+    const avatar = `https://api.adorable.io/avatars/200/${date.getTime()}-${slug}.png`;
+
+    // Initialise le nouvel utilisateur
+    const user = new User({
+      avatar,
+      username,
+      slug,
+      email,
+      verified: false,
+      password: hash,
+      isAdmin: false,
+    });
+
+    // Sauvegarde l'utilisateur dans la db
+    await user.save(async (error) => {
+      if (error) {
+        console.log(error);
+      } else {
+        // Sauvegarde le token dans la db
+        await Token.create({
+          type: 'emailValidation',
+          user: user._id,
+          token,
+          createdAt: date,
+        });
+      }
+    });
+
+    return res.status(200).json({
+      status: 'success',
+      data: {},
+      message: null,
+    });
+  } catch (error) {
+    console.log(error);
     // Si une erreur inconnue arrive
     return res.status(400).json({
       status: 'error',
