@@ -20,6 +20,8 @@ app
     // Urls à redirigées
     const URL_MAP = {
       '/connexion': '/auth/login',
+      '/inscription': '/auth/register',
+      '/mot-de-passe-oublie': '/auth/reset',
     };
 
     server.use(helmet());
