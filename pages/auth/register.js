@@ -1,40 +1,49 @@
 import React from 'react';
 import Link from 'next/link';
-import cookies from 'js-cookie';
-import Router from 'next/router';
-import { NextSeo } from 'next-seo';
 import { Form, Row, Col, Button, Typography, Icon, Alert } from 'antd';
+import { NextSeo } from 'next-seo';
 import Input from '../../components/form/Input';
 import useForm from '../../hooks/useForm';
+import { notify } from '../../lib/notification';
 import withAuth from '../../middlewares/withAuth';
 
 export default withAuth(
   () => {
-    // Connexion
-    const setAuthToken = (data) => {
-      // Enregistre le token de connexion
-      cookies.set('auth', data.token);
-      // Redirige sur la page d'accueil
-      Router.push('/');
-    };
-
     const { values, errors, isLoading, handleChange, handleSubmit } = useForm(
-      setAuthToken,
+      () => notify('success', 'Inscription réussie, un email de confirmation vous a été envoyé'),
       'post',
-      '/api/auth/login',
+      '/api/auth/register',
     );
 
     return (
       <>
-        <NextSeo title="Connexion" />
+        <NextSeo title="Inscription" />
         <Row type="flex" justify="center">
           <Col xs={24} sm={16} md={12} lg={10} xl={8} xxl={6}>
             <section style={{ border: '1px solid #ebedf0', margin: 20, borderRadius: 4 }}>
+              <div style={{ borderBottom: '1px solid #ebedf0', padding: 10 }}>
+                <Link href="/auth/login" as="/connexion">
+                  <a>
+                    <Icon type="arrow-left" style={{ marginRight: 5 }} />
+                    Retour à la page de connexion
+                  </a>
+                </Link>
+              </div>
               <Form onSubmit={handleSubmit} noValidate style={{ padding: 10 }}>
                 <div style={{ textAlign: 'center' }}>
-                  <Typography.Title level={2}>Connexion</Typography.Title>
+                  <Typography.Title level={2}>Inscription</Typography.Title>
                 </div>
                 {errors.message && <Alert type="error" showIcon message={errors.message} />}
+                <Input
+                  placeholder="Nom d'utilisateur"
+                  value={values.username || ''}
+                  onChange={handleChange}
+                  label="Nom d'utilisateur"
+                  name="username"
+                  error={errors.username}
+                  disabled={isLoading}
+                  icon="user"
+                />
                 <Input
                   placeholder="Adresse mail"
                   value={values.email || ''}
@@ -57,11 +66,17 @@ export default withAuth(
                   disabled={isLoading}
                   icon="lock"
                 />
-                <Form.Item style={{ margin: 0, textAlign: 'right' }}>
-                  <Link href="/auth/reset" as="/mot-de-passe-oublie">
-                    <a>Mot de passe oublié ?</a>
-                  </Link>
-                </Form.Item>
+                <Input
+                  placeholder="Confirmation du mot de passe"
+                  value={values.confirm || ''}
+                  onChange={handleChange}
+                  label="Confirmation du mot de passe"
+                  name="confirm"
+                  password
+                  error={errors.confirm}
+                  disabled={isLoading}
+                  icon="lock"
+                />
                 <Button
                   type="primary"
                   htmlType="submit"
@@ -69,17 +84,9 @@ export default withAuth(
                   loading={isLoading}
                   block
                 >
-                  Connexion
+                  Inscription
                 </Button>
               </Form>
-              <div style={{ borderTop: '1px solid #ebedf0', padding: 10, textAlign: 'right' }}>
-                <Link href="/auth/register" as="/inscription">
-                  <a>
-                    Pas encore inscrit ?
-                    <Icon type="arrow-right" style={{ marginLeft: 5 }} />
-                  </a>
-                </Link>
-              </div>
             </section>
           </Col>
         </Row>
