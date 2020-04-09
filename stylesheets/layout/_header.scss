@@ -19,8 +19,13 @@
     align-items: center;
     -webkit-box-pack: justify;
     justify-content: space-between;
-    background-color: #edebd7;
+    background-color: #384859;
     padding: 0 50px;
+    color: #fff;
+
+    a {
+      color: #fff;
+    }
   }
 
   .navbar {
