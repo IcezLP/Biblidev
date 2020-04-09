@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const next = require('next');
 const compression = require('compression');
@@ -21,7 +22,8 @@ app
     const URL_MAP = {
       '/connexion': '/auth/login',
       '/inscription': '/auth/register',
-      '/mot-de-passe-oublie': '/auth/reset',
+      '/mot-de-passe-oublie': '/auth/forgot',
+      '/verification': '/auth/verify',
     };
 
     server.use(helmet());
@@ -48,7 +50,7 @@ app
       const url = URL_MAP[req.path];
 
       if (url) {
-        return app.render(req, res, url);
+        return app.render(req, res, url, req.query);
       }
 
       return handle(req, res);

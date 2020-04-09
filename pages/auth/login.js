@@ -58,7 +58,7 @@ export default withAuth(
                   icon="lock"
                 />
                 <Form.Item style={{ margin: 0, textAlign: 'right' }}>
-                  <Link href="/auth/reset" as="/mot-de-passe-oublie">
+                  <Link href="/auth/forgot" as="/mot-de-passe-oublie">
                     <a>Mot de passe oublié ?</a>
                   </Link>
                 </Form.Item>
