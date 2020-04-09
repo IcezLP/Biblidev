@@ -7,6 +7,9 @@ const User = require('../database/models/User');
 const Token = require('../database/models/Token');
 const loginFieldsValidation = require('../validation/auth/login');
 const registerFieldsValidation = require('../validation/auth/register');
+const forgotFieldsValidation = require('../validation/auth/forgot');
+const sendEmail = require('../services/amazon-ses');
+const verifyTemplate = require('../emailTemplates/verify');
 
 /**
  * Connecter un utilisateur
@@ -127,6 +130,13 @@ router.post('/register', async (req, res) => {
           token,
           createdAt: date,
         });
+
+        await sendEmail(
+          [email],
+          "Confirmation de l'adresse mail",
+          null,
+          verifyTemplate(user.username, `${process.env.SITE_URL}/verification?token=${token}`),
+        );
       }
     });
 
@@ -137,6 +147,67 @@ router.post('/register', async (req, res) => {
     });
   } catch (error) {
     console.log(error);
+    // Si une erreur inconnue arrive
+    return res.status(400).json({
+      status: 'error',
+      data: {},
+      message: 'Une erreur est survenue, veuillez réessayer',
+    });
+  }
+});
+
+/**
+ * Demande de mot de passe oublié
+ *
+ * @async
+ * @route POST /api/auth/forgot
+ * @public
+ */
+router.post('/forgot', async (req, res) => {
+  // Vérifie les champs du formulaire
+  const errors = forgotFieldsValidation(req.body);
+
+  // Si le formulaire contient des erreurs
+  if (Object.keys(errors).length !== 0) {
+    return res.status(400).json({
+      status: 'error',
+      data: errors,
+      message: null,
+    });
+  }
+});
+
+/**
+ * Vérifie l'adresse mail d'un utilisateur
+ *
+ * @async
+ * @route POST /api/auth/verify/:token
+ * @public
+ */
+router.post('/verify/:token', async (req, res) => {
+  const { token } = req.params;
+
+  try {
+    const verify = await Token.findOne({ token });
+    console.log(verify);
+
+    if (!verify || (verify && verify.type !== 'emailValidation')) {
+      return res.status(400).json({
+        status: 'error',
+        data: {},
+        message: "Aucune vérification correspondante n'a été trouvée",
+      });
+    }
+
+    await verify.remove();
+    await User.findByIdAndUpdate(verify.user, { $set: { verified: true } });
+
+    return res.status(200).json({
+      status: 'success',
+      data: {},
+      message: 'Votre adresse mail est validée, vous pouvez maintenant vous connecter',
+    });
+  } catch (error) {
     // Si une erreur inconnue arrive
     return res.status(400).json({
       status: 'error',
