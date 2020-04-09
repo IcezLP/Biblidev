@@ -22,7 +22,7 @@ const Verify = ({ status, message }) => {
             </Button>
           ) : (
             <Button type="primary" key="login">
-              <Link href="/auth/login">
+              <Link href="/auth/login" as="/connexion">
                 <a>Connexion</a>
               </Link>
             </Button>
