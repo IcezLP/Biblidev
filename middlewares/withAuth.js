@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import jwt from 'jsonwebtoken';
 import nextCookies from 'next-cookies';
 import cookies from 'js-cookie';
-import Axios from 'axios';
 import fetch from '../lib/fetch';
 
 export default (
