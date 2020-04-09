@@ -3,6 +3,7 @@ import jwt from 'jsonwebtoken';
 import nextCookies from 'next-cookies';
 import cookies from 'js-cookie';
 import fetch from '../lib/fetch';
+import Error from '../components/Error';
 
 export default (
   Page,
@@ -45,17 +46,17 @@ export default (
 
       // Si aucun utilisateur n'est connecté ou qu'il n'est pas admin
       if ((adminRequired && !user) || (adminRequired && user && !user.isAdmin)) {
-        return <p>Page introuvable</p>;
+        return <Error />;
       }
 
       // Si aucun utilisateur n'est connecté
       if (loginRequired && !logoutRequired && !user) {
-        return <p>Page introuvable</p>;
+        return <Error />;
       }
 
       // Si un utilisateur est connecté
       if (logoutRequired && user) {
-        return <p>Page introuvable</p>;
+        return <Error />;
       }
 
       return <Page {...this.props} />;
