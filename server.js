@@ -24,6 +24,7 @@ app
       '/inscription': '/auth/register',
       '/mot-de-passe-oublie': '/auth/forgot',
       '/verification': '/auth/verify',
+      '/proposition': '/submit',
     };
 
     server.use(helmet());
