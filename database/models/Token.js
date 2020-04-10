@@ -23,7 +23,7 @@ const TokenSchema = new Schema(
   { timestamps: true },
 );
 
-TokenSchema.index({ expiredAt: 1 }, { expireAfterSeconds: 0 });
+TokenSchema.index({ expireAt: 1 }, { expireAfterSeconds: 0 });
 
 const Token = model('tokens', TokenSchema);
 module.exports = Token;

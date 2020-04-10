@@ -25,6 +25,7 @@ app
       '/mot-de-passe-oublie': '/auth/forgot',
       '/verification': '/auth/verify',
       '/proposition': '/submit',
+      '/nouveau-mot-de-passe': '/auth/reset',
     };
 
     server.use(helmet());

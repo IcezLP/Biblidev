@@ -9,7 +9,7 @@ import withAuth from '../../middlewares/withAuth';
 
 export default withAuth(
   () => {
-    const { values, errors, isProcessing, handleChange, handleSubmit } = useForm(
+    const { values, errors, isLoading, handleChange, handleSubmit } = useForm(
       () =>
         notify(
           'success',
@@ -45,7 +45,7 @@ export default withAuth(
                   label="Adresse mail"
                   name="email"
                   error={errors.email}
-                  disabled={isProcessing}
+                  disabled={isLoading}
                   type="email"
                   icon="mail"
                 />
@@ -53,7 +53,7 @@ export default withAuth(
                   type="primary"
                   htmlType="submit"
                   style={{ margin: '20px 0' }}
-                  loading={isProcessing}
+                  loading={isLoading}
                   block
                 >
                   Réinitialiser mon mot de passe
