@@ -16,7 +16,7 @@ app
   .prepare()
   .then(() => {
     // Urls à bloquées
-    const URL_STOP = ['/routes/*', '/logs/*'];
+    // const URL_STOP = ['/routes/*', '/logs/*'];
 
     // Urls à redirigées
     const URL_MAP = {
@@ -43,9 +43,9 @@ app
     database(process.env.MONGO_URI);
     routes(server);
 
-    server.all(URL_STOP, (req, res) => {
-      return app.render(req, res, '/_error');
-    });
+    // server.all(URL_STOP, (req, res) => {
+    //   return app.render(req, res, '/_error');
+    // });
 
     // Affichage des pages
     server.get('*', (req, res) => {
