@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Upload as AntdUpload, Form, Icon } from 'antd';
 import PropTypes from 'prop-types';
-import './upload.css';
 
 /**
  * @param {String} label The label of input

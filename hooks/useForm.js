@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import fetch from '../lib/fetch';
+import toFormData from '../lib/toFormData';
 
-export default (callback, method, url) => {
+export default (callback, method, url, hasFile = false) => {
   const [values, setValues] = useState({});
   const [data, setData] = useState({});
   const [errors, setErrors] = useState({});
@@ -34,8 +35,14 @@ export default (callback, method, url) => {
     // Commence le chargement de la requête
     setIsLoading(true);
 
+    let formData;
+
+    if (hasFile) {
+      formData = toFormData(values);
+    }
+
     // Effectue la requête
-    const response = await fetch(method, url, values);
+    const response = await fetch(method, url, hasFile ? formData : values);
 
     switch (response.status) {
       case 'success':

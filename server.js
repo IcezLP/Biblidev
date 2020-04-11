@@ -33,7 +33,7 @@ app
     // Parse application/json
     server.use(express.json());
     // Parse application/x-www-form-urlencoded
-    server.use(express.urlencoded({ extended: true }));
+    server.use(express.urlencoded({ extended: false }));
 
     if (!dev) {
       // Ajout de req.hostname et req.ip
