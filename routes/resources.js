@@ -25,8 +25,39 @@ v2.config({
  * @return {Array} Liste des catégories
  */
 router.get('/', async (req, res) => {
+  let sort;
+
+  switch (String(req.query.sort)) {
+    case 'newest':
+      sort = { createdAt: -1 };
+      break;
+    case 'latest':
+      sort = { createdAt: 1 };
+      break;
+    case 'ascending':
+      sort = { slug: 1 };
+      break;
+    case 'descending':
+      sort = { slug: -1 };
+      break;
+    default:
+      sort = null;
+  }
+
+  const search = req.query.search
+    ? {
+        state: 'Validée',
+        $or: [
+          { name: { $regex: req.query.search, $options: 'i' } },
+          { description: { $regex: req.query.search, $options: 'i' } },
+        ],
+      }
+    : { state: 'Validée' };
+
   try {
-    const resources = await Resource.find()
+    const resources = await Resource.find(search)
+      .limit(Number(req.query.limit) || 25)
+      .sort(sort)
       .populate('categories')
       .populate('author', '-_id username slug');
 
