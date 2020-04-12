@@ -56,7 +56,7 @@ router.get('/', async (req, res) => {
 
   try {
     const resources = await Resource.find(search)
-      .limit(Number(req.query.limit) || 25)
+      .limit(Number(req.query.limit) || 50)
       .sort(sort)
       .populate('categories')
       .populate('author', '-_id username slug');
