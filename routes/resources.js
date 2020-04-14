@@ -41,7 +41,7 @@ router.get('/', async (req, res) => {
       sort = { slug: -1 };
       break;
     default:
-      sort = null;
+      sort = { slug: 1 };
   }
 
   const search = req.query.search

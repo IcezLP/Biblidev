@@ -6,4 +6,3 @@ logs/
 package-lock.json
 public/css/main.css
 public/css/main.css.map
-hooks/useSearch.js

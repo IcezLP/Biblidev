@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
-import { Layout, Row, Col } from 'antd';
+import React, { useState, useEffect } from 'react';
+import { Layout, Row, Col, Spin, Result } from 'antd';
 import classnames from 'classnames';
 import useSWR from 'swr';
+import { FrownOutlined, LoadingOutlined } from '@ant-design/icons';
 import withAuth from '../middlewares/withAuth';
 import Hero from '../components/pages/home/Hero';
 import useWindowSize from '../hooks/useWindowSize';
@@ -9,34 +10,55 @@ import Sidebar from '../components/pages/home/Sidebar';
 import fetch from '../lib/fetch';
 import Card from '../components/pages/home/Card';
 import Search from '../components/pages/home/Search';
+import useSearch from '../hooks/useSearch';
 
-const Home = ({ user, initialCategories, initialResources }) => {
-  const [search, setSearch] = useState('');
+const Home = ({ user, initialCategories }) => {
   const [collapsed, setCollapsed] = useState(true);
   const { width } = useWindowSize();
   const sidebarWidth = 230;
+  const { search, handleSearch, sortBy, handleSort } = useSearch('newest');
 
-  const {
-    data: {
-      data: { categories },
-    },
-  } = useSWR('/api/categories', (url) => fetch('get', url), {
+  const categories = useSWR('/api/categories', (url) => fetch('get', url), {
     initialData: initialCategories,
   });
 
-  const {
-    data: {
-      data: { resources },
-    },
-    mutate,
-  } = useSWR(`/api/resources?search=${search}`, (url) => fetch('get', url), {
-    initialData: initialResources,
-  });
+  const { data, mutate } = useSWR(`/api/resources?search=${search}&sort=${sortBy}`, (url) =>
+    fetch('get', url),
+  );
 
-  const reloadData = async () => {
-    const response = await fetch('get', `/api/resources?search=${search}`);
+  useEffect(() => {
+    const response = fetch('get', `/api/resources?search=${search}&sort=${sortBy}`);
+    mutate(response);
+  }, [search, sortBy]);
 
-    await mutate(response);
+  const Resources = () => {
+    if (!data) {
+      return (
+        <Row style={{ margin: '20px 0' }} type="flex" justify="center">
+          <Spin indicator={<LoadingOutlined style={{ fontSize: 24 }} spin />} />
+        </Row>
+      );
+    }
+
+    if (data) {
+      if (data.data.status === 'error') {
+        return <Result status="error" title="Une erreur est survenue, veuillez réesayer" />;
+      }
+
+      if (data.data.resources.length === 0) {
+        return <Result icon={<FrownOutlined />} title="Aucun résultat" />;
+      }
+
+      return (
+        <Row gutter={[12, 12]} type="flex">
+          {data.data.resources.map((item) => (
+            <Col xs={24} sm={12} md={8} lg={8} xl={6} xxl={4} key={item._id}>
+              <Card resource={item} />
+            </Col>
+          ))}
+        </Row>
+      );
+    }
   };
 
   return (
@@ -47,22 +69,19 @@ const Home = ({ user, initialCategories, initialResources }) => {
         width={sidebarWidth}
         onCollapse={() => setCollapsed(!collapsed)}
         isAdmin={user && user.isAdmin}
-        categories={categories}
+        categories={categories.data.data.categories}
       />
-      <Layout.Content style={{ marginLeft: width < 1200 ? 0 : sidebarWidth }} id="content">
+      <Layout.Content
+        style={{
+          marginLeft: width < 1200 ? 0 : sidebarWidth,
+          overflow: 'hidden',
+          backgroundColor: '#fff',
+        }}
+        id="content"
+      >
         <Hero />
-        <Search
-          query={search}
-          onChange={(event) => setSearch(event.target.value)}
-          onSearch={reloadData}
-        />
-        <Row gutter={[12, 12]} type="flex">
-          {resources.map((resource) => (
-            <Col xs={24} sm={12} md={8} lg={8} xl={6} xxl={4} key={resource._id}>
-              <Card resource={resource} />
-            </Col>
-          ))}
-        </Row>
+        <Search search={search} onChange={handleSearch} sort={sortBy} onSort={handleSort} />
+        <Resources />
       </Layout.Content>
     </Layout>
   );
@@ -70,7 +89,7 @@ const Home = ({ user, initialCategories, initialResources }) => {
 
 Home.getInitialProps = async () => {
   const initialCategories = await fetch('get', '/api/categories');
-  const initialResources = await fetch('get', '/api/resources');
+  const initialResources = await fetch('get', '/api/resources?sort=newest');
 
   return { initialCategories, initialResources };
 };
