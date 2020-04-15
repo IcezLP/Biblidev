@@ -25,6 +25,8 @@ v2.config({
  * @return {Array} Liste des catégories
  */
 router.get('/', async (req, res) => {
+  const price = String(req.query.price) || null;
+  const category = req.query.category || null;
   let sort;
 
   switch (String(req.query.sort)) {
@@ -47,12 +49,14 @@ router.get('/', async (req, res) => {
   const search = req.query.search
     ? {
         state: 'Validée',
+        ...(price && { price }),
+        ...(category && { categories: category }),
         $or: [
           { name: { $regex: req.query.search, $options: 'i' } },
           { description: { $regex: req.query.search, $options: 'i' } },
         ],
       }
-    : { state: 'Validée' };
+    : { state: 'Validée', ...(price && { price }), ...(category && { categories: category }) };
 
   try {
     const resources = await Resource.find(search)

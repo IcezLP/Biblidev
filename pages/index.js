@@ -16,20 +16,46 @@ const Home = ({ user, initialCategories }) => {
   const [collapsed, setCollapsed] = useState(true);
   const { width } = useWindowSize();
   const sidebarWidth = 230;
+  const [filters, setFilters] = useState({ price: '', category: '' });
   const { search, handleSearch, sortBy, handleSort } = useSearch('newest');
+
+  const handleFilter = (event) => {
+    if (event.persist) event.persist();
+    const key = event.item.props.type;
+    const value = event.key;
+
+    if (filters[key] === value) {
+      return setFilters((previous) => ({
+        ...previous,
+        [key]: '',
+      }));
+    }
+
+    return setFilters((previous) => ({
+      ...previous,
+      [key]: value,
+    }));
+  };
 
   const categories = useSWR('/api/categories', (url) => fetch('get', url), {
     initialData: initialCategories,
   });
 
-  const { data, mutate } = useSWR(`/api/resources?search=${search}&sort=${sortBy}`, (url) =>
-    fetch('get', url),
+  const {
+    data,
+    mutate,
+  } = useSWR(
+    `/api/resources?search=${search}&sort=${sortBy}&price=${filters.price}&category=${filters.category}`,
+    (url) => fetch('get', url),
   );
 
   useEffect(() => {
-    const response = fetch('get', `/api/resources?search=${search}&sort=${sortBy}`);
+    const response = fetch(
+      'get',
+      `/api/resources?search=${search}&sort=${sortBy}&price=${filters.price}&category=${filters.category}`,
+    );
     mutate(response);
-  }, [search, sortBy]);
+  }, [search, sortBy, filters]);
 
   const Resources = () => {
     if (!data) {
@@ -41,7 +67,7 @@ const Home = ({ user, initialCategories }) => {
     }
 
     if (data) {
-      if (data.data.status === 'error') {
+      if (data.status === 'error' || !data.data.resources) {
         return <Result status="error" title="Une erreur est survenue, veuillez réesayer" />;
       }
 
@@ -70,6 +96,8 @@ const Home = ({ user, initialCategories }) => {
         onCollapse={() => setCollapsed(!collapsed)}
         isAdmin={user && user.isAdmin}
         categories={categories.data.data.categories}
+        handleFilter={handleFilter}
+        filters={filters}
       />
       <Layout.Content
         style={{
