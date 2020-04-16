@@ -66,25 +66,23 @@ const Home = ({ user, initialCategories }) => {
       );
     }
 
-    if (data) {
-      if (data.status === 'error' || !data.data.resources) {
-        return <Result status="error" title="Une erreur est survenue, veuillez réesayer" />;
-      }
-
-      if (data.data.resources.length === 0) {
-        return <Result icon={<FrownOutlined />} title="Aucun résultat" />;
-      }
-
-      return (
-        <Row gutter={[12, 12]} type="flex">
-          {data.data.resources.map((item) => (
-            <Col xs={24} sm={12} md={8} lg={8} xl={6} xxl={4} key={item._id}>
-              <Card resource={item} />
-            </Col>
-          ))}
-        </Row>
-      );
+    if (data.status === 'error' || !data.data.resources) {
+      return <Result status="error" title="Une erreur est survenue, veuillez réesayer" />;
     }
+
+    if (data.data.resources.length === 0) {
+      return <Result icon={<FrownOutlined />} title="Aucun résultat" />;
+    }
+
+    return (
+      <Row gutter={[12, 12]} type="flex">
+        {data.data.resources.map((item) => (
+          <Col xs={24} sm={12} md={8} lg={8} xl={6} xxl={4} key={item._id}>
+            <Card resource={item} />
+          </Col>
+        ))}
+      </Row>
+    );
   };
 
   return (
