@@ -16,7 +16,17 @@ export default ({ user }) => {
   };
 
   const userMenu = () => (
-    <Menu>
+    <Menu theme="light">
+      <Menu.Item key="dashboard" className="navbar__link">
+        <Link href="/dashboard" as="/tableau-de-bord">
+          <a>Tableau de bord</a>
+        </Link>
+      </Menu.Item>
+      <Menu.Item key="settings" className="navbar__link">
+        <Link href="/settings" as="/parametres">
+          <a>Paramètres</a>
+        </Link>
+      </Menu.Item>
       <Menu.Item key="logout" className="navbar__link">
         <a href="#" onClick={removeAuthToken}>
           Déconnexion
