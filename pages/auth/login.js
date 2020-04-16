@@ -30,7 +30,6 @@ export default withAuth(
       const response = await fetch('post', `/api/auth/resend/${data.userId}`);
 
       if (response.status === 'success') {
-        document.getElementById('resend').remove();
         notify('success', 'Un nouvel email de confirmation vous a été envoyé, vérifiez vos spams');
       }
     };
