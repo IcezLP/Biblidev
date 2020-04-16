@@ -352,7 +352,7 @@ router.post('/resend/:userId', async (req, res) => {
     }
 
     // Si aucun token de validation n'a été trouvé
-    if (!verify) {
+    if (!verify || (verify && verify.type !== 'emailValidation')) {
       // Génère un nouveau token pour la validation de l'email
       const token = crypto.randomBytes(32).toString('hex');
 
