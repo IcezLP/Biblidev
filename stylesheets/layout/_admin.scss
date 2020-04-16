@@ -1,0 +1,22 @@
+.admin {
+  .admin__sidebar {
+    height: calc(100vh - 98px);
+    border-right: 1px solid #f0f2f5;
+    z-index: 10;
+
+    .menu {
+      border-right: none;
+      max-width: 100%;
+    }
+
+    .ant-layout-sider-trigger {
+      background-color: #f0f2f5;
+    }
+  }
+
+  .admin__content {
+    background-color: #fff;
+    padding: 10px;
+    overflow: hidden;
+  }
+}
