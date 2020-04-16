@@ -52,7 +52,7 @@ export default withAuth(
       }
 
       return `${data.data.resources.length} ressource${
-        data.data.resources.length > 1 ? 's' : null
+        data.data.resources.length > 1 ? 's' : ''
       } à valider`;
     };
 
