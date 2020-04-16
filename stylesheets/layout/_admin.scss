@@ -1,9 +1,6 @@
 .admin {
   .admin__sidebar {
     height: calc(100vh - 98px);
-    position: fixed;
-    left: 0;
-    top: 98px;
     border-right: 1px solid #f0f2f5;
     z-index: 10;
 
@@ -21,6 +18,5 @@
     background-color: #fff;
     padding: 10px;
     overflow: hidden;
-    transition: margin 0.2s;
   }
 }
