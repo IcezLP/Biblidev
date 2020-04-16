@@ -57,7 +57,7 @@ export default withAuth(
     };
 
     return (
-      <Layout title="Ressources en attentes de validation" subTitle={subTitle()}>
+      <Layout title="Ressources en attente de validation" subTitle={subTitle()}>
         <div id="awaiting">
           <Resources />
         </div>
