@@ -14,8 +14,10 @@ import PropTypes from 'prop-types';
 const Radio = ({ label, error, options, value, onChange, name, disabled }) => (
   <Form.Item
     label={label}
+    labelAlign="left"
+    labelCol={{ sm: 24 }}
     validateStatus={error && 'error'}
-    help={error}
+    help={!!error && error}
     style={{ marginBottom: 0 }}
   >
     <AntdRadio.Group

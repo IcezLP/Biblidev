@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Upload as AntdUpload, Form, Icon } from 'antd';
+import { Upload as AntdUpload, Form } from 'antd';
 import PropTypes from 'prop-types';
+import { PlusOutlined } from '@ant-design/icons';
 
 /**
  * @param {String} label The label of input
@@ -37,8 +38,10 @@ const Upload = ({ label, error, name, disabled, onChange, value }) => {
   return (
     <Form.Item
       label={label}
+      labelAlign="left"
+      labelCol={{ sm: 24 }}
       validateStatus={error && 'error'}
-      help={error}
+      help={!!error && error}
       style={{ marginBottom: 0 }}
     >
       <AntdUpload
@@ -56,7 +59,7 @@ const Upload = ({ label, error, name, disabled, onChange, value }) => {
           />
         ) : (
           <>
-            <Icon type="plus" />
+            <PlusOutlined />
             <div className="ant-upload-text">Sélectionner ou déposer une image</div>
           </>
         )}

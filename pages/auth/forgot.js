@@ -1,7 +1,8 @@
 import React from 'react';
-import { Form, Row, Col, Button, Typography, Icon, Alert } from 'antd';
+import { Form, Row, Col, Button, Typography, Alert } from 'antd';
 import Link from 'next/link';
 import { NextSeo } from 'next-seo';
+import { MailOutlined, ArrowLeftOutlined } from '@ant-design/icons';
 import Input from '../../components/form/Input';
 import useForm from '../../hooks/useForm';
 import { notify } from '../../lib/notification';
@@ -28,12 +29,12 @@ export default withAuth(
               <div style={{ borderBottom: '1px solid #ebedf0', padding: 10 }}>
                 <Link href="/auth/login" as="/connexion">
                   <a>
-                    <Icon type="arrow-left" style={{ marginRight: 5 }} />
+                    <ArrowLeftOutlined style={{ marginRight: 5 }} />
                     Retour à la page de connexion
                   </a>
                 </Link>
               </div>
-              <Form onSubmit={handleSubmit} noValidate style={{ padding: 10 }}>
+              <Form onFinish={handleSubmit} noValidate style={{ padding: 10 }}>
                 <div style={{ textAlign: 'center' }}>
                   <Typography.Title level={2}>Mot de passe oublié</Typography.Title>
                 </div>
@@ -47,7 +48,7 @@ export default withAuth(
                   error={errors.email}
                   disabled={isLoading}
                   type="email"
-                  icon="mail"
+                  icon={<MailOutlined />}
                 />
                 <Button
                   type="primary"

@@ -1,7 +1,8 @@
 import React from 'react';
-import { Form, Row, Col, Button, Typography, Icon, Alert } from 'antd';
+import { Form, Row, Col, Button, Typography, Alert } from 'antd';
 import Link from 'next/link';
 import { NextSeo } from 'next-seo';
+import { LockOutlined, ArrowLeftOutlined } from '@ant-design/icons';
 import Input from '../../components/form/Input';
 import useForm from '../../hooks/useForm';
 import { notify } from '../../lib/notification';
@@ -23,12 +24,12 @@ const Reset = ({ token }) => {
             <div style={{ borderBottom: '1px solid #ebedf0', padding: 10 }}>
               <Link href="/auth/login" as="/connexion">
                 <a>
-                  <Icon type="arrow-left" style={{ marginRight: 5 }} />
+                  <ArrowLeftOutlined style={{ marginRight: 5 }} />
                   Retour à la page de connexion
                 </a>
               </Link>
             </div>
-            <Form onSubmit={handleSubmit} noValidate style={{ padding: 10 }}>
+            <Form onFinish={handleSubmit} noValidate style={{ padding: 10 }}>
               <div style={{ textAlign: 'center' }}>
                 <Typography.Title level={2}>Modifier mon mot de passe</Typography.Title>
               </div>
@@ -42,7 +43,7 @@ const Reset = ({ token }) => {
                 password
                 error={errors.password}
                 disabled={isLoading}
-                icon="lock"
+                icon={<LockOutlined />}
               />
               <Input
                 placeholder="Confirmation du mot de passe"
@@ -53,7 +54,7 @@ const Reset = ({ token }) => {
                 password
                 error={errors.confirm}
                 disabled={isLoading}
-                icon="lock"
+                icon={<LockOutlined />}
               />
               <Button
                 type="primary"

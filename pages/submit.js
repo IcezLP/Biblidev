@@ -10,6 +10,7 @@ import useForm from '../hooks/useForm';
 import { notify } from '../lib/notification';
 import withAuth from '../middlewares/withAuth';
 import fetch from '../lib/fetch';
+import {} from '@ant-design/icons';
 
 const Submit = ({ user, categories }) => {
   const { values, errors, handleChange, handleSubmit, isLoading } = useForm(
@@ -37,7 +38,7 @@ const Submit = ({ user, categories }) => {
       <Row type="flex" justify="center">
         <Col xs={24} sm={16} md={12} lg={10} xl={8} xxl={6}>
           <section style={{ border: '1px solid #ebedf0', margin: 20, borderRadius: 4 }}>
-            <Form onSubmit={handleSubmit} noValidate style={{ padding: 10 }}>
+            <Form onFinish={handleSubmit} noValidate style={{ padding: 10 }}>
               {!user && (
                 <Alert
                   type="info"

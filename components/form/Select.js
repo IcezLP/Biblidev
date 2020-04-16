@@ -49,9 +49,11 @@ const Select = ({
   return (
     <Form.Item
       label={label}
+      labelAlign="left"
+      labelCol={{ sm: 24 }}
       hasFeedback={!!error}
       validateStatus={error && 'error'}
-      help={error}
+      help={!!error && error}
       style={{ marginBottom: 0 }}
     >
       <AntdSelect

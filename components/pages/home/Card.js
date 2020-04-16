@@ -1,5 +1,6 @@
 import React from 'react';
-import { Card, Avatar, Tag, Typography, Badge, Icon } from 'antd';
+import { Card, Avatar, Tag, Typography, Badge } from 'antd';
+import { DollarOutlined } from '@ant-design/icons';
 
 export default ({ resource }) => {
   const color = () => {
@@ -13,10 +14,7 @@ export default ({ resource }) => {
   return (
     <Badge
       count={
-        <Icon
-          type="dollar"
-          style={{ color: color(), fontSize: '19px', top: '14px', right: '14px' }}
-        />
+        <DollarOutlined style={{ color: color(), fontSize: '19px', top: '14px', right: '14px' }} />
       }
       className="resource"
     >

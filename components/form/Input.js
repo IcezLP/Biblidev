@@ -1,6 +1,7 @@
 import React from 'react';
 import { Input as AntdInput, Icon, Form, Tooltip } from 'antd';
 import PropTypes from 'prop-types';
+import { InfoCircleOutlined } from '@ant-design/icons';
 
 /**
  * @param {String} placeholder The input placeholder
@@ -56,22 +57,23 @@ const Input = ({
 
   const textareaConfig = textarea ? { autoSize } : {};
   const searchConfig = search ? { onSearch, enterButton, loading } : {};
-
   return (
     <Form.Item
       label={label}
+      labelAlign="left"
+      labelCol={{ sm: 24 }}
       hasFeedback={!!error}
       validateStatus={error && 'error'}
-      help={error}
+      help={!!error && error}
       style={{ marginBottom: 0 }}
     >
       <InputType
         placeholder={placeholder}
-        prefix={icon && <Icon type={icon} style={{ color: 'rgba(0,0,0,.25)' }} />}
+        prefix={icon}
         suffix={
           tooltip && (
             <Tooltip title={tooltip}>
-              <Icon type="info-circle" style={{ color: 'rgba(0,0,0,.45)' }} />
+              <InfoCircleOutlined style={{ color: 'rgba(0,0,0,.45)' }} />
             </Tooltip>
           )
         }
@@ -92,7 +94,7 @@ const Input = ({
 
 Input.propTypes = {
   placeholder: PropTypes.string,
-  icon: PropTypes.string,
+  icon: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
   password: PropTypes.bool,
   type: PropTypes.oneOf(['text', 'password', 'email']),
   disabled: PropTypes.bool,
