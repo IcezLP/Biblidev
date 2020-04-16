@@ -49,7 +49,11 @@ export default (callback, method, url, hasFile = false) => {
         // Si la réponse contient des données à renvoyer
         if (Object.keys(response.data).length !== 0) {
           setData(response.data);
+        } else {
+          // Réinitialise le state à un objet vide
+          setData({});
         }
+
         setValues({}); // Réinitialise les valeurs
         setErrors({}); // Réinitialise les erreurs
         break;
@@ -57,7 +61,11 @@ export default (callback, method, url, hasFile = false) => {
         // Si la réponse contient des données à renvoyer
         if (Object.keys(response.data).length !== 0) {
           setData(response.data);
+        } else {
+          // Réinitialise le state à un objet vide
+          setData({});
         }
+
         setErrors((response.message && { message: response.message }) || response.data);
         break;
       default:
