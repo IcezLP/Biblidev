@@ -1,5 +1,5 @@
 import React from 'react';
-import { Layout, Menu, Badge } from 'antd';
+import { Layout, Menu, Badge, Divider } from 'antd';
 import {
   TeamOutlined,
   TagOutlined,
@@ -75,6 +75,18 @@ export default ({ collapsed, onCollapse }) => {
             </span>
           }
         >
+          {collapsed && (
+            <Menu.Item
+              key="title"
+              style={{
+                textAlign: 'center',
+                color: 'rgba(0, 0, 0, 0.65)',
+              }}
+            >
+              Ressources
+            </Menu.Item>
+          )}
+          <Divider />
           <Menu.Item key="manage" disabled>
             <Link href="/admin/resources" as="/admin/ressources">
               <a>
