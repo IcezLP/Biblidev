@@ -43,7 +43,7 @@ router.post('/login', async (req, res) => {
       return res.status(404).json({
         status: 'error',
         data: {},
-        message: 'Adresse e-mail ou mot de passe incorrect',
+        message: 'Adresse mail ou mot de passe incorrect',
       });
     }
 
@@ -51,8 +51,10 @@ router.post('/login', async (req, res) => {
     if (!user.verified) {
       return res.status(400).json({
         status: 'error',
-        data: {},
-        message: 'Veuillez confirmer votre adresse e-mail pour continuer',
+        data: {
+          userId: user._id,
+        },
+        message: 'Veuillez confirmer votre adresse mail pour continuer',
       });
     }
 
@@ -130,7 +132,6 @@ router.post('/register', async (req, res) => {
           type: 'emailValidation',
           user: user._id,
           token,
-          createdAt: date,
         });
 
         await sendEmail(
@@ -200,7 +201,6 @@ router.post('/forgot', async (req, res) => {
       type: 'passwordReset',
       user: user._id,
       token,
-      createdAt: new Date(),
       expireAt: new Date(Date.now() + 1000 * 60 * 20),
     });
 
@@ -312,6 +312,77 @@ router.post('/verify/:token', async (req, res) => {
     await verify.remove();
     // Met à jour le statut de vérification de l'adresse mail de l'utilisateur
     await User.findByIdAndUpdate(verify.user, { $set: { verified: true } });
+
+    return res.status(200).json({
+      status: 'success',
+      data: {},
+      message: 'Votre adresse mail est validée, vous pouvez maintenant vous connecter',
+    });
+  } catch (error) {
+    // Si une erreur inconnue arrive
+    return res.status(400).json({
+      status: 'error',
+      data: {},
+      message: 'Une erreur est survenue, veuillez réessayer',
+    });
+  }
+});
+
+/**
+ * Ré-envoi un email de validation
+ *
+ * @async
+ * @route POST /api/auth/resend
+ * @public
+ */
+router.post('/resend/:userId', async (req, res) => {
+  const { userId } = req.params;
+
+  try {
+    const user = await User.findById(userId);
+    const verify = await Token.findOne({ user: userId });
+
+    if (!user) {
+      // Si une erreur inconnue arrive
+      return res.status(400).json({
+        status: 'error',
+        data: {},
+        message: "Aucun utilisateur n'a été trouvé",
+      });
+    }
+
+    // Si aucun token de validation n'a été trouvé
+    if (!verify) {
+      // Génère un nouveau token pour la validation de l'email
+      const token = crypto.randomBytes(32).toString('hex');
+
+      // Sauvegarde le token dans la db
+      await Token.create({
+        type: 'emailValidation',
+        user: userId,
+        token,
+      });
+
+      await sendEmail(
+        [user.email],
+        "Confirmation de l'adresse mail",
+        null,
+        verifyTemplate(user.username, `${process.env.SITE_URL}/verification?token=${token}`),
+      );
+
+      return res.status(200).json({
+        status: 'success',
+        data: {},
+        message: null,
+      });
+    }
+
+    await sendEmail(
+      [user.email],
+      "Confirmation de l'adresse mail",
+      null,
+      verifyTemplate(user.username, `${process.env.SITE_URL}/verification?token=${verify.token}`),
+    );
 
     return res.status(200).json({
       status: 'success',

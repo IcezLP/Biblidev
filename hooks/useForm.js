@@ -54,6 +54,10 @@ export default (callback, method, url, hasFile = false) => {
         setErrors({}); // Réinitialise les erreurs
         break;
       case 'error':
+        // Si la réponse contient des données à renvoyer
+        if (Object.keys(response.data).length !== 0) {
+          setData(response.data);
+        }
         setErrors((response.message && { message: response.message }) || response.data);
         break;
       default:
@@ -61,5 +65,5 @@ export default (callback, method, url, hasFile = false) => {
     }
   };
 
-  return { values, errors, isLoading, handleChange, handleSubmit };
+  return { values, errors, isLoading, handleChange, handleSubmit, data };
 };

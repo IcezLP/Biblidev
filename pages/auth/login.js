@@ -7,6 +7,8 @@ import { Form, Row, Col, Button, Typography, Icon, Alert } from 'antd';
 import Input from '../../components/form/Input';
 import useForm from '../../hooks/useForm';
 import withAuth from '../../middlewares/withAuth';
+import fetch from '../../lib/fetch';
+import { notify } from '../../lib/notification';
 
 export default withAuth(
   () => {
@@ -18,11 +20,20 @@ export default withAuth(
       Router.push('/');
     };
 
-    const { values, errors, isLoading, handleChange, handleSubmit } = useForm(
+    const { values, errors, isLoading, handleChange, handleSubmit, data } = useForm(
       setAuthToken,
       'post',
       '/api/auth/login',
     );
+
+    const resendVerify = async () => {
+      const response = await fetch('post', `/api/auth/resend/${data.userId}`);
+
+      if (response.status === 'success') {
+        document.getElementById('resend').remove();
+        notify('success', 'Un nouvel email de confirmation vous a été envoyé, vérifiez vos spams');
+      }
+    };
 
     return (
       <>
@@ -34,7 +45,26 @@ export default withAuth(
                 <div style={{ textAlign: 'center' }}>
                   <Typography.Title level={2}>Connexion</Typography.Title>
                 </div>
-                {errors.message && <Alert type="error" showIcon message={errors.message} />}
+                {errors.message && (
+                  <Alert
+                    type="error"
+                    showIcon
+                    message={
+                      data.userId ? (
+                        <>
+                          {errors.message}
+                          &nbsp;
+                          <br />
+                          <a href="#" onClick={resendVerify} id="resend">
+                            Me renvoyer un email de validation
+                          </a>
+                        </>
+                      ) : (
+                        errors.message
+                      )
+                    }
+                  />
+                )}
                 <Input
                   placeholder="Adresse mail"
                   value={values.email || ''}
