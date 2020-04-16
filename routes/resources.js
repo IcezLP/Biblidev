@@ -170,7 +170,10 @@ router.post('/submit', async (req, res) => {
  */
 router.get('/awaiting', async (req, res) => {
   try {
-    const resources = await Resource.find({ state: 'En attente de validation' });
+    const resources = await Resource.find({ state: 'En attente de validation' })
+      .sort({ createdAt: 1 })
+      .populate('categories')
+      .populate('author', '_id username slug');
 
     return res.status(200).json({
       status: 'success',

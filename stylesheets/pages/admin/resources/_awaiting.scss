@@ -1,0 +1,55 @@
+#awaiting {
+  .resource {
+    .resource__header {
+      display: block;
+      margin-bottom: 5px;
+
+      .resource__author {
+        color: #1890ff;
+        cursor: pointer;
+
+        b {
+          font-weight: bold;
+        }
+      }
+    }
+
+    .resource__price {
+      height: 100%;
+      width: 100%;
+    }
+
+    .resource__card {
+      .resource__categories {
+        margin-top: auto;
+        display: -webkit-box;
+        display: flex;
+        flex-wrap: wrap-reverse;
+
+        .resource__category {
+          margin-top: 8px;
+        }
+      }
+    }
+
+    .resource__controls {
+      margin-top: 5px;
+      display: -webkit-box;
+      display: flex;
+      -webkit-box-pack: end;
+      justify-content: flex-end;
+
+      .control__button {
+        &:not(:last-child) {
+          margin-right: 5px;
+        }
+
+        &.control__button--success {
+          background-color: $successColor;
+          color: #fff;
+          border-color: $successColor;
+        }
+      }
+    }
+  }
+}
