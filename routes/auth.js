@@ -201,7 +201,7 @@ router.post('/forgot', async (req, res) => {
       type: 'passwordReset',
       user: user._id,
       token,
-      expireAt: new Date(Date.now() + 1000 * 60 * 20),
+      expireAt: new Date(Date.now() + 1000 * 60 * 20), // Expire après 20 minutes
     });
 
     // Envoi le mail contenant le lien pour réinitialiser le mot de passe

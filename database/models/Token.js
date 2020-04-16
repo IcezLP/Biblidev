@@ -23,6 +23,7 @@ const TokenSchema = new Schema(
   { timestamps: true },
 );
 
+// Ajoute un index sur expireAt pour automatiquement supprimer un document après un temps donné
 TokenSchema.index({ expireAt: 1 }, { expireAfterSeconds: 0 });
 
 const Token = model('tokens', TokenSchema);
