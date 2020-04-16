@@ -51,8 +51,9 @@ export default withAuth(
         return 'Aucune ressource à valider';
       }
 
-      return `${data.data.resources.length} ressource${data.data.resources.length > 1 &&
-        's'} à valider`;
+      return `${data.data.resources.length} ressource${
+        data.data.resources.length > 1 ? 's' : null
+      } à valider`;
     };
 
     return (
