@@ -24,7 +24,7 @@ export default ({ resource, onEdit, onCheck, onUserClick, onDeny }) => {
             className="resource__author"
             onClick={(event) => {
               event.preventDefault();
-              onUserClick(resource._id);
+              onUserClick(resource.author._id);
             }}
           >
             {/* eslint-disable-next-line */}
