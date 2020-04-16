@@ -1,6 +1,6 @@
 import React from 'react';
 import useSWR from 'swr';
-import { Col, Row, Spin, Result } from 'antd';
+import { Col, Row, Spin, Result, Modal } from 'antd';
 import { LoadingOutlined, FrownOutlined } from '@ant-design/icons';
 import withAuth from '../../../middlewares/withAuth';
 import Layout from '../../../components/layout/admin/Layout';
@@ -9,6 +9,16 @@ import Card from '../../../components/pages/admin/resources/awaiting/Card';
 export default withAuth(
   () => {
     const { data } = useSWR('/api/resources/awaiting', (url) => fetch('get', url));
+
+    const verifyConfirm = (id) => {
+      Modal.confirm({
+        title: `Êtes-vous sûr de vouloir valider cette ressource ? (${id}))`,
+        okText: 'Confirmer',
+        cancelText: 'Annuler',
+        onOk: () => console.log('VALIDATION TERMINÉE'),
+        onCancel: () => console.log('VALIDATION ANNULÉE'),
+      });
+    };
 
     const Resources = () => {
       if (!data) {
@@ -31,7 +41,7 @@ export default withAuth(
         <Row gutter={[12, 12]} type="flex">
           {data.data.resources.map((item) => (
             <Col xs={24} key={item._id}>
-              <Card resource={item} />
+              <Card resource={item} onCheck={verifyConfirm} />
             </Col>
           ))}
         </Row>

@@ -20,7 +20,13 @@ export default ({ resource, onEdit, onCheck, onUserClick, onDeny }) => {
         </Moment>
         &nbsp;par&nbsp;
         {resource.author ? (
-          <span className="resource__author" onClick={onUserClick}>
+          <span
+            className="resource__author"
+            onClick={(event) => {
+              event.preventDefault();
+              onUserClick(resource._id);
+            }}
+          >
             {/* eslint-disable-next-line */}
             <b>{resource.author.username}</b> ({resource.author._id})
           </span>
@@ -67,7 +73,14 @@ export default ({ resource, onEdit, onCheck, onUserClick, onDeny }) => {
         </Card>
       </Badge>
       <div className="resource__controls">
-        <Button className="control__button" icon={<EditOutlined />} onClick={onEdit}>
+        <Button
+          className="control__button"
+          icon={<EditOutlined />}
+          onClick={(event) => {
+            event.preventDefault();
+            onEdit(resource._id);
+          }}
+        >
           Éditer
         </Button>
         <Button
@@ -75,14 +88,20 @@ export default ({ resource, onEdit, onCheck, onUserClick, onDeny }) => {
           type="primary"
           danger
           icon={<CloseOutlined />}
-          onClick={onDeny}
+          onClick={(event) => {
+            event.preventDefault();
+            onDeny(resource._id);
+          }}
         >
           Refuser
         </Button>
         <Button
           className="control__button control__button--success"
           icon={<CheckOutlined />}
-          onClick={onCheck}
+          onClick={(event) => {
+            event.preventDefault();
+            onCheck(resource._id);
+          }}
         >
           Valider
         </Button>
