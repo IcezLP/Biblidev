@@ -26,6 +26,8 @@ app
       '/verification': '/auth/verify',
       '/proposition': '/submit',
       '/nouveau-mot-de-passe': '/auth/reset',
+      '/admin/utilisateurs': '/admin/users',
+      '/admin/ressources': '/admin/resources',
     };
 
     server.use(helmet());
