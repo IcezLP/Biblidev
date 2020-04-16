@@ -161,4 +161,30 @@ router.post('/submit', async (req, res) => {
   });
 });
 
+/**
+ * Ressources en attentes de validation
+ *
+ * @async
+ * @route GET /api/resources/awaiting
+ * @public
+ */
+router.get('/awaiting', async (req, res) => {
+  try {
+    const resources = await Resource.find({ state: 'En attente de validation' });
+
+    return res.status(200).json({
+      status: 'success',
+      data: { resources },
+      message: null,
+    });
+  } catch (error) {
+    // Si une erreur inconnue arrive
+    return res.status(400).json({
+      status: 'error',
+      data: {},
+      message: 'Une erreur est survenue, veuillez réesayer',
+    });
+  }
+});
+
 module.exports = router;

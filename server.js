@@ -30,6 +30,9 @@ app
       '/nouveau-mot-de-passe': '/auth/reset',
       '/admin/utilisateurs': '/admin/users',
       '/admin/ressources': '/admin/resources',
+      '/admin/ressources/ajout': '/admin/resources/add',
+      '/admin/ressources/importation': '/admin/resources/import',
+      '/admin/ressources/validation': '/admin/resources/awaiting',
     };
 
     server.use(helmet());
