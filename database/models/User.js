@@ -43,6 +43,10 @@ const UserSchema = new Schema(
         ref: 'resources',
       },
     ],
+    newsletter: {
+      type: Boolean,
+      default: true,
+    },
     isAdmin: {
       type: Boolean,
       default: false,
