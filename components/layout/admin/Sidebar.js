@@ -88,7 +88,7 @@ export default ({ collapsed, onCollapse }) => {
               Ressources
             </Menu.Item>
           )}
-          <Menu.Item key="manage" disabled>
+          <Menu.Item key="manage">
             <Link href="/admin/resources" as="/admin/ressources">
               <a>
                 <ControlOutlined />
@@ -96,7 +96,7 @@ export default ({ collapsed, onCollapse }) => {
               </a>
             </Link>
           </Menu.Item>
-          <Menu.Item key="add" disabled>
+          <Menu.Item key="add">
             <Link href="/admin/resources/add" as="/admin/ressources/ajout">
               <a>
                 <PlusOutlined />
@@ -104,7 +104,7 @@ export default ({ collapsed, onCollapse }) => {
               </a>
             </Link>
           </Menu.Item>
-          <Menu.Item key="import" disabled>
+          <Menu.Item key="import">
             <Link href="/admin/resources/import" as="/admin/ressources/importation">
               <a>
                 <ImportOutlined />
@@ -112,7 +112,7 @@ export default ({ collapsed, onCollapse }) => {
               </a>
             </Link>
           </Menu.Item>
-          <Menu.Item key="awaiting" disabled>
+          <Menu.Item key="awaiting">
             <Link href="/admin/resources/awaiting" as="/admin/ressources/validation">
               <a>
                 <Badge count={awaitingResources()} showZero offset={[15, 8]}>
