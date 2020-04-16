@@ -88,7 +88,7 @@ const Home = ({ user, initialCategories }) => {
   };
 
   return (
-    <Layout className={classnames('home', { layout__admin: user && user.isAdmin })}>
+    <Layout className={classnames('home', { layout__admin: user && user.isAdmin })} hasSider>
       <Sidebar
         collapsible={width < 1200}
         collapsed={width < 1200 && collapsed}
@@ -102,8 +102,6 @@ const Home = ({ user, initialCategories }) => {
       <Layout.Content
         style={{
           marginLeft: width < 1200 ? 0 : sidebarWidth,
-          overflow: 'hidden',
-          backgroundColor: '#fff',
         }}
         id="content"
       >
