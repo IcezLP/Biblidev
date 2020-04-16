@@ -25,6 +25,8 @@ app
       '/mot-de-passe-oublie': '/auth/forgot',
       '/verification': '/auth/verify',
       '/proposition': '/submit',
+      '/parametres': '/settings',
+      '/tableau-de-bord': '/dashboard',
       '/nouveau-mot-de-passe': '/auth/reset',
       '/admin/utilisateurs': '/admin/users',
       '/admin/ressources': '/admin/resources',
