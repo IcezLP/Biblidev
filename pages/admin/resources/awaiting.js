@@ -10,9 +10,11 @@ export default withAuth(
   () => {
     const { data } = useSWR('/api/admin/resources/awaiting', (url) => fetch('get', url));
 
-    const verifyConfirm = (id) => {
+    const verifyConfirm = (name, id) => {
       Modal.confirm({
-        title: `Êtes-vous sûr de vouloir valider cette ressource ? (${id})`,
+        title: `Êtes-vous sûr de vouloir valider cette ressource ? ${name} (${id})`,
+        content:
+          'Assurez-vous de bien avoir vérifier la ressource (orthographe, lien, catégories...)',
         okText: 'Confirmer',
         cancelText: 'Annuler',
         onOk: () => console.log('VALIDATION TERMINÉE'),

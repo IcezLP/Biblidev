@@ -82,7 +82,7 @@ export default ({ resource, onEdit, onCheck, onDeny }) => {
           icon={<CloseOutlined />}
           onClick={(event) => {
             event.preventDefault();
-            onDeny(resource._id);
+            onDeny(resource.name, resource._id);
           }}
         >
           Refuser
@@ -92,7 +92,7 @@ export default ({ resource, onEdit, onCheck, onDeny }) => {
           icon={<CheckOutlined />}
           onClick={(event) => {
             event.preventDefault();
-            onCheck(resource._id);
+            onCheck(resource.name, resource._id);
           }}
         >
           Valider
