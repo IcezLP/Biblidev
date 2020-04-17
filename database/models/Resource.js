@@ -41,10 +41,12 @@ const ResourceSchema = new Schema(
       enum: ['Validée', 'En attente de validation'],
       required: true,
     },
-    favorites: {
-      type: Number,
-      default: 0,
-    },
+    favorites: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'users',
+      },
+    ],
   },
   { timestamps: true },
 );
