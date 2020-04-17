@@ -8,7 +8,7 @@ import Card from '../../../components/pages/admin/resources/awaiting/Card';
 
 export default withAuth(
   () => {
-    const { data } = useSWR('/api/resources/awaiting', (url) => fetch('get', url));
+    const { data } = useSWR('/api/admin/resources/awaiting', (url) => fetch('get', url));
 
     const verifyConfirm = (id) => {
       Modal.confirm({

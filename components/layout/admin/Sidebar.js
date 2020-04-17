@@ -19,7 +19,7 @@ import useSWR from 'swr';
 import fetch from '../../../lib/fetch';
 
 export default ({ collapsed, onCollapse }) => {
-  const { data } = useSWR('/api/resources/awaiting', (url) => fetch('get', url));
+  const { data } = useSWR('/api/admin/resources/awaiting', (url) => fetch('get', url));
 
   const awaitingResources = () => {
     if (!data) {
