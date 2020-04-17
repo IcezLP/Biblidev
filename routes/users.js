@@ -6,7 +6,7 @@ const authenticateJwt = require('../middlewares/authenticateJwt');
  * Récupère les information d'un utilisateur via son id
  *
  * @async
- * @route POST /api/users/:id
+ * @route GET /api/users/:id
  * @public
  * @return {Object} Informations utilisateur
  */
