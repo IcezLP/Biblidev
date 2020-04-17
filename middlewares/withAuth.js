@@ -26,7 +26,7 @@ export default (
             // Récupère les informations de l'utilisateur
             const response = await fetch('get', `/api/users/${decoded._id}`);
             // Assigne les données utilisateur
-            user = response.data;
+            user = response.data.user;
           } catch (error) {
             // En cas d'erreur, le cookie est supprimé
             cookies.remove('auth');

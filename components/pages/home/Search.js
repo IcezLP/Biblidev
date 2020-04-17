@@ -18,7 +18,7 @@ const sortByOptions = [
   },
   {
     label: 'Plus anciens en premier',
-    value: 'latest',
+    value: 'oldest',
   },
 ];
 
