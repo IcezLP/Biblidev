@@ -3,8 +3,9 @@ import { Card, Typography, Avatar, Tag, Button, Badge } from 'antd';
 import { EditOutlined, CheckOutlined, CloseOutlined, DollarOutlined } from '@ant-design/icons';
 import Moment from 'react-moment';
 import 'moment/locale/fr';
+import UserModal from './UserModal';
 
-export default ({ resource, onEdit, onCheck, onUserClick, onDeny }) => {
+export default ({ resource, onEdit, onCheck, onDeny }) => {
   const color = () => {
     if (resource.price === 'gratuit') return '#52c41a';
     if (resource.price === 'payant') return '#f5222d';
@@ -20,16 +21,7 @@ export default ({ resource, onEdit, onCheck, onUserClick, onDeny }) => {
         </Moment>
         &nbsp;par&nbsp;
         {resource.author ? (
-          <span
-            className="resource__author"
-            onClick={(event) => {
-              event.preventDefault();
-              onUserClick(resource.author._id);
-            }}
-          >
-            {/* eslint-disable-next-line */}
-            <b>{resource.author.username}</b> ({resource.author._id})
-          </span>
+          <UserModal username={resource.author.username} id={resource.author._id} />
         ) : (
           'Anonyme'
         )}
