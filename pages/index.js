@@ -73,6 +73,7 @@ const Home = ({ user, initialCategories }) => {
     if (data.data.resources.length === 0) {
       return <Result icon={<FrownOutlined />} title="Aucun résultat" />;
     }
+
     return (
       <Row gutter={[12, 12]} type="flex">
         {data.data.resources.map((item) => (
