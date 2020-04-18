@@ -6,7 +6,7 @@ module.exports = {
     jest: true,
   },
   plugins: ['react', 'jsx-a11y', 'import', 'prettier'],
-  ignorePatterns: ['node_modules/'],
+  ignorePatterns: ['node_modules/', 'emailTemplates/*'],
   rules: {
     camelcase: 'off',
     'no-console': 'off',

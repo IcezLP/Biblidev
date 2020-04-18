@@ -1,24 +1,53 @@
-import React from 'react';
+import React, { useState } from 'react';
 import useSWR from 'swr';
 import { Col, Row, Spin, Result, Modal } from 'antd';
-import { LoadingOutlined, FrownOutlined, QuestionCircleOutlined } from '@ant-design/icons';
+import { LoadingOutlined, SmileOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 import withAuth from '../../../middlewares/withAuth';
 import Layout from '../../../components/layout/admin/Layout';
 import Card from '../../../components/pages/admin/resources/awaiting/Card';
+import fetch from '../../../lib/fetch';
+import { notify } from '../../../lib/notification';
 
 export default withAuth(
   () => {
-    const { data } = useSWR('/api/admin/resources/awaiting', (url) => fetch('get', url));
+    const { data, mutate } = useSWR('/api/admin/resources/awaiting', (url) => fetch('get', url));
 
     const verifyConfirm = (name, id) => {
-      Modal.confirm({
+      const confirm = Modal.confirm({
         title: `Êtes-vous sûr de vouloir valider cette ressource ? ${name} (${id})`,
         content:
           'Assurez-vous de bien avoir vérifier la ressource (orthographe, lien, catégories...)',
         okText: 'Confirmer',
         cancelText: 'Annuler',
-        onOk: () => console.log('VALIDATION TERMINÉE'),
-        onCancel: () => console.log('VALIDATION ANNULÉE'),
+        onOk: (event) => {
+          confirm.update({
+            okButtonProps: {
+              loading: true,
+            },
+            cancelButtonProps: {
+              disabled: true,
+            },
+          });
+
+          const acceptResource = async () => {
+            const response = await fetch('post', `/api/admin/resources/accept/${id}`);
+
+            notify(response.status, response.message);
+
+            confirm.update({
+              okButtonProps: {
+                loading: false,
+              },
+              cancelButtonProps: {
+                disabled: false,
+              },
+            });
+            mutate();
+            confirm.destroy();
+          };
+
+          acceptResource();
+        },
         icon: <QuestionCircleOutlined />,
       });
     };
@@ -37,7 +66,7 @@ export default withAuth(
       }
 
       if (data.data.resources.length === 0) {
-        return <Result icon={<FrownOutlined />} title="Aucun résultat" />;
+        return <Result icon={<SmileOutlined />} title="Aucune ressource à valider" />;
       }
 
       return (
