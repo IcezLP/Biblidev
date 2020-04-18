@@ -131,7 +131,7 @@ router.post('/accept/:id', async (req, res) => {
     return res.status(200).json({
       status: 'success',
       data: {},
-      message: null,
+      message: 'La ressource a bien été validée',
     });
   } catch (error) {
     // Si une erreur inconnue arrive
