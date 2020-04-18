@@ -5,6 +5,7 @@ import NProgress from 'nprogress';
 import { DefaultSeo } from 'next-seo';
 import { Layout, BackTop } from 'antd';
 import classnames from 'classnames';
+import { SWRConfig } from 'swr';
 import SEO from '../next-seo.config';
 import Header from '../components/layout/Header';
 
@@ -23,10 +24,12 @@ class CustomApp extends App {
 
     return (
       <Layout id="layout" className={classnames({ layout__admin: user && user.isAdmin })}>
-        <DefaultSeo {...SEO} />
-        <Header {...pageProps} />
-        <Component {...pageProps} />
-        <BackTop style={{ right: 50 }} />
+        <SWRConfig value={{ refreshInterval: 3000 }}>
+          <DefaultSeo {...SEO} />
+          <Header {...pageProps} />
+          <Component {...pageProps} />
+          <BackTop style={{ right: 50 }} />
+        </SWRConfig>
       </Layout>
     );
   }

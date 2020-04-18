@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import useSWR from 'swr';
 import { Col, Row, Spin, Result, Modal } from 'antd';
 import { LoadingOutlined, SmileOutlined, QuestionCircleOutlined } from '@ant-design/icons';
