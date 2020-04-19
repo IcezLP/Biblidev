@@ -3,11 +3,11 @@ import { Card, Typography, Avatar, Tag, Button, Badge } from 'antd';
 import { CheckOutlined, DollarOutlined } from '@ant-design/icons';
 import Moment from 'react-moment';
 import 'moment/locale/fr';
-import UserModal from './UserModal';
+import UserModal from '../UserModal';
 import DenyModal from './DenyModal';
 import EditModal from './EditModal';
 
-export default ({ resource, onEdit, onCheck, onDeny }) => {
+export default ({ resource, onCheck }) => {
   const color = () => {
     if (resource.price === 'gratuit') return '#52c41a';
     if (resource.price === 'payant') return '#f5222d';

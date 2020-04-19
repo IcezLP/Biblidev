@@ -8,7 +8,7 @@ import {
   ClockCircleOutlined,
 } from '@ant-design/icons';
 import Moment from 'react-moment';
-import fetch from '../../../../../lib/fetch';
+import fetch from '../../../../lib/fetch';
 
 export default ({ username, id }) => {
   const [visible, setVisible] = useState(false);
@@ -219,6 +219,9 @@ export default ({ username, id }) => {
       return (
         <>
           <div className="user__header">
+            <Typography.Text type="secondary" style={{ display: 'block', marginBottom: '0.5em' }}>
+              {data.data.user._id}
+            </Typography.Text>
             {data.data.user.avatar ? (
               <Avatar size={64} src={data.data.user.avatar} />
             ) : (
@@ -283,9 +286,11 @@ export default ({ username, id }) => {
 
   return (
     <>
-      <span className="resource__author" onClick={() => setVisible(true)}>
-        {/* eslint-disable-next-line */}
-        <b>{username}</b> ({id})
+      <span
+        onClick={() => setVisible(true)}
+        style={{ fontWeight: 'bold', color: '#1890ff', cursor: 'pointer' }}
+      >
+        {username}
       </span>
       <Modal
         key={`user-${id}`}
