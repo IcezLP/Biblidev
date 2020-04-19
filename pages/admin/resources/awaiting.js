@@ -10,7 +10,7 @@ import { notify } from '../../../lib/notification';
 
 export default withAuth(
   () => {
-    const { data, mutate } = useSWR('/api/admin/resources?state=awaiting', (url) =>
+    const { data, mutate } = useSWR('/api/admin/resources?state=awaiting&sort=oldest', (url) =>
       fetch('get', url),
     );
 

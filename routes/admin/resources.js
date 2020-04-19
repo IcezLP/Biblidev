@@ -14,8 +14,12 @@ const acceptedTemplate = require('../../emailTemplates/accepted');
  */
 router.get('/', async (req, res) => {
   let state;
+  let sort;
 
-  switch (req.query.state) {
+  switch (String(req.query.state)) {
+    case 'valid':
+      state = 'Validée';
+      break;
     case 'awaiting':
       state = 'En attente de validation';
       break;
@@ -23,9 +27,26 @@ router.get('/', async (req, res) => {
       state = 'Validée';
   }
 
+  switch (String(req.query.sort)) {
+    case 'newest':
+      sort = { createdAt: -1 };
+      break;
+    case 'oldest':
+      sort = { createdAt: 1 };
+      break;
+    case 'ascending':
+      sort = { slug: 1 };
+      break;
+    case 'descending':
+      sort = { slug: -1 };
+      break;
+    default:
+      sort = { slug: 1 };
+  }
+
   try {
     const resources = await Resource.find({ state })
-      .sort({ createdAt: 1 })
+      .sort(sort)
       .populate('categories')
       .populate('author', '_id username slug');
 
