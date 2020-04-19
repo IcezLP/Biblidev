@@ -62,7 +62,7 @@ module.exports = async (data, file, Resource) => {
   }
 
   if (data.categories.length === 0) {
-    errors.categories = 'Veuillez selectionner une catégorie au minimum';
+    errors.categories = 'Veuillez sélectionner une catégorie au minimum';
   }
 
   if (data.categories.length > 5) {
