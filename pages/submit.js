@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Row, Col, Form, Button, Alert } from 'antd';
+import { Row, Col, Form, Button, Alert, Typography } from 'antd';
 import { NextSeo } from 'next-seo';
 import Link from 'next/link';
 import Input from '../components/form/Input';
@@ -84,7 +84,11 @@ const Submit = ({ user, categories }) => {
                 placeholder="Description"
                 label="Description"
                 disabled={isLoading}
-                suffix={(values.description && values.description.length) || '0'}
+                suffix={
+                  <Typography.Text type="secondary">
+                    {(values.description && values.description.length) || '0'}
+                  </Typography.Text>
+                }
                 maxLength={160}
               />
               <Select
