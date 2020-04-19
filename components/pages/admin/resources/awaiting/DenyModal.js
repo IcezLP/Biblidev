@@ -14,7 +14,7 @@ export default ({ name, id }) => {
         icon={<CloseOutlined />}
         onClick={() => setVisible(true)}
       >
-        Éditer
+        Refuser
       </Button>
       <Modal key={`deny-${id}`} visible={visible} onCancel={() => setVisible(false)}>
         Deny {name}
