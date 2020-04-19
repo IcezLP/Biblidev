@@ -44,6 +44,7 @@ export default withAuth(
                   error={errors.username}
                   disabled={isLoading}
                   icon={<UserOutlined />}
+                  maxLength={20}
                 />
                 <Input
                   placeholder="Adresse mail"

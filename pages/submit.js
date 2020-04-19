@@ -104,6 +104,7 @@ const Submit = ({ user, categories }) => {
                 value={values.categories || []}
                 onChange={handleChange}
                 name="categories"
+                maxLength={5}
               />
               <Input
                 name="link"
