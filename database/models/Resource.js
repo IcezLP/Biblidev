@@ -23,6 +23,12 @@ const ResourceSchema = new Schema(
         ref: 'categories',
       },
     ],
+    description: {
+      type: String,
+      required: true,
+      minlength: 50,
+      maxlength: 160,
+    },
     link: {
       type: String,
       required: true,
