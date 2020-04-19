@@ -74,6 +74,7 @@ const Submit = ({ user, categories }) => {
                 placeholder="Nom"
                 label="Nom"
                 disabled={isLoading}
+                maxLength={24}
               />
               <Input
                 name="description"
@@ -83,6 +84,8 @@ const Submit = ({ user, categories }) => {
                 placeholder="Description"
                 label="Description"
                 disabled={isLoading}
+                suffix={(values.description && values.description.length) || '0'}
+                maxLength={160}
               />
               <Select
                 label="Catégorie(s)"

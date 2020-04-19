@@ -46,6 +46,7 @@ const Input = ({
   label,
   name,
   error,
+  suffix,
 }) => {
   const InputType = password
     ? AntdInput.Password
@@ -71,11 +72,12 @@ const Input = ({
         placeholder={placeholder}
         prefix={icon}
         suffix={
-          tooltip && (
+          suffix ||
+          (tooltip && (
             <Tooltip title={tooltip}>
               <InfoCircleOutlined style={{ color: 'rgba(0,0,0,.45)' }} />
             </Tooltip>
-          )
+          ))
         }
         type={password ? 'password' : type}
         name={name}
