@@ -13,11 +13,11 @@ import {
   ImportOutlined,
   ControlOutlined,
   LoadingOutlined,
-  LayoutOutlined,
 } from '@ant-design/icons';
 import Link from 'next/link';
 import useSWR from 'swr';
 import { useRouter } from 'next/router';
+import CustomScroll from 'react-custom-scroll';
 import fetch from '../../../lib/fetch';
 
 export default ({ collapsed, onCollapse }) => {
@@ -44,122 +44,124 @@ export default ({ collapsed, onCollapse }) => {
       onCollapse={onCollapse}
       className="admin__sidebar"
     >
-      <Menu
-        theme="light"
-        mode="inline"
-        className="menu"
-        selectable={false}
-        defaultOpenKeys={[router.route.split('/')[2]]}
-        defaultSelectedKeys={[router.route.split('/admin/').pop()]}
-      >
-        <Menu.Item key="dashboard">
-          <Link href="/admin">
-            <a>
-              <HomeOutlined />
-              <span>Tableau de contrôle</span>
-            </a>
-          </Link>
-        </Menu.Item>
-        <Menu.Item key="users" disabled>
-          <Link href="/admin/users" as="/admin/utilisateurs">
-            <a>
-              <TeamOutlined />
-              <span>Utilisateurs</span>
-            </a>
-          </Link>
-        </Menu.Item>
-        <Menu.Item key="categories" disabled>
-          <Link href="/admin/categories">
-            <a>
-              <TagOutlined />
-              <span>Catégories</span>
-            </a>
-          </Link>
-        </Menu.Item>
-        <Menu.SubMenu
-          key="resources"
-          title={
-            <span>
-              <AppstoreOutlined />
-              <span>Ressources</span>
-            </span>
-          }
+      <CustomScroll heightRelativeToParent="100%">
+        <Menu
+          theme="light"
+          mode="inline"
+          className="menu"
+          selectable={false}
+          defaultOpenKeys={[router.route.split('/')[2]]}
+          defaultSelectedKeys={[router.route.split('/admin/').pop()]}
         >
-          {collapsed && (
-            <Menu.Item
-              key="resources/title"
-              style={{
-                textAlign: 'center',
-                color: 'rgba(0, 0, 0, 0.65)',
-                cursor: 'default',
-                backgroundColor: '#fff',
-              }}
-            >
-              Ressources
+          <Menu.Item key="dashboard">
+            <Link href="/admin">
+              <a>
+                <HomeOutlined />
+                <span>Tableau de contrôle</span>
+              </a>
+            </Link>
+          </Menu.Item>
+          <Menu.Item key="users" disabled>
+            <Link href="/admin/users" as="/admin/utilisateurs">
+              <a>
+                <TeamOutlined />
+                <span>Utilisateurs</span>
+              </a>
+            </Link>
+          </Menu.Item>
+          <Menu.Item key="categories" disabled>
+            <Link href="/admin/categories">
+              <a>
+                <TagOutlined />
+                <span>Catégories</span>
+              </a>
+            </Link>
+          </Menu.Item>
+          <Menu.SubMenu
+            key="resources"
+            title={
+              <span>
+                <AppstoreOutlined />
+                <span>Ressources</span>
+              </span>
+            }
+          >
+            {collapsed && (
+              <Menu.Item
+                key="resources/title"
+                style={{
+                  textAlign: 'center',
+                  color: 'rgba(0, 0, 0, 0.65)',
+                  cursor: 'default',
+                  backgroundColor: '#fff',
+                }}
+              >
+                Ressources
+              </Menu.Item>
+            )}
+            <Menu.Item key="resources">
+              <Link href="/admin/resources" as="/admin/ressources">
+                <a>
+                  <ControlOutlined />
+                  <span>Gérer</span>
+                </a>
+              </Link>
             </Menu.Item>
-          )}
-          <Menu.Item key="resources">
-            <Link href="/admin/resources" as="/admin/ressources">
+            <Menu.Item key="resources/add">
+              <Link href="/admin/resources/add" as="/admin/ressources/ajout">
+                <a>
+                  <PlusOutlined />
+                  <span>Ajouter</span>
+                </a>
+              </Link>
+            </Menu.Item>
+            <Menu.Item key="resources/import">
+              <Link href="/admin/resources/import" as="/admin/ressources/importation">
+                <a>
+                  <ImportOutlined />
+                  <span>Importer</span>
+                </a>
+              </Link>
+            </Menu.Item>
+            <Menu.Item key="resources/awaiting">
+              <Link href="/admin/resources/awaiting" as="/admin/ressources/validation">
+                <a>
+                  <Badge count={awaitingResources()} showZero offset={[15, 8]}>
+                    <span>
+                      <ClockCircleOutlined />
+                      <span>À valider</span>
+                    </span>
+                  </Badge>
+                </a>
+              </Link>
+            </Menu.Item>
+          </Menu.SubMenu>
+          <Menu.Item key="templates" disabled>
+            <Link href="/admin/templates">
               <a>
-                <ControlOutlined />
-                <span>Gérer</span>
+                <MailOutlined />
+                <span>Templates d'email</span>
               </a>
             </Link>
           </Menu.Item>
-          <Menu.Item key="resources/add">
-            <Link href="/admin/resources/add" as="/admin/ressources/ajout">
+          <Menu.Item key="newsletter" disabled>
+            <Link href="/admin/newsletter">
               <a>
-                <PlusOutlined />
-                <span>Ajouter</span>
+                <MailOutlined />
+                <span>Newsletter</span>
               </a>
             </Link>
           </Menu.Item>
-          <Menu.Item key="resources/import">
-            <Link href="/admin/resources/import" as="/admin/ressources/importation">
+          <Menu.Item key="logs" disabled>
+            <Link href="/admin/logs">
               <a>
-                <ImportOutlined />
-                <span>Importer</span>
+                <ExceptionOutlined />
+                <span>Logs</span>
               </a>
             </Link>
           </Menu.Item>
-          <Menu.Item key="resources/awaiting">
-            <Link href="/admin/resources/awaiting" as="/admin/ressources/validation">
-              <a>
-                <Badge count={awaitingResources()} showZero offset={[15, 8]}>
-                  <span>
-                    <ClockCircleOutlined />
-                    <span>À valider</span>
-                  </span>
-                </Badge>
-              </a>
-            </Link>
-          </Menu.Item>
-        </Menu.SubMenu>
-        <Menu.Item key="templates" disabled>
-          <Link href="/admin/templates">
-            <a>
-              <MailOutlined />
-              <span>Templates d'email</span>
-            </a>
-          </Link>
-        </Menu.Item>
-        <Menu.Item key="newsletter" disabled>
-          <Link href="/admin/newsletter">
-            <a>
-              <MailOutlined />
-              <span>Newsletter</span>
-            </a>
-          </Link>
-        </Menu.Item>
-        <Menu.Item key="logs" disabled>
-          <Link href="/admin/logs">
-            <a>
-              <ExceptionOutlined />
-              <span>Logs</span>
-            </a>
-          </Link>
-        </Menu.Item>
-      </Menu>
+        </Menu>
+      </CustomScroll>
     </Layout.Sider>
   );
 };
