@@ -1,9 +1,11 @@
 import React from 'react';
 import { Card, Typography, Avatar, Tag, Button, Badge } from 'antd';
-import { EditOutlined, CheckOutlined, CloseOutlined, DollarOutlined } from '@ant-design/icons';
+import { CheckOutlined, DollarOutlined } from '@ant-design/icons';
 import Moment from 'react-moment';
 import 'moment/locale/fr';
 import UserModal from './UserModal';
+import DenyModal from './DenyModal';
+import EditModal from './EditModal';
 
 export default ({ resource, onEdit, onCheck, onDeny }) => {
   const color = () => {
@@ -65,28 +67,8 @@ export default ({ resource, onEdit, onCheck, onDeny }) => {
         </Card>
       </Badge>
       <div className="resource__controls">
-        <Button
-          className="control__button"
-          icon={<EditOutlined />}
-          onClick={(event) => {
-            event.preventDefault();
-            onEdit(resource._id);
-          }}
-        >
-          Éditer
-        </Button>
-        <Button
-          className="control__button"
-          type="primary"
-          danger
-          icon={<CloseOutlined />}
-          onClick={(event) => {
-            event.preventDefault();
-            onDeny(resource.name, resource._id);
-          }}
-        >
-          Refuser
-        </Button>
+        <EditModal name={resource.name} id={resource._id} />
+        <DenyModal name={resource.name} id={resource._id} />
         <Button
           className="control__button control__button--success"
           icon={<CheckOutlined />}
