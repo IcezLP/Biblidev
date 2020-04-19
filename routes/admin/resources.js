@@ -28,6 +28,9 @@ router.get('/', async (req, res) => {
   }
 
   switch (String(req.query.sort)) {
+    case 'none':
+      sort = {};
+      break;
     case 'newest':
       sort = { createdAt: -1 };
       break;
