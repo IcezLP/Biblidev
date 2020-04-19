@@ -3,6 +3,10 @@
     height: calc(100vh - 98px);
     border-right: 1px solid #f0f2f5;
     z-index: 10;
+    position: fixed;
+    left: 0;
+    top: 98px;
+    max-height: 100vh;
 
     .menu {
       border-right: none;
