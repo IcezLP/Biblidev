@@ -13,6 +13,7 @@ import {
   ImportOutlined,
   ControlOutlined,
   LoadingOutlined,
+  LayoutOutlined,
 } from '@ant-design/icons';
 import Link from 'next/link';
 import useSWR from 'swr';
@@ -139,7 +140,7 @@ export default ({ collapsed, onCollapse }) => {
           <Menu.Item key="templates" disabled>
             <Link href="/admin/templates">
               <a>
-                <MailOutlined />
+                <LayoutOutlined />
                 <span>Templates d'email</span>
               </a>
             </Link>
