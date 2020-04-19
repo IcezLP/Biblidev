@@ -6,15 +6,25 @@ const sendEmail = require('../../services/amazon-ses');
 const acceptedTemplate = require('../../emailTemplates/accepted');
 
 /**
- * Ressources en attentes de validation
+ * Récupère les ressources
  *
  * @async
- * @route GET /api/admin/resources/awaiting
+ * @route GET /api/admin/resources
  * @private
  */
-router.get('/awaiting', async (req, res) => {
+router.get('/', async (req, res) => {
+  let state;
+
+  switch (req.query.state) {
+    case 'awaiting':
+      state = 'En attente de validation';
+      break;
+    default:
+      state = 'Validée';
+  }
+
   try {
-    const resources = await Resource.find({ state: 'En attente de validation' })
+    const resources = await Resource.find({ state })
       .sort({ createdAt: 1 })
       .populate('categories')
       .populate('author', '_id username slug');

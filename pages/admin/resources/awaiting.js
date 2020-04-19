@@ -10,7 +10,9 @@ import { notify } from '../../../lib/notification';
 
 export default withAuth(
   () => {
-    const { data, mutate } = useSWR('/api/admin/resources/awaiting', (url) => fetch('get', url));
+    const { data, mutate } = useSWR('/api/admin/resources?state=awaiting', (url) =>
+      fetch('get', url),
+    );
 
     const verifyConfirm = (name, id) => {
       const confirm = Modal.confirm({

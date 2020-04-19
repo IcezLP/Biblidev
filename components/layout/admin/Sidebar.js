@@ -23,7 +23,7 @@ import fetch from '../../../lib/fetch';
 
 export default ({ collapsed, onCollapse }) => {
   const router = useRouter();
-  const { data } = useSWR('/api/admin/resources/awaiting', (url) => fetch('get', url));
+  const { data } = useSWR('/api/admin/resources?state=awaiting', (url) => fetch('get', url));
 
   const awaitingResources = () => {
     if (!data) {
