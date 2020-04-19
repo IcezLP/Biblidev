@@ -13,12 +13,15 @@ import {
   ImportOutlined,
   ControlOutlined,
   LoadingOutlined,
+  LayoutOutlined,
 } from '@ant-design/icons';
 import Link from 'next/link';
 import useSWR from 'swr';
+import { useRouter } from 'next/router';
 import fetch from '../../../lib/fetch';
 
 export default ({ collapsed, onCollapse }) => {
+  const router = useRouter();
   const { data } = useSWR('/api/admin/resources/awaiting', (url) => fetch('get', url));
 
   const awaitingResources = () => {
@@ -41,7 +44,14 @@ export default ({ collapsed, onCollapse }) => {
       onCollapse={onCollapse}
       className="admin__sidebar"
     >
-      <Menu theme="light" mode="inline" className="menu" selectable={false}>
+      <Menu
+        theme="light"
+        mode="inline"
+        className="menu"
+        selectable={false}
+        defaultOpenKeys={[router.route.split('/')[2]]}
+        defaultSelectedKeys={[router.route.split('/admin/').pop()]}
+      >
         <Menu.Item key="dashboard">
           <Link href="/admin">
             <a>
@@ -77,7 +87,7 @@ export default ({ collapsed, onCollapse }) => {
         >
           {collapsed && (
             <Menu.Item
-              key="title"
+              key="resources/title"
               style={{
                 textAlign: 'center',
                 color: 'rgba(0, 0, 0, 0.65)',
@@ -88,7 +98,7 @@ export default ({ collapsed, onCollapse }) => {
               Ressources
             </Menu.Item>
           )}
-          <Menu.Item key="manage">
+          <Menu.Item key="resources">
             <Link href="/admin/resources" as="/admin/ressources">
               <a>
                 <ControlOutlined />
@@ -96,7 +106,7 @@ export default ({ collapsed, onCollapse }) => {
               </a>
             </Link>
           </Menu.Item>
-          <Menu.Item key="add">
+          <Menu.Item key="resources/add">
             <Link href="/admin/resources/add" as="/admin/ressources/ajout">
               <a>
                 <PlusOutlined />
@@ -104,7 +114,7 @@ export default ({ collapsed, onCollapse }) => {
               </a>
             </Link>
           </Menu.Item>
-          <Menu.Item key="import">
+          <Menu.Item key="resources/import">
             <Link href="/admin/resources/import" as="/admin/ressources/importation">
               <a>
                 <ImportOutlined />
@@ -112,7 +122,7 @@ export default ({ collapsed, onCollapse }) => {
               </a>
             </Link>
           </Menu.Item>
-          <Menu.Item key="awaiting">
+          <Menu.Item key="resources/awaiting">
             <Link href="/admin/resources/awaiting" as="/admin/ressources/validation">
               <a>
                 <Badge count={awaitingResources()} showZero offset={[15, 8]}>
@@ -125,14 +135,14 @@ export default ({ collapsed, onCollapse }) => {
             </Link>
           </Menu.Item>
         </Menu.SubMenu>
-        {/* <Menu.Item key="test" disabled>
-        <Link href="/admin/resources" as="/admin/ressources">
-          <a>
-            <AppstoreOutlined />
-            <span>Ressources</span>
-          </a>
-        </Link>
-      </Menu.Item> */}
+        <Menu.Item key="templates" disabled>
+          <Link href="/admin/templates">
+            <a>
+              <MailOutlined />
+              <span>Templates d'email</span>
+            </a>
+          </Link>
+        </Menu.Item>
         <Menu.Item key="newsletter" disabled>
           <Link href="/admin/newsletter">
             <a>

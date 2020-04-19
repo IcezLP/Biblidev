@@ -4,7 +4,7 @@ import Sidebar from './Sidebar';
 import Header from './Header';
 
 export default ({ children, title, subTitle }) => {
-  const [collapsed, setCollapsed] = useState(true);
+  const [collapsed, setCollapsed] = useState(false);
 
   useEffect(() => {
     let storedCollapsedState = localStorage.getItem('collapsed');
