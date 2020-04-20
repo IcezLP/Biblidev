@@ -23,7 +23,7 @@ router.get('/', async (req, res) => {
     return res.status(400).json({
       status: 'error',
       data: {},
-      message: 'Une erreur est survenue, veuillez réesayer',
+      message: 'Une erreur est survenue, veuillez réessayez',
     });
   }
 });

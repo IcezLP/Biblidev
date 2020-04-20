@@ -67,7 +67,7 @@ const Home = ({ user, initialCategories }) => {
     }
 
     if (data.status === 'error' || !data.data.resources) {
-      return <Result status="error" title="Une erreur est survenue, veuillez réesayer" />;
+      return <Result status="error" title="Une erreur est survenue, veuillez réessayez" />;
     }
 
     if (data.data.resources.length === 0) {

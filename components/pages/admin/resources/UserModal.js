@@ -29,7 +29,7 @@ export default ({ username, id }) => {
     if (data.status === 'error') {
       return (
         <Typography.Paragraph style={{ textAlign: 'center', marginTop: '1em' }}>
-          Une erreur est survenue, veuillez réesayer
+          Une erreur est survenue, veuillez réessayez
         </Typography.Paragraph>
       );
     }
@@ -113,7 +113,7 @@ export default ({ username, id }) => {
     if (data.status === 'error') {
       return (
         <Typography.Paragraph style={{ textAlign: 'center', marginTop: '1em' }}>
-          Une erreur est survenue, veuillez réesayer
+          Une erreur est survenue, veuillez réessayez
         </Typography.Paragraph>
       );
     }
@@ -202,7 +202,7 @@ export default ({ username, id }) => {
     if (data.status === 'error' || !data.data.user) {
       return (
         <div className="center">
-          <Typography.Paragraph>Une erreur est survenue, veuillez réesayer</Typography.Paragraph>
+          <Typography.Paragraph>Une erreur est survenue, veuillez réessayez</Typography.Paragraph>
         </div>
       );
     }
