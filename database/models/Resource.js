@@ -14,8 +14,6 @@ const ResourceSchema = new Schema(
       type: String,
       required: true,
       unique: true,
-      minlength: 2,
-      maxlength: 24,
     },
     categories: [
       {
