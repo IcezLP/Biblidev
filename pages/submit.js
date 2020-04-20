@@ -10,7 +10,6 @@ import useForm from '../hooks/useForm';
 import { notify } from '../lib/notification';
 import withAuth from '../middlewares/withAuth';
 import fetch from '../lib/fetch';
-import {} from '@ant-design/icons';
 
 const Submit = ({ user, categories }) => {
   const { values, errors, handleChange, handleSubmit, isLoading } = useForm(
