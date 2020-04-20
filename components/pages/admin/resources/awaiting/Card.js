@@ -7,7 +7,7 @@ import UserModal from '../UserModal';
 import DenyModal from './DenyModal';
 import EditModal from './EditModal';
 
-export default ({ resource, onCheck }) => {
+export default ({ resource, onCheck, mutate }) => {
   const color = () => {
     if (resource.price === 'gratuit') return '#52c41a';
     if (resource.price === 'payant') return '#f5222d';
@@ -68,7 +68,7 @@ export default ({ resource, onCheck }) => {
       </Badge>
       <div className="resource__controls">
         <EditModal name={resource.name} id={resource._id} />
-        <DenyModal name={resource.name} id={resource._id} />
+        <DenyModal name={resource.name} id={resource._id} mutate={mutate} />
         <Button
           className="control__button control__button--success"
           icon={<CheckOutlined />}

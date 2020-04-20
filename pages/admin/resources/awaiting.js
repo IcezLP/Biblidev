@@ -16,7 +16,7 @@ export default withAuth(
 
     const verifyConfirm = (name, id) => {
       const confirm = Modal.confirm({
-        title: `Êtes-vous sûr de vouloir valider cette ressource ? ${name} (${id})`,
+        title: `Êtes-vous sûr de vouloir valider cette ressource ? ${name}`,
         content:
           'Assurez-vous de bien avoir vérifier la ressource (orthographe, lien, catégories...)',
         okText: 'Confirmer',
@@ -64,7 +64,7 @@ export default withAuth(
       }
 
       if (data.status === 'error' || !data.data.resources) {
-        return <Result status="error" title="Une erreur est survenue, veuillez réesayer" />;
+        return <Result status="error" title="Une erreur est survenue, veuillez réessayez" />;
       }
 
       if (data.data.resources.length === 0) {
@@ -75,7 +75,7 @@ export default withAuth(
         <Row gutter={[12, 12]} type="flex">
           {data.data.resources.map((item) => (
             <Col xs={24} key={item._id}>
-              <Card resource={item} onCheck={verifyConfirm} />
+              <Card resource={item} onCheck={verifyConfirm} mutate={() => mutate()} />
             </Col>
           ))}
         </Row>
