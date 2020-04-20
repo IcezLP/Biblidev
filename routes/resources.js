@@ -151,6 +151,7 @@ router.post('/submit', async (req, res) => {
         message: null,
       });
     } catch (error) {
+      console.log(error);
       // Si une erreur inconnue arrive
       return res.status(400).json({
         status: 'error',

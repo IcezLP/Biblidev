@@ -1,11 +1,22 @@
 const router = require('express').Router();
 const moment = require('moment');
+const { v2 } = require('cloudinary');
 const Resource = require('../../database/models/Resource');
 const User = require('../../database/models/User');
 const sendEmail = require('../../services/amazon-ses');
 const acceptedTemplate = require('../../emailTemplates/accepted');
 const deniedTemplate = require('../../emailTemplates/denied');
 const denyFieldsValidation = require('../../validation/admin/resources/deny');
+
+const { hostname: cloud_name, username: api_key, password: api_secret } = new URL(
+  process.env.CLOUDINARY_URL,
+);
+
+v2.config({
+  cloud_name,
+  api_key,
+  api_secret,
+});
 
 /**
  * Récupère les ressources
@@ -216,6 +227,17 @@ router.put('/deny/:id', async (req, res) => {
 
     // Cherche la ressource
     const resource = await Resource.findById(req.params.id);
+
+    if (resource.logo) {
+      // Décompose l'url pour récupèrer l'id de l'image
+      const publicId = resource.logo
+        .split('/')
+        .pop()
+        .split('.')[0];
+
+      // Supprime l'image du serveur Cloudinary
+      await v2.uploader.destroy(publicId);
+    }
 
     if (!resource) {
       // Si aucune ressource n'est trouvée
