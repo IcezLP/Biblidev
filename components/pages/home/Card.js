@@ -49,9 +49,13 @@ export default ({ resource }) => {
             description={resource.description}
             avatar={
               resource.logo ? (
-                <Avatar src={resource.logo} />
+                <Avatar
+                  size={32}
+                  src={`https://res.cloudinary.com/biblidev/image/upload/${resource.logo}`}
+                />
               ) : (
                 <Avatar
+                  size={32}
                   style={{
                     backgroundColor: 'red',
                   }}

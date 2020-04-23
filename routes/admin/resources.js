@@ -229,14 +229,8 @@ router.put('/deny/:id', async (req, res) => {
     const resource = await Resource.findById(req.params.id);
 
     if (resource.logo) {
-      // Décompose l'url pour récupèrer l'id de l'image
-      const publicId = resource.logo
-        .split('/')
-        .pop()
-        .split('.')[0];
-
       // Supprime l'image du serveur Cloudinary
-      await v2.uploader.destroy(publicId);
+      await v2.uploader.destroy(resource.logo);
     }
 
     if (!resource) {

@@ -121,8 +121,8 @@ router.post('/submit', async (req, res) => {
     if (files && files.logo) {
       try {
         // Upload sur le serveur cloud de Cloudinary
-        const { secure_url } = await v2.uploader.upload(files.logo.path);
-        logo = secure_url;
+        const { public_id } = await v2.uploader.upload(files.logo.path);
+        logo = public_id;
       } catch (error) {
         console.log(error);
       }
