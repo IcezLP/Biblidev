@@ -70,7 +70,9 @@ export default ({ username, id }) => {
                 }
                 avatar={
                   resource.logo ? (
-                    <Avatar src={resource.logo} />
+                    <Avatar
+                      src={`https://res.cloudinary.com/biblidev/image/upload/${resource.logo}`}
+                    />
                   ) : (
                     <Avatar
                       style={{
@@ -154,7 +156,9 @@ export default ({ username, id }) => {
                 }
                 avatar={
                   resource.logo ? (
-                    <Avatar src={resource.logo} />
+                    <Avatar
+                      src={`https://res.cloudinary.com/biblidev/image/upload/${resource.logo}`}
+                    />
                   ) : (
                     <Avatar
                       style={{
