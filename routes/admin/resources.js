@@ -274,4 +274,30 @@ router.put('/deny/:id', async (req, res) => {
   }
 });
 
+/**
+ * Supprime une ressource
+ *
+ * @async
+ * @route DELETE /api/admin/resources/:id
+ * @private
+ */
+router.delete('/:id', async (req, res) => {
+  try {
+    await Resource.findByIdAndDelete(req.params.id);
+
+    return res.status(200).json({
+      status: 'success',
+      data: {},
+      message: 'La ressource a été supprimée',
+    });
+  } catch (error) {
+    // Si une erreur inconnue arrive
+    return res.status(400).json({
+      status: 'error',
+      data: {},
+      message: 'Une erreur est survenue, veuillez réessayez',
+    });
+  }
+});
+
 module.exports = router;

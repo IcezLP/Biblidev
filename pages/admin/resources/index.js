@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import useSWR from 'swr';
-import { Table, Tag, Button, Input, Avatar, Dropdown, Menu } from 'antd';
+import { Table, Tag, Button, Input, Avatar, Dropdown, Menu, Modal } from 'antd';
 import Moment from 'react-moment';
 import {
   SearchOutlined,
@@ -10,6 +10,7 @@ import {
   ExportOutlined,
   ImportOutlined,
   PlusOutlined,
+  QuestionCircleOutlined,
 } from '@ant-design/icons';
 import Highlighter from 'react-highlight-words';
 import Link from 'next/link';
@@ -17,6 +18,7 @@ import withAuth from '../../../middlewares/withAuth';
 import Layout from '../../../components/layout/admin/Layout';
 import fetch from '../../../lib/fetch';
 import UserModal from '../../../components/pages/admin/resources/UserModal';
+import { notify } from '../../../lib/notification';
 
 export default withAuth(
   () => {
@@ -25,6 +27,44 @@ export default withAuth(
 
     const resources = useSWR('/api/admin/resources?sort=none', (url) => fetch('get', url));
     const categories = useSWR('/api/categories', (url) => fetch('get', url));
+
+    const handleDelete = async (id, name) => {
+      const confirm = Modal.confirm({
+        title: `Êtes-vous sûr de vouloir supprimer la ressource « ${name} » ?`,
+        okText: 'Confirmer',
+        cancelText: 'Annuler',
+        onOk: (event) => {
+          confirm.update({
+            okButtonProps: {
+              loading: true,
+            },
+            cancelButtonProps: {
+              disabled: true,
+            },
+          });
+
+          const acceptResource = async () => {
+            const response = await fetch('delete', `/api/admin/resources/${id}`);
+
+            notify(response.status, response.message);
+
+            confirm.update({
+              okButtonProps: {
+                loading: false,
+              },
+              cancelButtonProps: {
+                disabled: false,
+              },
+            });
+            resources.mutate();
+            confirm.destroy();
+          };
+
+          acceptResource();
+        },
+        icon: <QuestionCircleOutlined />,
+      });
+    };
 
     const subTitle = () => {
       if (!resources.data) {
@@ -236,14 +276,14 @@ export default withAuth(
         className: 'center',
         render: (text, record) => (
           <Dropdown
-            trigger={['click', 'hover']}
+            trigger={['click']}
             overlay={
               <Menu>
                 <Menu.Item key="edit" onClick={() => console.log(`Edit ${record.name}`)}>
                   <EditOutlined />
                   Éditer
                 </Menu.Item>
-                <Menu.Item key="delete" onClick={() => console.log(`Delete ${record.name}`)}>
+                <Menu.Item key="delete" onClick={() => handleDelete(record._id, record.name)}>
                   <DeleteOutlined />
                   Supprimer
                 </Menu.Item>
@@ -290,7 +330,7 @@ export default withAuth(
           }}
           expandable={{ expandedRowRender: (record) => <p>{record.description}</p> }}
           scroll={{ x: 1200 }}
-          rowSelection={rowSelection}
+          // rowSelection={rowSelection}
         />
       </Layout>
     );
