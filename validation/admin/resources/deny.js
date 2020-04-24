@@ -1,7 +1,7 @@
 const Validator = require('validator');
 const { isEmpty } = require('lodash');
 
-module.exports = (data, file, Resource) => {
+module.exports = (data) => {
   const errors = {};
 
   data.reason = !isEmpty(data.reason) ? data.reason : '';
