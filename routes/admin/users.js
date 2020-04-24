@@ -1,6 +1,5 @@
 const router = require('express').Router();
 const User = require('../../database/models/User');
-const authenticateJwt = require('../../middlewares/authenticateJwt');
 
 /**
  * Récupère les information d'un utilisateur via son id
