@@ -16,7 +16,7 @@ export default withAuth(
 
     const verifyConfirm = (name, id) => {
       const confirm = Modal.confirm({
-        title: `Êtes-vous sûr de vouloir valider cette ressource ? ${name}`,
+        title: `Êtes-vous sûr de vouloir valider la ressource « ${name} » ?`,
         content:
           'Assurez-vous de bien avoir vérifier la ressource (orthographe, lien, catégories...)',
         okText: 'Confirmer',
