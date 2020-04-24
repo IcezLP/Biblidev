@@ -11,7 +11,7 @@ import { PlusOutlined } from '@ant-design/icons';
  * @param {Function} onChange The input change event
  * @param {Object} value The file object, used to generate a preview
  */
-const Upload = ({ label, error, name, disabled, onChange, value }) => {
+const Upload = ({ label, error, name, disabled, onChange, value, placeholder }) => {
   const [fileUrl, setFileUrl] = useState('');
 
   useEffect(() => {
@@ -60,7 +60,7 @@ const Upload = ({ label, error, name, disabled, onChange, value }) => {
         ) : (
           <>
             <PlusOutlined />
-            <div className="ant-upload-text">Sélectionner ou déposer une image</div>
+            <div className="ant-upload-text">{placeholder}</div>
           </>
         )}
       </AntdUpload>
