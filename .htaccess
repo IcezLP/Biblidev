@@ -1,8 +1,6 @@
-#Disable index view
 options -Indexes
 
-#hide a Specifuc File
-
+#Empêche la lecture du fichier .env
 <Files .env>
 order allow,deny
 Deny from all
