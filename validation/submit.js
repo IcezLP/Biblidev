@@ -12,7 +12,14 @@ module.exports = async (data, file, Resource) => {
   data.categories = !isEmpty(data.categories) ? JSON.parse(data.categories) : [];
 
   if (file) {
-    const types = ['image/jpg', 'image/jpeg', 'image/png', 'image/svg+xml', 'image/x-icon'];
+    const types = [
+      'image/jpg',
+      'image/jpeg',
+      'image/png',
+      'image/svg+xml',
+      'image/x-icon',
+      'image/vnd.microsoft.icon',
+    ];
     const maxSize = 1024;
 
     if (types.includes(file.type)) {
