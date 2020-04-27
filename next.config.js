@@ -8,6 +8,12 @@ module.exports = withCss({
     SITE_NAME: process.env.SITE_NAME,
     SITE_URL: process.env.SITE_URL,
     TOKEN_SECRET: process.env.TOKEN_SECRET,
+    AWS_REGION: process.env.AWS_REGION,
+    AWS_ACCESS_KEY_ID: process.env.AWS_ACCESS_KEY_ID,
+    AWS_SECRET_ACCESS_KEY: process.env.AWS_SECRET_ACCESS_KEY,
+    NOREPLY_EMAIL: process.env.NOREPLY_EMAIL,
+    CLOUDINARY_URL: process.env.CLOUDINARY_URL,
+    GOOGLE_ANALYTICS_ID: process.env.GOOGLE_ANALYTICS_ID,
   },
   webpack: (config, { isServer }) => {
     // @svgr/webpack config
