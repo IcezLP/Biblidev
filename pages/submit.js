@@ -64,6 +64,7 @@ const Submit = ({ user, categories }) => {
                 disabled={isLoading}
                 onChange={handleChange}
                 value={values.logo || {}}
+                placeholder="Sélectionner ou déposer une image"
               />
               <Input
                 name="name"
