@@ -10,11 +10,13 @@ import useForm from '../../hooks/useForm';
 import withAuth from '../../middlewares/withAuth';
 import fetch from '../../lib/fetch';
 import { notify } from '../../lib/notification';
+import { logEvent } from '../../services/google-analytics';
 
 export default withAuth(
   () => {
     // Connexion
     const setAuthToken = (data) => {
+      logEvent('User', 'Log in');
       // Enregistre le token de connexion
       cookies.set('auth', data.token);
       // Redirige sur la page d'accueil

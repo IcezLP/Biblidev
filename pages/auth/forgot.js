@@ -7,15 +7,18 @@ import Input from '../../components/form/Input';
 import useForm from '../../hooks/useForm';
 import { notify } from '../../lib/notification';
 import withAuth from '../../middlewares/withAuth';
+import { logEvent } from '../../services/google-analytics';
 
 export default withAuth(
   () => {
     const { values, errors, isLoading, handleChange, handleSubmit } = useForm(
-      () =>
+      () => {
         notify(
           'success',
           "Si l'adresse mail saisie est correcte vous recevrez un email de réinitialisation",
-        ),
+        );
+        logEvent('User', 'Forgot a password');
+      },
       'post',
       '/api/auth/forgot',
     );

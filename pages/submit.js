@@ -10,10 +10,14 @@ import useForm from '../hooks/useForm';
 import { notify } from '../lib/notification';
 import withAuth from '../middlewares/withAuth';
 import fetch from '../lib/fetch';
+import { logEvent } from '../services/google-analytics';
 
 const Submit = ({ user, categories }) => {
   const { values, errors, handleChange, handleSubmit, isLoading } = useForm(
-    () => notify('success', 'Proposition réussie'),
+    () => {
+      notify('success', 'Proposition réussie');
+      logEvent('User', 'Submitted a resource');
+    },
     'post',
     '/api/resources/submit',
     true,

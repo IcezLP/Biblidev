@@ -8,6 +8,7 @@ import classnames from 'classnames';
 import { SWRConfig } from 'swr';
 import SEO from '../next-seo.config';
 import Header from '../components/layout/Header';
+import { initGA, logPageView } from '../services/google-analytics';
 
 // NProgress config
 NProgress.configure({ showSpinner: false });
@@ -15,9 +16,20 @@ NProgress.configure({ showSpinner: false });
 // Router events
 Router.onRouteChangeStart = () => NProgress.start();
 Router.onRouteChangeError = () => NProgress.done();
-Router.onRouteChangeComplete = () => NProgress.done();
+Router.onRouteChangeComplete = () => {
+  NProgress.done();
+  logPageView();
+};
 
 class CustomApp extends App {
+  componentDidMount() {
+    if (!window.GA_INITIALIZED) {
+      initGA();
+      window.GA_INITIALIZED = true;
+    }
+    logPageView();
+  }
+
   render() {
     const { Component, pageProps } = this.props;
     const { user } = pageProps;

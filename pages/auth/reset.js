@@ -7,10 +7,14 @@ import Input from '../../components/form/Input';
 import useForm from '../../hooks/useForm';
 import { notify } from '../../lib/notification';
 import withAuth from '../../middlewares/withAuth';
+import { logEvent } from '../../services/google-analytics';
 
 const Reset = ({ token }) => {
   const { values, errors, isLoading, handleChange, handleSubmit } = useForm(
-    () => notify('success', 'Votre mot de passe a bien été modifié'),
+    () => {
+      notify('success', 'Votre mot de passe a bien été modifié');
+      logEvent('User', 'Reset a password');
+    },
     'post',
     `/api/auth/reset/${token}`,
   );

@@ -4,8 +4,13 @@ import Link from 'next/link';
 import { NextSeo } from 'next-seo';
 import withAuth from '../../middlewares/withAuth';
 import fetch from '../../lib/fetch';
+import { logEvent } from '../../services/google-analytics';
 
 const Verify = ({ status, message }) => {
+  if (status === 200) {
+    logEvent('User', 'Verify an email');
+  }
+
   return (
     <>
       <NextSeo title="Vérification de l'adresse mail" />

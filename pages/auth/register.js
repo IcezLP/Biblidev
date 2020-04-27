@@ -7,11 +7,15 @@ import Input from '../../components/form/Input';
 import useForm from '../../hooks/useForm';
 import { notify } from '../../lib/notification';
 import withAuth from '../../middlewares/withAuth';
+import { logEvent } from '../../services/google-analytics';
 
 export default withAuth(
   () => {
     const { values, errors, isLoading, handleChange, handleSubmit } = useForm(
-      () => notify('success', 'Inscription réussie, un email de confirmation vous a été envoyé'),
+      () => {
+        notify('success', 'Inscription réussie, un email de confirmation vous a été envoyé');
+        logEvent('User', 'Created an account');
+      },
       'post',
       '/api/auth/register',
     );
