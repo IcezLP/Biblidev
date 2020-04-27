@@ -44,6 +44,7 @@
     "next-seo": "^4.4.0",
     "nprogress": "^0.2.0",
     "null-loader": "^3.0.0",
+    "probe-image-size": "^5.0.0",
     "prop-types": "^15.7.2",
     "react": "^16.13.1",
     "react-custom-scroll": "^4.2.0",
@@ -54,7 +55,8 @@
     "sass": "^1.26.3",
     "swr": "^0.2.0",
     "validator": "^13.0.0",
-    "winston": "^3.2.1"
+    "winston": "^3.2.1",
+    "xlsx": "^0.15.6"
   },
   "devDependencies": {
     "babel-eslint": "^10.1.0",
