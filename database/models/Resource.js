@@ -44,6 +44,7 @@ const ResourceSchema = new Schema(
       type: String,
       enum: ['Validée', 'En attente de validation'],
       required: true,
+      default: 'En attente de validation',
     },
     favorites: [
       {
