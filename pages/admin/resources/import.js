@@ -9,8 +9,8 @@ import { notify } from '../../../lib/notification';
 
 export default withAuth(
   () => {
-    const { values, errors, handleChange, handleSubmit, isLoading } = useForm(
-      () => notify('success', 'Importation réussie'),
+    const { values, errors, handleChange, handleSubmit, isLoading, data } = useForm(
+      () => notify('success', data.message),
       'post',
       '/api/admin/resources/import',
       true,
@@ -41,23 +41,20 @@ export default withAuth(
               description={
                 <>
                   <Typography.Text>
-                    L'importation est en phase de test et ne supporte pour le moment que les
-                    fichiers au format .xlsx
+                    Le fichier d'importation doit être au format .xlsx
                   </Typography.Text>
                   <br />
                   <Typography.Text>
-                    L'upload de logo doit se faire après l'importation via la page « À valider »
-                  </Typography.Text>
-                  <br />
-                  <Typography.Text>
-                    Le fichier doit contenir 5 colonnes labellisées respectivement name,
-                    description, categories, link, price
+                    Le fichier doit contenir 5 colonnes labellisées name, description, categories,
+                    link, price
                   </Typography.Text>
                   <br />
                   <Typography.Text>
                     Les catégories doivent être l'id des catégories désirées et séparées par un
                     point virgule sans espace
                   </Typography.Text>
+                  <br />
+                  <Typography.Text>Les ressources importées sont anonymes</Typography.Text>
                 </>
               }
             />

@@ -437,11 +437,22 @@ router.post('/import', (req, res) => {
 
     try {
       await Resource.insertMany(resourcesToDocuments);
+      let message;
+
+      if (resourcesToDocuments.length > 1) {
+        message = `${resourcesToDocuments.length} ressources ont été importées, elles sont disponibles à la validation`;
+      } else if (resourcesToDocuments.length === 0) {
+        message = "Le fichier étant vide, aucune ressource n'a été importée";
+      } else {
+        message = '1 ressource a été importée, elle est disponible à la validation';
+      }
 
       return res.status(200).json({
         status: 'success',
-        data: {},
-        message: "L'importation à réussi, les ressources sont disponibles à la validation",
+        data: {
+          message,
+        },
+        message: null,
       });
     } catch (error) {
       console.log(error);
