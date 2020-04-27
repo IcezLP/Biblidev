@@ -1,7 +1,8 @@
 import ReactGA from 'react-ga';
 import Router from 'next/router';
+import dotenv from 'dotenv';
 
-require('dotenv').config();
+dotenv.config();
 
 export const initGA = () => {
   ReactGA.initialize(process.env.GOOGLE_ANALYTICS_ID);
