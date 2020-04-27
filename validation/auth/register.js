@@ -1,5 +1,6 @@
 const Validator = require('validator');
 const { isEmpty, kebabCase } = require('lodash');
+const axios = require('axios');
 const { spaces, strength } = require('../../lib/regexp');
 
 module.exports = async (data, User) => {
@@ -24,6 +25,14 @@ module.exports = async (data, User) => {
 
   if (Validator.isEmpty(data.username)) {
     errors.username = 'Veuillez remplir ce champ';
+  }
+
+  if (Validator.isEmail(data.email)) {
+    const response = await axios.get(`https://open.kickbox.com/v1/disposable/${data.email}`);
+
+    if (response.data && response.data.disposable) {
+      errors.email = 'Les adresse mail jetables sont interdites';
+    }
   }
 
   if (await User.findOne({ email: data.email })) {
