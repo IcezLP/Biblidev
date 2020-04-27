@@ -388,7 +388,7 @@ router.post('/import', (req, res) => {
 
     const seen = new Set();
 
-    // Vérifie si il le fichier a des noms dupliquéss
+    // Vérifie si le fichier a des noms dupliquéss
     const hasDuplicates = resources.some((obj) => {
       return seen.size === seen.add(obj.name).size;
     });
