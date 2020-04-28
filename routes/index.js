@@ -5,6 +5,7 @@ const categoriesRoutes = require('./categories');
 const resourcesRoutes = require('./resources');
 const adminResourcesRoutes = require('./admin/resources');
 const adminUsersRoutes = require('./admin/users');
+const adminCategoriesRoutes = require('./admin/categories');
 const User = require('../database/models/User');
 
 module.exports = (server) => {
@@ -47,4 +48,5 @@ module.exports = (server) => {
 
   server.use('/api/admin/users', adminUsersRoutes);
   server.use('/api/admin/resources', adminResourcesRoutes);
+  server.use('/api/admin/categories', adminCategoriesRoutes);
 };

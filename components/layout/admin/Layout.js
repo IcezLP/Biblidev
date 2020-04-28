@@ -33,10 +33,7 @@ export default ({ children, title, subTitle }) => {
   return (
     <Layout className="admin" hasSider>
       <Sidebar collapsed={collapsed} onCollapse={collapse} />
-      <Layout.Content
-        className="admin__content"
-        style={{ marginLeft: marginLeft(), transition: width > 1200 && 'margin 0.2s' }}
-      >
+      <Layout.Content className="admin__content" style={{ marginLeft: 200 }}>
         <Header title={title} subTitle={subTitle} />
         {children}
       </Layout.Content>

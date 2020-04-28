@@ -40,9 +40,9 @@ export default ({ collapsed, onCollapse }) => {
   return (
     <Layout.Sider
       theme="light"
-      collapsible
-      collapsed={collapsed}
-      onCollapse={onCollapse}
+      // collapsible
+      // collapsed={collapsed}
+      // onCollapse={onCollapse}
       className="admin__sidebar"
     >
       <CustomScroll heightRelativeToParent="100%">
@@ -70,7 +70,7 @@ export default ({ collapsed, onCollapse }) => {
               </a>
             </Link>
           </Menu.Item>
-          <Menu.Item key="categories" disabled>
+          <Menu.Item key="categories">
             <Link href="/admin/categories">
               <a>
                 <TagOutlined />

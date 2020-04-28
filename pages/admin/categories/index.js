@@ -1,23 +1,19 @@
 import React, { useState } from 'react';
 import useSWR from 'swr';
-import { Table, Tag, Button, Input, Avatar, Dropdown, Menu, Modal } from 'antd';
+import { Table, Button, Input, Dropdown, Menu, Modal, Select } from 'antd';
 import Moment from 'react-moment';
 import {
   SearchOutlined,
   EditOutlined,
   DeleteOutlined,
   MoreOutlined,
-  ExportOutlined,
-  ImportOutlined,
   PlusOutlined,
   QuestionCircleOutlined,
 } from '@ant-design/icons';
 import Highlighter from 'react-highlight-words';
-import Link from 'next/link';
 import withAuth from '../../../middlewares/withAuth';
 import Layout from '../../../components/layout/admin/Layout';
 import fetch from '../../../lib/fetch';
-import UserModal from '../../../components/pages/admin/resources/UserModal';
 import { notify } from '../../../lib/notification';
 
 export default withAuth(
@@ -25,12 +21,11 @@ export default withAuth(
     const [search, setSearch] = useState({ searchText: '', searchedColumn: '' });
     const [selectedRowKeys, setSelectedRowKeys] = useState([]);
 
-    const resources = useSWR('/api/admin/resources?sort=none', (url) => fetch('get', url));
-    const categories = useSWR('/api/categories', (url) => fetch('get', url));
+    const categories = useSWR('/api/admin/categories', (url) => fetch('get', url));
 
     const handleDelete = async (id, name) => {
       const confirm = Modal.confirm({
-        title: `Êtes-vous sûr de vouloir supprimer la ressource « ${name} » ?`,
+        title: `Êtes-vous sûr de vouloir supprimer la catégorie « ${name} » ?`,
         okText: 'Confirmer',
         cancelText: 'Annuler',
         onOk: (event) => {
@@ -43,8 +38,8 @@ export default withAuth(
             },
           });
 
-          const deleteResource = async () => {
-            const response = await fetch('delete', `/api/admin/resources/${id}`);
+          const deleteCategory = async () => {
+            const response = await fetch('delete', `/api/admin/categories/${id}`);
 
             notify(response.status, response.message);
 
@@ -56,40 +51,40 @@ export default withAuth(
                 disabled: false,
               },
             });
-            resources.mutate();
+            categories.mutate();
             confirm.destroy();
           };
 
-          deleteResource();
+          deleteCategory();
         },
         icon: <QuestionCircleOutlined />,
       });
     };
 
     const subTitle = () => {
-      if (!resources.data) {
+      if (!categories.data) {
         return 'Chargement des ressources...';
       }
 
-      if (resources.data.status === 'error' || !resources.data.data.resources) {
+      if (categories.data.status === 'error' || !categories.data.data.categories) {
         return '';
       }
 
-      if (resources.data.data.resources.length === 0) {
+      if (categories.data.data.categories.length === 0) {
         return 'Aucune ressource à valider';
       }
 
-      return `${resources.data.data.resources.length} ressource${
-        resources.data.data.resources.length > 1 ? 's' : ''
+      return `${categories.data.data.categories.length} ressource${
+        categories.data.data.categories.length > 1 ? 's' : ''
       } chargées`;
     };
 
     const dataSource = () => {
-      if (!resources.data || (resources.data && resources.data.status === 'error')) {
+      if (!categories.data || (categories.data && categories.data.status === 'error')) {
         return [];
       }
 
-      return resources.data.data.resources;
+      return categories.data.data.categories;
     };
 
     const handleSearch = (selectedKeys, confirm, dataIndex) => {
@@ -157,50 +152,14 @@ export default withAuth(
       onChange: onSelectChange,
       hideDefaultSelections: true,
       columnWidth: 50,
-      selections: [
-        {
-          key: 'export',
-          text: (
-            <>
-              <ExportOutlined />
-              Exporter
-            </>
-          ),
-          onSelect: () => console.log('Export', selectedRowKeys),
-        },
-        {
-          key: 'delete',
-          text: (
-            <>
-              <DeleteOutlined />
-              Supprimer
-            </>
-          ),
-          onSelect: () => console.log('Delete', selectedRowKeys),
-        },
-      ],
     };
 
     const columns = [
       {
-        title: 'Logo',
-        dataIndex: 'logo',
-        key: 'logo',
-        width: 50,
-        className: 'center',
-        render: (logo, record) =>
-          logo ? (
-            <Avatar size={32} src={`https://res.cloudinary.com/biblidev/image/upload/${logo}`} />
-          ) : (
-            <Avatar
-              size={32}
-              style={{
-                backgroundColor: 'red',
-              }}
-            >
-              {record.name.charAt(0)}
-            </Avatar>
-          ),
+        title: 'ID',
+        dataIndex: '_id',
+        key: '_id',
+        width: 200,
       },
       {
         title: 'Nom',
@@ -215,43 +174,16 @@ export default withAuth(
         ...getColumnSearchProps('name'),
       },
       {
-        title: 'Auteur',
-        key: 'author',
-        dataIndex: 'author',
-        render: (author) => (
-          <span>
-            {author ? <UserModal username={author.username} id={author._id} /> : 'Anonyme'}
-          </span>
-        ),
+        title: 'Pluriel',
+        dataIndex: 'plural_name',
+        key: 'plural_name',
         sorter: (a, b) => {
-          a = a.author ? a.author.username : 'Anonyme';
-          b = b.author ? b.author.username : 'Anonyme';
-
-          if (a.toLowerCase() < b.toLowerCase()) return -1;
-          if (a.toLowerCase() > b.toLowerCase()) return 1;
+          if (a.name.toLowerCase() < b.name.toLowerCase()) return -1;
+          if (a.name.toLowerCase() > b.name.toLowerCase()) return 1;
           return 0;
         },
         sortDirections: ['ascend', 'descend'],
-      },
-      {
-        title: 'Catégorie(s)',
-        key: 'categories',
-        dataIndex: 'categories',
-        render: (categories) => (
-          <span>
-            {categories.map((category) => (
-              <Tag key={category._id}>{category.name}</Tag>
-            ))}
-          </span>
-        ),
-        filters:
-          categories.data &&
-          categories.data.data.categories.map((category) => ({
-            text: category.name,
-            value: category._id,
-          })),
-        onFilter: (value, record) =>
-          record.categories.some((category) => category._id.toString() === value),
+        ...getColumnSearchProps('plural_name'),
       },
       {
         title: 'Date de création',
@@ -299,20 +231,12 @@ export default withAuth(
     return (
       <Layout title="Toutes les ressources validées" subTitle={subTitle()}>
         <div style={{ marginBottom: 20 }}>
-          <Link href="/admin/resources/import" as="/admin/ressources/importation">
-            <a>
-              <Button icon={<ImportOutlined />} style={{ marginRight: 8 }} type="primary">
-                Importer
-              </Button>
-            </a>
-          </Link>
-          <Link href="/admin/resources/add" as="/admin/ressources/ajout">
-            <a>
-              <Button icon={<PlusOutlined />} type="primary">
-                Ajouter
-              </Button>
-            </a>
-          </Link>
+          <Button icon={<PlusOutlined />} type="primary" style={{ marginRight: 8 }}>
+            Ajouter
+          </Button>
+          <Select placeholder="Avec la séléction" disabled={selectedRowKeys.length <= 0}>
+            <Select.Option>Supprimer</Select.Option>
+          </Select>
         </div>
         <Table
           dataSource={dataSource()}
@@ -320,7 +244,7 @@ export default withAuth(
           size="middle"
           pagination={{ position: ['bottomRight'] }}
           rowKey={(record) => record._id}
-          loading={!resources.data}
+          loading={!categories.data}
           locale={{
             cancelSort: 'Annuler le tri',
             triggerAsc: 'Trier par ordre croissant',
@@ -328,9 +252,7 @@ export default withAuth(
             emptyText: 'Aucune ressource',
             filterReset: 'Réinitialiser',
           }}
-          expandable={{ expandedRowRender: (record) => <p>{record.description}</p> }}
-          scroll={{ x: 1200 }}
-          // rowSelection={rowSelection}
+          rowSelection={rowSelection}
         />
       </Layout>
     );
