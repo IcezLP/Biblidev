@@ -38,7 +38,7 @@ export default ({ record, handleDelete, mutate, ...props }) => {
         confirmLoading={isLoading}
         title="Modifier une catégorie"
         maskStyle={{ zIndex: 1100 }}
-        style={{ zIndex: 1100 }}
+        wrapClassName="modal__wrapper"
       >
         <Form noValidate onFinish={handleSubmit}>
           <Input
