@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import useSWR from 'swr';
-import { Table, Button, Input, Dropdown, Menu, Modal, Select } from 'antd';
+import { Table, Button, Input as AntdInput, Dropdown, Menu, Modal, Select, Form } from 'antd';
 import Moment from 'react-moment';
 import {
   SearchOutlined,
@@ -15,13 +15,27 @@ import withAuth from '../../../middlewares/withAuth';
 import Layout from '../../../components/layout/admin/Layout';
 import fetch from '../../../lib/fetch';
 import { notify } from '../../../lib/notification';
+import useForm from '../../../hooks/useForm';
+import Input from '../../../components/form/Input';
+import EditModal from '../../../components/pages/admin/categories/EditModal';
 
 export default withAuth(
   () => {
+    const [visible, setVisible] = useState(false);
     const [search, setSearch] = useState({ searchText: '', searchedColumn: '' });
     const [selectedRowKeys, setSelectedRowKeys] = useState([]);
 
     const categories = useSWR('/api/admin/categories', (url) => fetch('get', url));
+
+    const { values, errors, handleChange, handleSubmit, isLoading } = useForm(
+      () => {
+        setVisible(false);
+        notify('success', 'La catégorie a été créée');
+        categories.mutate();
+      },
+      'post',
+      `/api/admin/categories`,
+    );
 
     const handleDelete = async (id, name) => {
       const confirm = Modal.confirm({
@@ -101,7 +115,7 @@ export default withAuth(
     const getColumnSearchProps = (dataIndex) => ({
       filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
         <div style={{ padding: 8 }}>
-          <Input
+          <AntdInput
             placeholder="Rechercher"
             value={selectedKeys[0]}
             onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])}
@@ -211,10 +225,7 @@ export default withAuth(
             trigger={['click']}
             overlay={
               <Menu>
-                <Menu.Item key="edit" onClick={() => console.log(`Edit ${record.name}`)}>
-                  <EditOutlined />
-                  Éditer
-                </Menu.Item>
+                <EditModal record={record} mutate={() => categories.mutate()} />
                 <Menu.Item key="delete" onClick={() => handleDelete(record._id, record.name)}>
                   <DeleteOutlined />
                   Supprimer
@@ -231,9 +242,46 @@ export default withAuth(
     return (
       <Layout title="Toutes les ressources validées" subTitle={subTitle()}>
         <div style={{ marginBottom: 20 }}>
-          <Button icon={<PlusOutlined />} type="primary" style={{ marginRight: 8 }}>
+          <Button
+            icon={<PlusOutlined />}
+            type="primary"
+            style={{ marginRight: 8 }}
+            onClick={() => setVisible(true)}
+          >
             Ajouter
           </Button>
+          <Modal
+            key="add"
+            visible={visible}
+            onCancel={() => setVisible(false)}
+            onOk={handleSubmit}
+            okText="Confirmer"
+            confirmLoading={isLoading}
+            title="Ajouter une catégorie"
+          >
+            <Form noValidate onFinish={handleSubmit}>
+              <Input
+                name="name"
+                value={values.name || ''}
+                onChange={handleChange}
+                error={errors.name}
+                placeholder="Nom"
+                label="Nom"
+                disabled={isLoading}
+                maxLength={30}
+              />
+              <Input
+                name="plural_name"
+                value={values.plural_name || ''}
+                onChange={handleChange}
+                error={errors.plural_name}
+                placeholder="Pluriel (optionnel)"
+                label="Pluriel (optionnel)"
+                disabled={isLoading}
+                maxLength={35}
+              />
+            </Form>
+          </Modal>
           <Select placeholder="Avec la séléction" disabled={selectedRowKeys.length <= 0}>
             <Select.Option>Supprimer</Select.Option>
           </Select>
