@@ -15,9 +15,6 @@ const handle = app.getRequestHandler();
 app
   .prepare()
   .then(() => {
-    // Urls à bloquées
-    // const URL_STOP = ['/routes/*', '/logs/*'];
-
     // Urls à redirigées
     const URL_MAP = {
       '/connexion': '/auth/login',
@@ -35,6 +32,10 @@ app
       '/admin/ressources/validation': '/admin/resources/awaiting',
     };
 
+    if (!dev) {
+      server.set('trust proxy', true);
+    }
+
     server.use(helmet());
     server.use(compression());
     // Parse application/json
@@ -42,17 +43,8 @@ app
     // Parse application/x-www-form-urlencoded
     server.use(express.urlencoded({ extended: false }));
 
-    if (!dev) {
-      // Ajout de req.hostname et req.ip
-      server.set('trust proxy', 1);
-    }
-
     database(process.env.MONGO_URI);
     routes(server);
-
-    // server.all(URL_STOP, (req, res) => {
-    //   return app.render(req, res, '/_error');
-    // });
 
     // Affichage des pages
     server.get('*', (req, res) => {
