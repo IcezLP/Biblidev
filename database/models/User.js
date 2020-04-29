@@ -31,6 +31,12 @@ const UserSchema = new Schema(
       required: true,
       minlength: 8,
     },
+    favorites: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'resources',
+      },
+    ],
     newsletter: {
       type: Boolean,
       default: true,

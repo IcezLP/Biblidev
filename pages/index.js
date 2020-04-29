@@ -80,7 +80,7 @@ const Home = ({ user, initialCategories }) => {
       <Row gutter={[12, 12]} type="flex">
         {data.data.resources.map((item) => (
           <Col xs={24} sm={12} md={8} lg={8} xl={6} xxl={4} key={item._id}>
-            <Card resource={item} />
+            <Card resource={item} user={user} />
           </Col>
         ))}
       </Row>

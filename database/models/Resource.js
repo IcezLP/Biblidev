@@ -46,10 +46,13 @@ const ResourceSchema = new Schema(
       required: true,
       default: 'En attente de validation',
     },
-    favorites: [
+    rates: [
       {
-        type: Schema.Types.ObjectId,
-        ref: 'users',
+        rate: Number,
+        user: {
+          type: Schema.Types.ObjectId,
+          ref: 'users',
+        },
       },
     ],
   },

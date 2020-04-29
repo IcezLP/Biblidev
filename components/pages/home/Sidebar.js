@@ -24,7 +24,7 @@ export default ({
     style={{ transition: !collapsible && 'none' }}
   >
     <CustomScroll heightRelativeToParent="100%">
-      <Menu mode="inline" theme="light" className="menu" selectedKeys={[filters.price]}>
+      {/* <Menu mode="inline" theme="light" className="menu" selectedKeys={[filters.price]}>
         <Menu.ItemGroup key="prices" title="Prix">
           <Menu.Item key="gratuit" type="price" onClick={handleFilter}>
             <DollarOutlined style={{ color: '#52c41a', fontSize: '19px' }} />
@@ -39,7 +39,7 @@ export default ({
             Payants
           </Menu.Item>
         </Menu.ItemGroup>
-      </Menu>
+      </Menu> */}
       <Menu mode="inline" theme="light" className="menu" selectedKeys={[filters.category]}>
         <Menu.ItemGroup key="categories" title="Catégories">
           {categories.map((category) => (
