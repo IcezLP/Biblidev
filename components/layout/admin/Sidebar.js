@@ -87,7 +87,7 @@ export default ({ collapsed, onCollapse }) => {
               </span>
             }
           >
-            {collapsed && (
+            {/* {collapsed && (
               <Menu.Item
                 key="resources/title"
                 style={{
@@ -99,7 +99,7 @@ export default ({ collapsed, onCollapse }) => {
               >
                 Ressources
               </Menu.Item>
-            )}
+            )} */}
             <Menu.Item key="resources">
               <Link href="/admin/resources" as="/admin/ressources">
                 <a>
