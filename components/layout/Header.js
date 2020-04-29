@@ -18,12 +18,12 @@ export default ({ user }) => {
   const userMenu = () => (
     <Menu theme="light">
       <Menu.Item key="dashboard" className="navbar__link">
-        <Link href="/dashboard" as="/tableau-de-bord">
+        <Link href="/user/dashboard" as="/tableau-de-bord">
           <a>Tableau de bord</a>
         </Link>
       </Menu.Item>
       <Menu.Item key="settings" className="navbar__link">
-        <Link href="/settings" as="/parametres">
+        <Link href="/user/settings" as="/parametres">
           <a>Paramètres</a>
         </Link>
       </Menu.Item>

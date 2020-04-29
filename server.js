@@ -17,14 +17,17 @@ app
   .then(() => {
     // Urls à redirigées
     const URL_MAP = {
+      // Routes publiques
       '/connexion': '/auth/login',
       '/inscription': '/auth/register',
       '/mot-de-passe-oublie': '/auth/forgot',
       '/verification': '/auth/verify',
       '/proposition': '/submit',
-      '/parametres': '/settings',
-      '/tableau-de-bord': '/dashboard',
       '/nouveau-mot-de-passe': '/auth/reset',
+      // Routes utilisateurs
+      '/tableau-de-bord': '/user/dashboard',
+      '/parametres': '/user/settings',
+      // Routes admin
       '/admin/utilisateurs': '/admin/users',
       '/admin/ressources': '/admin/resources',
       '/admin/ressources/ajout': '/admin/resources/add',
