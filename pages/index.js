@@ -38,6 +38,7 @@ const Home = ({ user, initialCategories }) => {
   };
 
   const categories = useSWR('/api/categories', (url) => fetch('get', url), {
+    refreshInterval: 0,
     initialData: initialCategories,
   });
 
@@ -47,6 +48,7 @@ const Home = ({ user, initialCategories }) => {
   } = useSWR(
     `/api/resources?search=${search}&sort=${sortBy}&price=${filters.price}&category=${filters.category}`,
     (url) => fetch('get', url),
+    { refreshInterval: 0 },
   );
 
   useEffect(() => {
