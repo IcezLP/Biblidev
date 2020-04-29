@@ -1,8 +1,8 @@
 export default {
-  title: 'Des ressources prêtes à être utilisées',
+  title: 'Bibliothèque communautaire de ressources',
   titleTemplate: `${process.env.SITE_NAME} | %s`,
   description:
-    'Bibliothèque de ressources utilisées dans le développement web et le web design. Plus besoin de chercher pour trouver son bonheur',
+    'Inspiration, Outils, SEO, Veille, Emplois... Des centaines de ressources ressources prêtes à être utilisées dans le développement web et le web design',
   openGraph: {
     type: 'website',
     locale: 'fr_FR',
