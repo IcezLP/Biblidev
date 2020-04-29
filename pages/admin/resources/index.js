@@ -76,12 +76,14 @@ export default withAuth(
       }
 
       if (resources.data.data.resources.length === 0) {
-        return 'Aucune ressource à valider';
+        return 'Aucune ressource chargée';
       }
 
-      return `${resources.data.data.resources.length} ressource${
-        resources.data.data.resources.length > 1 ? 's' : ''
-      } chargées`;
+      if (resources.data.data.resources.length === 1) {
+        return '1 ressource chargée';
+      }
+
+      return `${resources.data.data.resources.length} ressources chargées`;
     };
 
     const dataSource = () => {

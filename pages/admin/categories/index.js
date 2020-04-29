@@ -77,7 +77,7 @@ export default withAuth(
 
     const subTitle = () => {
       if (!categories.data) {
-        return 'Chargement des ressources...';
+        return 'Chargement des catégories...';
       }
 
       if (categories.data.status === 'error' || !categories.data.data.categories) {
@@ -85,12 +85,14 @@ export default withAuth(
       }
 
       if (categories.data.data.categories.length === 0) {
-        return 'Aucune ressource à valider';
+        return 'Aucune catégorie trouvée';
       }
 
-      return `${categories.data.data.categories.length} ressource${
-        categories.data.data.categories.length > 1 ? 's' : ''
-      } chargées`;
+      if (categories.data.data.categories.length === 1) {
+        return '1 catégorie trouvée';
+      }
+
+      return `${categories.data.data.categories.length} catégories chargées`;
     };
 
     const dataSource = () => {
