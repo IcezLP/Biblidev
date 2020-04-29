@@ -6,7 +6,7 @@ import fetch from '../../../lib/fetch';
 import { notify } from '../../../lib/notification';
 
 export default ({ resource, user }) => {
-  const [favorite, setFavorite] = useState(user.favorites.includes(resource._id));
+  const [favorite, setFavorite] = useState(user && user.favorites.includes(resource._id));
   // const color = () => {
   //   if (resource.price === 'gratuit') return '#52c41a';
   //   if (resource.price === 'payant') return '#f5222d';
@@ -16,6 +16,10 @@ export default ({ resource, user }) => {
   const site_url = process.env.SITE_URL.split('://').pop();
 
   const handleFavorite = async () => {
+    if (!user) {
+      return notify('info', 'Vous devez être connecté pour effectuer cette action');
+    }
+
     const response = await fetch('put', `/api/users/favorite/${user._id}/${resource._id}`);
 
     if (response.status === 'error') {
