@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Modal, Form, Typography } from 'antd';
+import { Modal, Form, Typography, Alert } from 'antd';
 import { LinkOutlined } from '@ant-design/icons';
 import useForm from '../../../../hooks/useForm';
 import { notify } from '../../../../lib/notification';
@@ -52,6 +52,7 @@ export default ({ resource, trigger, mutate, categories, ...props }) => {
         cancelText="Annuler"
       >
         <Form noValidate onFinish={handleSubmit}>
+          {errors.message && <Alert type="error" showIcon message={errors.message} />}
           <Upload
             label="Logo"
             error={errors.logo}
