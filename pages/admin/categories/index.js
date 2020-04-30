@@ -258,6 +258,7 @@ export default withAuth(
             onCancel={() => setVisible(false)}
             onOk={handleSubmit}
             okText="Confirmer"
+            cancelText="Annuler"
             confirmLoading={isLoading}
             title="Ajouter une catégorie"
           >
