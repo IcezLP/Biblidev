@@ -34,6 +34,7 @@ const Select = ({
   value,
   onChange,
   name,
+  ...props
 }) => {
   const handleChange = (selected) => {
     const event = {
@@ -57,6 +58,7 @@ const Select = ({
       style={{ marginBottom: 0 }}
     >
       <AntdSelect
+        {...props}
         placeholder={placeholder}
         disabled={disabled}
         allowClear={allowClear}

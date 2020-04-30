@@ -11,7 +11,7 @@ import { PlusOutlined } from '@ant-design/icons';
  * @param {Function} onChange The input change event
  * @param {Object} value The file object, used to generate a preview
  */
-const Upload = ({ label, error, name, disabled, onChange, value, placeholder }) => {
+const Upload = ({ label, error, name, disabled, onChange, value, placeholder, current }) => {
   const [fileUrl, setFileUrl] = useState('');
 
   useEffect(() => {
@@ -54,6 +54,12 @@ const Upload = ({ label, error, name, disabled, onChange, value, placeholder }) 
         {fileUrl ? (
           <img
             src={fileUrl}
+            alt={value.name ? value.name : label}
+            style={{ maxWidth: '100%', maxHeight: '160px' }}
+          />
+        ) : current ? (
+          <img
+            src={current}
             alt={value.name ? value.name : label}
             style={{ maxWidth: '100%', maxHeight: '160px' }}
           />
