@@ -412,9 +412,11 @@ router.post('/import', (req, res) => {
         }
 
         // Convertie les id en ObjectID pour le populate
-        resource.categories = resource.categories.map((category) =>
-          mongoose.Types.ObjectId(category),
-        );
+        resource.categories = resource.categories.map((category) => {
+          if (category.length === 24) {
+            return mongoose.Types.ObjectId(category);
+          }
+        });
 
         // Génère un slug à partir du nom de la ressource pour avoir des urls propres
         resource.slug = kebabCase(resource.name);
