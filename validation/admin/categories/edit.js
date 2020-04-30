@@ -11,7 +11,7 @@ module.exports = async (data, Category, category) => {
     errors.name = 'Une catégorie portant ce nom existe déjà';
   }
 
-  if (!Validator.isLength(data.name, { min: 2, max: 24 })) {
+  if (!Validator.isLength(data.name, { min: 2, max: 30 })) {
     errors.name = 'Le nom doit être compris entre 2 et 30 charactères';
   }
 
