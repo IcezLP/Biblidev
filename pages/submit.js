@@ -78,7 +78,7 @@ const Submit = ({ user, categories }) => {
                 placeholder="Nom"
                 label="Nom"
                 disabled={isLoading}
-                maxLength={24}
+                maxLength={30}
               />
               <Input
                 name="description"

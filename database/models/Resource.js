@@ -8,7 +8,7 @@ const ResourceSchema = new Schema(
       required: true,
       unique: true,
       minlength: 2,
-      maxlength: 24,
+      maxlength: 30,
     },
     slug: {
       type: String,

@@ -36,8 +36,8 @@ module.exports = async (data, file, Resource) => {
     errors.name = 'Une ressource portant ce nom existe déjà';
   }
 
-  if (!Validator.isLength(data.name, { min: 2, max: 24 })) {
-    errors.name = 'Le nom doit être compris entre 2 et 24 charactères';
+  if (!Validator.isLength(data.name, { min: 2, max: 30 })) {
+    errors.name = 'Le nom doit être compris entre 2 et 30 charactères';
   }
 
   if (Validator.isEmpty(data.name)) {
