@@ -19,6 +19,7 @@ import Layout from '../../../components/layout/admin/Layout';
 import fetch from '../../../lib/fetch';
 import UserModal from '../../../components/pages/admin/resources/UserModal';
 import { notify } from '../../../lib/notification';
+import EditModal from '../../../components/pages/admin/resources/EditModal';
 
 export default withAuth(
   () => {
@@ -281,10 +282,17 @@ export default withAuth(
             trigger={['click']}
             overlay={
               <Menu>
-                <Menu.Item key="edit" onClick={() => console.log(`Edit ${record.name}`)}>
-                  <EditOutlined />
-                  Éditer
-                </Menu.Item>
+                <EditModal
+                  resource={record}
+                  mutate={() => resources.mutate()}
+                  categories={categories.data && categories.data.data.categories}
+                  trigger={
+                    <Menu.Item key="edit">
+                      <EditOutlined />
+                      Éditer
+                    </Menu.Item>
+                  }
+                />
                 <Menu.Item key="delete" onClick={() => handleDelete(record._id, record.name)}>
                   <DeleteOutlined />
                   Supprimer

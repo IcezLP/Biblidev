@@ -1,13 +1,13 @@
 import React from 'react';
 import { Card, Typography, Avatar, Tag, Button, Badge } from 'antd';
-import { CheckOutlined, DollarOutlined } from '@ant-design/icons';
+import { CheckOutlined, DollarOutlined, EditOutlined } from '@ant-design/icons';
 import Moment from 'react-moment';
 import 'moment/locale/fr';
 import UserModal from '../UserModal';
 import DenyModal from './DenyModal';
-import EditModal from './EditModal';
+import EditModal from '../EditModal';
 
-export default ({ resource, onCheck, mutate }) => {
+export default ({ resource, onCheck, mutate, categories }) => {
   const color = () => {
     if (resource.price === 'gratuit') return '#52c41a';
     if (resource.price === 'payant') return '#f5222d';
@@ -71,7 +71,16 @@ export default ({ resource, onCheck, mutate }) => {
         </Card>
       </Badge>
       <div className="resource__controls">
-        <EditModal name={resource.name} id={resource._id} />
+        <EditModal
+          resource={resource}
+          mutate={mutate}
+          categories={categories}
+          trigger={
+            <Button className="control__button" icon={<EditOutlined />}>
+              Éditer
+            </Button>
+          }
+        />
         <DenyModal name={resource.name} id={resource._id} mutate={mutate} />
         <Button
           className="control__button control__button--success"

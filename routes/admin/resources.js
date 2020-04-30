@@ -13,6 +13,7 @@ const deniedTemplate = require('../../emailTemplates/denied');
 const denyFieldsValidation = require('../../validation/admin/resources/deny');
 const importFileValidation = require('../../validation/admin/resources/importFile');
 const importDataValidation = require('../../validation/admin/resources/importData');
+const editFieldsValidation = require('../../validation/admin/resources/edit');
 
 const { hostname: cloud_name, username: api_key, password: api_secret } = new URL(
   process.env.CLOUDINARY_URL,
@@ -311,6 +312,88 @@ router.delete('/:id', async (req, res) => {
       message: 'Une erreur est survenue, veuillez réessayez',
     });
   }
+});
+
+/**
+ * Modifier une ressources
+ *
+ * @async
+ * @route PUT /api/admin/resources/:id
+ * @private
+ */
+router.put('/:id', (req, res) => {
+  const form = new formidable.IncomingForm();
+
+  return form.parse(req, async (err, fields, files) => {
+    const resource = await Resource.findById(req.params.id);
+
+    if (!resource) {
+      return res.status(404).json({
+        status: 'error',
+        data: {},
+        message: "Aucune ressource n'a été trouvée",
+      });
+    }
+
+    // Vérifie les champs du formulaire
+    const errors = await editFieldsValidation(fields, files.logo, Resource, resource);
+
+    // Si le formulaire contient des erreurs
+    if (Object.keys(errors).length !== 0) {
+      return res.status(400).json({
+        status: 'error',
+        data: errors,
+        message: null,
+      });
+    }
+
+    // Déstructure les données reçu pour éviter l'injection de données non voulues
+    const { name, description, link, price } = fields;
+    // Extrait les catégories et les converties en tableau d'ObjectID
+    let categories = Array.isArray(fields.categories)
+      ? fields.categories
+      : JSON.parse(fields.categories);
+    categories = categories.map((category) => mongoose.Types.ObjectId(category));
+    // Génère un slug à partir du nom de la ressource pour avoir des urls propres
+    const slug = kebabCase(name);
+    // Initialise le logo
+    let logo;
+
+    // Si un fichier est reçu
+    if (files && files.logo) {
+      try {
+        // Supprime l'ancienne image
+        if (resource.logo) {
+          await v2.uploader.destroy(resource.logo);
+        }
+        // Upload la nouvelle sur le serveur cloud de Cloudinary
+        const { public_id } = await v2.uploader.upload(files.logo.path);
+        logo = public_id;
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      logo = resource.logo;
+    }
+
+    try {
+      // Met à jour dans la db
+      await resource.update({ name, slug, description, link, price, logo, categories });
+
+      return res.status(200).json({
+        status: 'success',
+        data: {},
+        message: 'La ressource a été modifiée',
+      });
+    } catch (error) {
+      // Si une erreur inconnue arrive
+      return res.status(400).json({
+        status: 'error',
+        data: {},
+        message: 'Une erreur est survenue, veuillez réessayez',
+      });
+    }
+  });
 });
 
 /**
