@@ -25,11 +25,11 @@ v2.config({
  * @return {Array} Liste des catégories
  */
 router.get('/', async (req, res) => {
-  const price = String(req.query.price) || null;
-  const category = req.query.category || null;
+  const price = req.query.price ? req.query.price : null;
+  const category = req.query.category ? req.query.category : null;
   let sort;
 
-  switch (String(req.query.sort)) {
+  switch (req.query.sort) {
     case 'newest':
       sort = { createdAt: -1 };
       break;
