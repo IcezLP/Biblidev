@@ -82,10 +82,8 @@ export default ({ resource, user, handleFilter, filters }) => {
                 key={category._id}
                 className="resource__category"
                 style={{ cursor: 'pointer' }}
-                checked={filters.category.includes(category._id)}
-                onChange={() =>
-                  handleFilter({ key: category._id, item: { props: { type: 'category' } } })
-                }
+                checked={filters.categories.includes(category._id)}
+                onChange={() => handleFilter({ key: category._id })}
               >
                 {category.name}
               </Tag.CheckableTag>

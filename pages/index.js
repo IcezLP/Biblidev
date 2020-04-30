@@ -16,7 +16,7 @@ const Home = ({ user, initialCategories }) => {
   const [collapsed, setCollapsed] = useState(true);
   const { width } = useWindowSize();
   const sidebarWidth = 230;
-  const [filters, setFilters] = useState({ price: '', category: '' });
+  const [filters, setFilters] = useState({ price: '', categories: [] });
   const { search, handleSearch, sortBy, handleSort } = useSearch('newest');
 
   const handleFilter = (event) => {
@@ -37,16 +37,45 @@ const Home = ({ user, initialCategories }) => {
     }));
   };
 
+  const onRemoveFilters = () => {
+    return setFilters((previous) => ({
+      ...previous,
+      categories: [],
+    }));
+  };
+
+  const handleCategoriesFilter = (event) => {
+    if (event.persist) event.persist();
+    const value = event.key;
+    const { categories } = filters;
+
+    if (categories.includes(value)) {
+      const index = categories.indexOf(value);
+      categories.splice(index, 1);
+
+      return setFilters((previous) => ({
+        ...previous,
+        categories,
+      }));
+    }
+
+    categories.push(value);
+
+    return setFilters((previous) => ({
+      ...previous,
+      categories,
+    }));
+  };
+
   const categories = useSWR('/api/categories', (url) => fetch('get', url), {
     refreshInterval: 0,
     initialData: initialCategories,
   });
 
-  const {
-    data,
-    mutate,
-  } = useSWR(
-    `/api/resources?search=${search}&sort=${sortBy}&price=${filters.price}&category=${filters.category}`,
+  const { data, mutate } = useSWR(
+    `/api/resources?search=${search}&sort=${sortBy}&price=${
+      filters.price
+    }&categories=${filters.categories.join(';')}`,
     (url) => fetch('get', url),
     { refreshInterval: 0 },
   );
@@ -54,7 +83,9 @@ const Home = ({ user, initialCategories }) => {
   useEffect(() => {
     const response = fetch(
       'get',
-      `/api/resources?search=${search}&sort=${sortBy}&price=${filters.price}&category=${filters.category}`,
+      `/api/resources?search=${search}&sort=${sortBy}&price=${
+        filters.price
+      }&categories=${filters.categories.join(';')}`,
     );
     mutate(response);
   }, [search, sortBy, filters]);
@@ -80,7 +111,12 @@ const Home = ({ user, initialCategories }) => {
       <Row gutter={[12, 12]} type="flex">
         {data.data.resources.map((item) => (
           <Col xs={24} sm={12} md={8} lg={8} xl={6} xxl={4} key={item._id}>
-            <Card resource={item} user={user} handleFilter={handleFilter} filters={filters} />
+            <Card
+              resource={item}
+              user={user}
+              handleFilter={handleCategoriesFilter}
+              filters={filters}
+            />
           </Col>
         ))}
       </Row>
@@ -97,6 +133,7 @@ const Home = ({ user, initialCategories }) => {
         isAdmin={user && user.isAdmin}
         categories={categories.data.data.categories}
         handleFilter={handleFilter}
+        handleCategoriesFilter={handleCategoriesFilter}
         filters={filters}
       />
       <Layout.Content
@@ -106,7 +143,14 @@ const Home = ({ user, initialCategories }) => {
         id="content"
       >
         <Hero />
-        <Search search={search} onChange={handleSearch} sort={sortBy} onSort={handleSort} />
+        <Search
+          search={search}
+          onChange={handleSearch}
+          sort={sortBy}
+          onSort={handleSort}
+          categories={filters.categories}
+          onRemoveFilters={onRemoveFilters}
+        />
         <Resources />
       </Layout.Content>
     </Layout>

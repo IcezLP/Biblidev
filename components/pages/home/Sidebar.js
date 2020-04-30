@@ -10,6 +10,7 @@ export default ({
   onCollapse,
   categories,
   handleFilter,
+  handleCategoriesFilter,
   filters,
 }) => (
   <Layout.Sider
@@ -40,10 +41,10 @@ export default ({
           </Menu.Item>
         </Menu.ItemGroup>
       </Menu> */}
-      <Menu mode="inline" theme="light" className="menu" selectedKeys={[filters.category]}>
+      <Menu mode="inline" theme="light" className="menu" selectedKeys={filters.categories}>
         <Menu.ItemGroup key="categories" title="Catégories">
           {categories.map((category) => (
-            <Menu.Item key={category._id} type="category" onClick={handleFilter}>
+            <Menu.Item key={category._id} type="categories" onClick={handleCategoriesFilter}>
               {category.plural_name}
             </Menu.Item>
           ))}
