@@ -62,6 +62,16 @@
 
         .resource__category {
           margin-top: 8px;
+          color: rgba(0, 0, 0, .65);
+          background-color: #fafafa;
+          border-color: #d9d9d9;
+
+          &:hover,
+          &.ant-tag-checkable-checked {
+            color: #1890ff;
+            background-color: #e6f7ff;
+            border-color: #91d5ff;
+          }
         }
       }
 

@@ -5,7 +5,7 @@ import classnames from 'classnames';
 import fetch from '../../../lib/fetch';
 import { notify } from '../../../lib/notification';
 
-export default ({ resource, user }) => {
+export default ({ resource, user, handleFilter, filters }) => {
   const [favorite, setFavorite] = useState(user && user.favorites.includes(resource._id));
   // const color = () => {
   //   if (resource.price === 'gratuit') return '#52c41a';
@@ -78,9 +78,17 @@ export default ({ resource, user }) => {
         {resource.categories.map(
           (category) =>
             !(typeof category === 'string') && (
-              <Tag key={category._id} className="resource__category">
+              <Tag.CheckableTag
+                key={category._id}
+                className="resource__category"
+                style={{ cursor: 'pointer' }}
+                checked={filters.category.includes(category._id)}
+                onChange={() =>
+                  handleFilter({ key: category._id, item: { props: { type: 'category' } } })
+                }
+              >
                 {category.name}
-              </Tag>
+              </Tag.CheckableTag>
             ),
         )}
       </div>
