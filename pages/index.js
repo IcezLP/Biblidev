@@ -14,6 +14,7 @@ import useSearch from '../hooks/useSearch';
 
 const Home = ({ user, initialCategories }) => {
   const [collapsed, setCollapsed] = useState(true);
+  const [includes, setIncludes] = useState('in');
   const { width } = useWindowSize();
   const sidebarWidth = 230;
   const [filters, setFilters] = useState({ price: '', categories: [] });
@@ -75,7 +76,7 @@ const Home = ({ user, initialCategories }) => {
   const { data, mutate } = useSWR(
     `/api/resources?search=${search}&sort=${sortBy}&price=${
       filters.price
-    }&categories=${filters.categories.join(';')}`,
+    }&categories=${filters.categories.join(';')}&includes=${includes}`,
     (url) => fetch('get', url),
     { refreshInterval: 0 },
   );
@@ -85,10 +86,10 @@ const Home = ({ user, initialCategories }) => {
       'get',
       `/api/resources?search=${search}&sort=${sortBy}&price=${
         filters.price
-      }&categories=${filters.categories.join(';')}`,
+      }&categories=${filters.categories.join(';')}&includes=${includes}`,
     );
     mutate(response);
-  }, [search, sortBy, filters]);
+  }, [search, sortBy, filters, includes]);
 
   const Resources = () => {
     if (!data) {
@@ -136,6 +137,8 @@ const Home = ({ user, initialCategories }) => {
         handleFilter={handleFilter}
         handleCategoriesFilter={handleCategoriesFilter}
         filters={filters}
+        handleIncludeChange={(event) => setIncludes(event.target.value)}
+        includes={includes}
       />
       <Layout.Content
         style={{

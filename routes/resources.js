@@ -28,6 +28,18 @@ router.get('/', async (req, res) => {
   const price = req.query.price ? req.query.price : null;
   const categories = req.query.categories ? req.query.categories.split(';') : null;
   let sort;
+  let includes;
+
+  switch (req.query.includes) {
+    case 'in':
+      includes = '$in';
+      break;
+    case 'all':
+      includes = '$all';
+      break;
+    default:
+      includes = '$in';
+  }
 
   switch (req.query.sort) {
     case 'newest':
@@ -50,7 +62,7 @@ router.get('/', async (req, res) => {
     ? {
         state: 'Validée',
         ...(price && { price }),
-        ...(categories && { categories: { $in: categories } }),
+        ...(categories && { categories: { [includes]: categories } }),
         $or: [
           { name: { $regex: req.query.search, $options: 'i' } },
           { description: { $regex: req.query.search, $options: 'i' } },
@@ -59,7 +71,7 @@ router.get('/', async (req, res) => {
     : {
         state: 'Validée',
         ...(price && { price }),
-        ...(categories && { categories: { $in: categories } }),
+        ...(categories && { categories: { [includes]: categories } }),
       };
 
   try {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Layout, Menu, Icon } from 'antd';
+import { Layout, Menu, Icon, Radio } from 'antd';
 import CustomScroll from 'react-custom-scroll';
 import { DollarOutlined } from '@ant-design/icons';
 
@@ -12,6 +12,8 @@ export default ({
   handleFilter,
   handleCategoriesFilter,
   filters,
+  handleIncludeChange,
+  includes,
 }) => (
   <Layout.Sider
     id="sidebar"
@@ -41,6 +43,22 @@ export default ({
           </Menu.Item>
         </Menu.ItemGroup>
       </Menu> */}
+      <Menu mode="inline" theme="light" className="menu">
+        <Menu.ItemGroup title="Mode de tri des catégories">
+          <Radio.Group
+            style={{ paddingLeft: 24, paddingRight: 16 }}
+            onChange={handleIncludeChange}
+            value={includes}
+          >
+            <Radio value="in" style={{ whiteSpace: 'unset' }}>
+              Contient au moins 1 séléction
+            </Radio>
+            <Radio value="all" style={{ whiteSpace: 'unset' }}>
+              Contient toute la séléction
+            </Radio>
+          </Radio.Group>
+        </Menu.ItemGroup>
+      </Menu>
       <Menu mode="inline" theme="light" className="menu" selectedKeys={filters.categories}>
         <Menu.ItemGroup key="categories" title="Catégories">
           {categories.map((category) => (
