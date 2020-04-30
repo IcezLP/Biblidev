@@ -209,11 +209,7 @@ export default withAuth(
         title: 'Nom',
         dataIndex: 'name',
         key: 'name',
-        sorter: (a, b) => {
-          if (a.name.toLowerCase() < b.name.toLowerCase()) return -1;
-          if (a.name.toLowerCase() > b.name.toLowerCase()) return 1;
-          return 0;
-        },
+        sorter: (a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase(), 'fr'),
         sortDirections: ['ascend', 'descend'],
         ...getColumnSearchProps('name'),
       },
@@ -230,9 +226,7 @@ export default withAuth(
           a = a.author ? a.author.username : 'Anonyme';
           b = b.author ? b.author.username : 'Anonyme';
 
-          if (a.toLowerCase() < b.toLowerCase()) return -1;
-          if (a.toLowerCase() > b.toLowerCase()) return 1;
-          return 0;
+          return a.toLowerCase().localeCompare(b.toLowerCase(), 'fr');
         },
         sortDirections: ['ascend', 'descend'],
       },

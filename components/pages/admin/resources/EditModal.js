@@ -96,7 +96,9 @@ export default ({ resource, trigger, mutate, categories, ...props }) => {
             disabled={isLoading}
             allowClear
             mode="multiple"
-            options={categories}
+            options={categories.sort((a, b) =>
+              a.name.toLowerCase().localeCompare(b.name.toLowerCase(), 'fr'),
+            )}
             optionKey="_id"
             optionLabel="name"
             value={values.categories || []}
