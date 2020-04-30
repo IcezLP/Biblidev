@@ -116,6 +116,7 @@ const Home = ({ user, initialCategories }) => {
               user={user}
               handleFilter={handleCategoriesFilter}
               filters={filters}
+              search={search}
             />
           </Col>
         ))}

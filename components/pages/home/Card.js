@@ -2,10 +2,11 @@ import React, { useState } from 'react';
 import { Card, Avatar, Tag, Typography, Badge, Rate, Row, Col, Button } from 'antd';
 import { DollarOutlined, HeartOutlined, HeartFilled } from '@ant-design/icons';
 import classnames from 'classnames';
+import Highlighter from 'react-highlight-words';
 import fetch from '../../../lib/fetch';
 import { notify } from '../../../lib/notification';
 
-export default ({ resource, user, handleFilter, filters }) => {
+export default ({ resource, user, handleFilter, filters, search }) => {
   const [favorite, setFavorite] = useState(user && user.favorites.includes(resource._id));
   // const color = () => {
   //   if (resource.price === 'gratuit') return '#52c41a';
@@ -59,7 +60,16 @@ export default ({ resource, user, handleFilter, filters }) => {
           }
           title={
             <>
-              {resource.name}
+              {search ? (
+                <Highlighter
+                  highlightStyle={{ backgroundColor: '#ffc069', padding: 0 }}
+                  searchWords={[search]}
+                  autoEscape
+                  textToHighlight={resource.name.toString()}
+                />
+              ) : (
+                resource.name
+              )}
               <br />
               <Typography.Text type="secondary" className="resource__author">
                 Posté par&nbsp;
@@ -71,7 +81,18 @@ export default ({ resource, user, handleFilter, filters }) => {
               </Typography.Text>
             </>
           }
-          description={resource.description}
+          description={
+            search ? (
+              <Highlighter
+                highlightStyle={{ backgroundColor: '#ffc069', padding: 0 }}
+                searchWords={[search]}
+                autoEscape
+                textToHighlight={resource.description.toString()}
+              />
+            ) : (
+              resource.description
+            )
+          }
         />
       </a>
       <div className="resource_categories">
