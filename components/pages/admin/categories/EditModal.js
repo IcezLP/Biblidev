@@ -21,7 +21,7 @@ export default ({ record, handleDelete, mutate, ...props }) => {
   useEffect(() => {
     values.name = record.name;
     values.plural_name = record.plural_name;
-  }, [record]);
+  }, [record, visible]);
 
   return (
     <>
@@ -35,6 +35,7 @@ export default ({ record, handleDelete, mutate, ...props }) => {
         onCancel={() => setVisible(false)}
         onOk={handleSubmit}
         okText="Confirmer"
+        cancelText="Annuler"
         confirmLoading={isLoading}
         title="Modifier une catégorie"
         maskStyle={{ zIndex: 1100 }}
