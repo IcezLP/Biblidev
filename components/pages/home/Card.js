@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Card, Avatar, Tag, Typography, Badge, Rate, Button } from 'antd';
-import { DollarOutlined, HeartOutlined, HeartFilled } from '@ant-design/icons';
+import { Card, Avatar, Tag, Typography, Rate, Button } from 'antd';
+import { HeartOutlined, HeartFilled } from '@ant-design/icons';
 import classnames from 'classnames';
 import Highlighter from 'react-highlight-words';
 import fetch from '../../../lib/fetch';
@@ -8,12 +8,7 @@ import { notify } from '../../../lib/notification';
 
 export default ({ resource, user, handleFilter, filters, search, mutate }) => {
   const [favorite, setFavorite] = useState(user && user.favorites.includes(resource._id));
-  const [average, setAverage] = useState(0);
-  // const color = () => {
-  //   if (resource.price === 'gratuit') return '#52c41a';
-  //   if (resource.price === 'payant') return '#f5222d';
-  //   if (resource.price === 'gratuit-et-payant') return '#fa8c16';
-  // };
+  const [average, setAverage] = useState();
 
   const site_url = process.env.SITE_URL.split('://').pop();
 
