@@ -61,11 +61,15 @@ export default ({
       </Menu>
       <Menu mode="inline" theme="light" className="menu" selectedKeys={filters.categories}>
         <Menu.ItemGroup key="categories" title="Catégories">
-          {categories.map((category) => (
-            <Menu.Item key={category._id} type="categories" onClick={handleCategoriesFilter}>
-              {category.plural_name}
-            </Menu.Item>
-          ))}
+          {categories
+            .sort((a, b) =>
+              a.plural_name.toLowerCase().localeCompare(b.plural_name.toLowerCase(), 'fr'),
+            )
+            .map((category) => (
+              <Menu.Item key={category._id} type="categories" onClick={handleCategoriesFilter}>
+                {category.plural_name}
+              </Menu.Item>
+            ))}
         </Menu.ItemGroup>
       </Menu>
     </CustomScroll>
