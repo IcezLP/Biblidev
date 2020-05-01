@@ -113,12 +113,11 @@ const Home = ({ user, initialCategories }) => {
         {data.data.resources.map((item) => (
           <Col xs={24} sm={12} md={8} lg={8} xl={6} xxl={4} key={item._id}>
             <Card
-              resource={item}
+              record={item}
               user={user}
               handleFilter={handleCategoriesFilter}
               filters={filters}
               search={search}
-              mutate={() => mutate()}
             />
           </Col>
         ))}

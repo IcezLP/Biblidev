@@ -77,7 +77,6 @@ router.get('/', async (req, res) => {
 
   try {
     const resources = await Resource.find(search)
-      .limit(Number(req.query.limit) || 50)
       .sort(sort)
       .populate('categories')
       .populate('author', '-_id username slug');
@@ -189,6 +188,14 @@ router.put('/rate/:userId/:resourceId', async (req, res) => {
   const { userId, resourceId } = req.params;
   const { value } = req.body;
 
+  if (value > 5 || value < 0) {
+    return res.status(404).json({
+      status: 'error',
+      data: {},
+      message: 'La valeur est incorrecte',
+    });
+  }
+
   try {
     const user = await User.findById(userId);
 
@@ -223,7 +230,7 @@ router.put('/rate/:userId/:resourceId', async (req, res) => {
 
         return res.status(200).json({
           status: 'success',
-          data: {},
+          data: { update: resource.rates },
           message: null,
         });
       }
@@ -235,7 +242,7 @@ router.put('/rate/:userId/:resourceId', async (req, res) => {
 
       return res.status(200).json({
         status: 'success',
-        data: {},
+        data: { update: resource.rates },
         message: null,
       });
     }
@@ -251,7 +258,7 @@ router.put('/rate/:userId/:resourceId', async (req, res) => {
 
     return res.status(200).json({
       status: 'success',
-      data: {},
+      data: { update: resource.rates },
       message: null,
     });
   } catch (error) {

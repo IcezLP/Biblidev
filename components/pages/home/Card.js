@@ -6,7 +6,8 @@ import Highlighter from 'react-highlight-words';
 import fetch from '../../../lib/fetch';
 import { notify } from '../../../lib/notification';
 
-export default ({ resource, user, handleFilter, filters, search, mutate }) => {
+export default ({ record, user, handleFilter, filters, search }) => {
+  const [resource, setResource] = useState(record);
   const [favorite, setFavorite] = useState(user && user.favorites.includes(resource._id));
   const [average, setAverage] = useState();
 
@@ -19,7 +20,7 @@ export default ({ resource, user, handleFilter, filters, search, mutate }) => {
     const avg = sum / resource.rates.length || 0;
 
     setAverage(avg);
-  }, [resource]);
+  }, [resource.rates]);
 
   const handleFavorite = async () => {
     if (!user) {
@@ -54,7 +55,10 @@ export default ({ resource, user, handleFilter, filters, search, mutate }) => {
       return notify('error', response.message);
     }
 
-    mutate();
+    setResource((previous) => ({
+      ...previous,
+      rates: response.data.update,
+    }));
   };
 
   return (
@@ -134,7 +138,7 @@ export default ({ resource, user, handleFilter, filters, search, mutate }) => {
       </div>
       <div style={{ marginTop: 10 }}>
         <Rate allowClear allowHalf onChange={handleRate} disabled={!user} value={average} />
-        <span className="ant-rate-text">({resource.rates.length})</span>
+        <span className="ant-rate-text">({resource.rates.length}) </span>
       </div>
       <Button
         className={classnames('resource__favorite', { favorite })}
