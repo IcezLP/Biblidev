@@ -61,6 +61,21 @@ export default ({ record, user, handleFilter, filters, search }) => {
     }));
   };
 
+  const HasRated = () => {
+    if (user && resource.rates.some((item) => item.user.toString() === user._id.toString())) {
+      // Récupère l'index de la note de l'utilisateur
+      const index = resource.rates.map((item) => item.user).indexOf(user._id);
+
+      return (
+        <Typography.Text disabled style={{ fontSize: 12 }}>
+          {/* eslint-disable-next-line */}
+          Vous avez noté {resource.rates[index].rate}/5
+        </Typography.Text>
+      );
+    }
+    return null;
+  };
+
   return (
     <Card className="resource" hoverable>
       <a href={`${resource.link}?ref=${site_url}`} target="_blank" rel="noopener noreferrer">
@@ -137,9 +152,23 @@ export default ({ record, user, handleFilter, filters, search }) => {
         )}
       </div>
       <div style={{ marginTop: 10 }}>
-        <Rate allowClear allowHalf onChange={handleRate} disabled={!user} value={average} />
-        <span className="ant-rate-text">({resource.rates.length}) </span>
+        <Rate
+          allowClear={false}
+          allowHalf={false}
+          onChange={handleRate}
+          disabled={!user}
+          value={average}
+          style={{
+            color:
+              user && resource.rates.some((item) => item.user.toString() === user._id.toString())
+                ? '#1890ff'
+                : null,
+          }}
+        />
+        {/* eslint-disable-next-line */}
+        <span className="ant-rate-text">({resource.rates.length})</span>
       </div>
+      <HasRated />
       <Button
         className={classnames('resource__favorite', { favorite })}
         shape="circle-outline"
