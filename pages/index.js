@@ -118,6 +118,7 @@ const Home = ({ user, initialCategories }) => {
               handleFilter={handleCategoriesFilter}
               filters={filters}
               search={search}
+              mutate={() => mutate()}
             />
           </Col>
         ))}

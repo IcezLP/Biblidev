@@ -1,13 +1,14 @@
-import React, { useState } from 'react';
-import { Card, Avatar, Tag, Typography, Badge, Rate, Row, Col, Button } from 'antd';
+import React, { useState, useEffect } from 'react';
+import { Card, Avatar, Tag, Typography, Badge, Rate, Button } from 'antd';
 import { DollarOutlined, HeartOutlined, HeartFilled } from '@ant-design/icons';
 import classnames from 'classnames';
 import Highlighter from 'react-highlight-words';
 import fetch from '../../../lib/fetch';
 import { notify } from '../../../lib/notification';
 
-export default ({ resource, user, handleFilter, filters, search }) => {
+export default ({ resource, user, handleFilter, filters, search, mutate }) => {
   const [favorite, setFavorite] = useState(user && user.favorites.includes(resource._id));
+  const [average, setAverage] = useState(0);
   // const color = () => {
   //   if (resource.price === 'gratuit') return '#52c41a';
   //   if (resource.price === 'payant') return '#f5222d';
@@ -15,6 +16,15 @@ export default ({ resource, user, handleFilter, filters, search }) => {
   // };
 
   const site_url = process.env.SITE_URL.split('://').pop();
+
+  useEffect(() => {
+    // Calcul le total des notes
+    const sum = resource.rates.reduce((acc, c) => acc + c.rate, 0);
+    // Calcul la moyenne des notes
+    const avg = sum / resource.rates.length || 0;
+
+    setAverage(avg);
+  }, [resource]);
 
   const handleFavorite = async () => {
     if (!user) {
@@ -34,6 +44,22 @@ export default ({ resource, user, handleFilter, filters, search }) => {
     if (response.data.update === 'remove') {
       return setFavorite(false);
     }
+  };
+
+  const handleRate = async (value) => {
+    if (!user) {
+      return notify('info', 'Vous devez être connecté pour effectuer cette action');
+    }
+
+    const response = await fetch('put', `/api/resources/rate/${user._id}/${resource._id}`, {
+      value,
+    });
+
+    if (response.status === 'error') {
+      return notify('error', response.message);
+    }
+
+    mutate();
   };
 
   return (
@@ -110,6 +136,10 @@ export default ({ resource, user, handleFilter, filters, search }) => {
               </Tag.CheckableTag>
             ),
         )}
+      </div>
+      <div style={{ marginTop: 10 }}>
+        <Rate allowClear allowHalf onChange={handleRate} disabled={!user} value={average} />
+        <span className="ant-rate-text">({resource.rates.length})</span>
       </div>
       <Button
         className={classnames('resource__favorite', { favorite })}

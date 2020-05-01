@@ -4,6 +4,7 @@ const { v2 } = require('cloudinary');
 const { kebabCase } = require('lodash');
 const mongoose = require('mongoose');
 const Resource = require('../database/models/Resource');
+const User = require('../database/models/User');
 const submitFieldsValidation = require('../validation/submit');
 
 const { hostname: cloud_name, username: api_key, password: api_secret } = new URL(
@@ -175,6 +176,92 @@ router.post('/submit', async (req, res) => {
       });
     }
   });
+});
+
+/**
+ * Note une ressource
+ *
+ * @async
+ * @route PUT /api/resources/rate/:userId/:resourceId
+ * @private
+ */
+router.put('/rate/:userId/:resourceId', async (req, res) => {
+  const { userId, resourceId } = req.params;
+  const { value } = req.body;
+
+  try {
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({
+        status: 'error',
+        data: {},
+        message: "Aucun utilisateur correspondant n'a été trouvé",
+      });
+    }
+
+    const resource = await Resource.findById(resourceId);
+
+    if (!resource) {
+      return res.status(404).json({
+        status: 'error',
+        data: {},
+        message: "Aucune ressource correspondant n'a été trouvée",
+      });
+    }
+
+    // Si l'utilisateur a déjà noté la ressource
+    if (resource.rates.some((item) => item.user.toString() === user._id.toString())) {
+      // Récupère l'index de la note de l'utilisateur
+      const index = resource.rates.map((item) => item.user).indexOf(user._id);
+
+      // Supprime la note de l'utilisateur
+      if (value === 0) {
+        await resource.rates.splice(index, 1);
+        // Met à jour la ressource dans la db
+        await resource.save();
+
+        return res.status(200).json({
+          status: 'success',
+          data: {},
+          message: null,
+        });
+      }
+
+      resource.rates[index].rate = value;
+
+      // Met à jour la ressource dans la db
+      await resource.save();
+
+      return res.status(200).json({
+        status: 'success',
+        data: {},
+        message: null,
+      });
+    }
+
+    // Ajout la note de l'utilisateur aux notes déjà existantes
+    await resource.rates.push({
+      rate: value,
+      user: mongoose.Types.ObjectId(user._id),
+    });
+
+    // Met à jour la ressource dans la db
+    await resource.save();
+
+    return res.status(200).json({
+      status: 'success',
+      data: {},
+      message: null,
+    });
+  } catch (error) {
+    // Si une erreur inconnue arrive
+    return res.status(400).json({
+      status: 'error',
+      data: {},
+      message: 'Une erreur est survenue, veuillez réessayez',
+    });
+  }
 });
 
 module.exports = router;
