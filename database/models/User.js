@@ -35,6 +35,7 @@ const UserSchema = new Schema(
       {
         type: Schema.Types.ObjectId,
         ref: 'resources',
+        unique: true,
       },
     ],
     newsletter: {
