@@ -1,97 +1,112 @@
-import React, { useState, useEffect } from 'react';
-import { Layout, Row, Col, Spin, Result } from 'antd';
-import classnames from 'classnames';
+import React, { useState } from 'react';
+import { Layout, Row, Col, Spin, Result, Tag } from 'antd';
+import { LoadingOutlined, FrownOutlined } from '@ant-design/icons';
 import useSWR from 'swr';
-import { FrownOutlined, LoadingOutlined } from '@ant-design/icons';
 import withAuth from '../middlewares/withAuth';
-import Hero from '../components/pages/home/Hero';
-import useWindowSize from '../hooks/useWindowSize';
-import Sidebar from '../components/pages/home/Sidebar';
 import fetch from '../lib/fetch';
-import Card from '../components/pages/home/Card';
-import Search from '../components/pages/home/Search';
-import useSearch from '../hooks/useSearch';
+import Hero from '../components/pages/home/Hero';
+import SearchBar from '../components/pages/home/SearchBar';
+import Sidebar from '../components/pages/home/Sidebar';
+import ResourceCard from '../components/pages/home/ResourceCard';
 
-const Home = ({ user, initialCategories }) => {
-  const [collapsed, setCollapsed] = useState(true);
-  const [includes, setIncludes] = useState('in');
-  const { width } = useWindowSize();
-  const sidebarWidth = 230;
-  const [filters, setFilters] = useState({ price: '', categories: [] });
-  const { search, handleSearch, sortBy, handleSort } = useSearch('newest');
+const { Content } = Layout;
 
-  const handleFilter = (event) => {
-    if (event.persist) event.persist();
-    const key = event.item.props.type;
-    const value = event.key;
+const Home = ({ user, categories }) => {
+  const [filters, setFilters] = useState({
+    categories: [],
+    mode: 'in',
+    sortBy: 'newest',
+    search: '',
+  });
 
-    if (filters[key] === value) {
-      return setFilters((previous) => ({
-        ...previous,
-        [key]: '',
-      }));
+  // Génère les paramètres d'URL
+  const resourcesURLParams = () => {
+    const entries = Object.entries(filters);
+    const url = [];
+
+    for (const [key, value] of entries) {
+      if (Array.isArray(value)) {
+        url.push(`${key}=${value.join(';')}`);
+      } else {
+        url.push(`${key}=${value}`);
+      }
     }
 
+    return url.join('&');
+  };
+
+  // Récupère les ressources
+  const resourcesRequest = useSWR(
+    `/api/resources?${resourcesURLParams()}`,
+    (url) => fetch('get', url),
+    {
+      refreshInterval: 60000, // Recharge les catégories toutes les minutes
+    },
+  );
+
+  // Change le mode de tri des catégories
+  const setMode = ({ key }) => {
     return setFilters((previous) => ({
       ...previous,
-      [key]: value,
+      mode: key,
     }));
   };
 
-  const onRemoveFilters = () => {
+  const setSort = (value) => {
+    return setFilters((previous) => ({
+      ...previous,
+      sortBy: value,
+    }));
+  };
+
+  // Ajout ou retire la catégorie séléctionnée des filtres
+  const setCategories = (categoryId) => {
+    const updatedCategories = filters.categories;
+
+    // Si la catégorie est déjà séléctionnée
+    if (filters.categories.includes(categoryId)) {
+      // Récupère la position de la catégorie dans le tableau
+      const index = filters.categories.indexOf(categoryId);
+      // Retire la catégorie du tableau
+      updatedCategories.splice(index, 1);
+
+      return setFilters((previous) => ({
+        ...previous,
+        categories: updatedCategories,
+      }));
+    }
+
+    // Ajoute la catégorie dans le tableau
+    updatedCategories.push(categoryId);
+
+    return setFilters((previous) => ({
+      ...previous,
+      categories: updatedCategories,
+    }));
+  };
+
+  // Retire toutes les catégories séléctionnées
+  const resetCategories = () => {
     return setFilters((previous) => ({
       ...previous,
       categories: [],
     }));
   };
 
-  const handleCategoriesFilter = (event) => {
-    if (event.persist) event.persist();
-    const value = event.key;
-    const { categories } = filters;
-
-    if (categories.includes(value)) {
-      const index = categories.indexOf(value);
-      categories.splice(index, 1);
-
-      return setFilters((previous) => ({
-        ...previous,
-        categories,
-      }));
-    }
-
-    categories.push(value);
-
+  // Modifie la recherche
+  const setSearch = (value) => {
     return setFilters((previous) => ({
       ...previous,
-      categories,
+      search: value,
     }));
   };
 
-  const categories = useSWR('/api/categories', (url) => fetch('get', url), {
-    refreshInterval: 0,
-    initialData: initialCategories,
-  });
-
-  const { data, mutate } = useSWR(
-    `/api/resources?search=${search}&sort=${sortBy}&price=${
-      filters.price
-    }&categories=${filters.categories.join(';')}&includes=${includes}`,
-    (url) => fetch('get', url),
-    { refreshInterval: 0 },
-  );
-
-  useEffect(() => {
-    const response = fetch(
-      'get',
-      `/api/resources?search=${search}&sort=${sortBy}&price=${
-        filters.price
-      }&categories=${filters.categories.join(';')}&includes=${includes}`,
-    );
-    mutate(response);
-  }, [search, sortBy, filters, includes]);
-
+  // Composant des ressources
   const Resources = () => {
+    // Destructure la requête
+    const { data } = resourcesRequest;
+
+    // Si la requête n'est pas terminé
     if (!data) {
       return (
         <Row style={{ margin: '20px 0' }} type="flex" justify="center">
@@ -100,24 +115,27 @@ const Home = ({ user, initialCategories }) => {
       );
     }
 
+    // Si une erreur est survenue ou que le résultat de la requête est vide
     if (data.status === 'error' || !data.data.resources) {
       return <Result status="error" title="Une erreur est survenue, veuillez réessayez" />;
     }
 
+    // Si il y a aucune ressource
     if (data.data.resources.length === 0) {
-      return <Result icon={<FrownOutlined />} title="Aucun résultat" />;
+      return <Result icon={<FrownOutlined />} title="Aucune ressource n'a été trouvée" />;
     }
 
+    // Affiche les ressources
     return (
-      <Row gutter={[12, 12]} type="flex">
-        {data.data.resources.map((item) => (
-          <Col xs={24} sm={12} md={8} lg={8} xl={6} xxl={4} key={item._id}>
-            <Card
-              record={item}
+      <Row gutter={[12, 12]}>
+        {data.data.resources.map((resource) => (
+          <Col xs={24} sm={12} md={8} lg={8} xl={6} xxl={4} key={resource._id}>
+            <ResourceCard
+              record={resource}
+              selectedCategories={filters.categories}
+              onCategoriesChange={setCategories}
+              searchQuery={filters.search}
               user={user}
-              handleFilter={handleCategoriesFilter}
-              filters={filters}
-              search={search}
             />
           </Col>
         ))}
@@ -125,47 +143,61 @@ const Home = ({ user, initialCategories }) => {
     );
   };
 
+  // Affiche le nombre de catégories séléctionnées
+  const SelectedCategories = () => {
+    // Si le tableau n'existe pas ou si il est vide
+    if (!filters.categories || filters.categories.length === 0) {
+      return null;
+    }
+
+    // Si il y a qu'une catégorie séléctionnée
+    if (filters.categories.length === 1) {
+      return (
+        <Row style={{ marginBottom: 10 }}>
+          <Tag closable onClose={resetCategories}>
+            1 catégorie séléctionnée
+          </Tag>
+        </Row>
+      );
+    }
+
+    // Si il y a plusieurs catégories séléctionées
+    return (
+      <Row style={{ marginBottom: 10 }}>
+        <Tag closable onClose={resetCategories}>
+          {/* eslint-disable-next-line */}
+          {filters.categories.length} catégories séléctionnées
+        </Tag>
+      </Row>
+    );
+  };
+
   return (
-    <Layout className={classnames('home', { layout__admin: user && user.isAdmin })} hasSider>
-      <Sidebar
-        collapsible={width < 1200}
-        collapsed={width < 1200 && collapsed}
-        width={sidebarWidth}
-        onCollapse={() => setCollapsed(!collapsed)}
-        isAdmin={user && user.isAdmin}
-        categories={categories.data.data.categories}
-        handleFilter={handleFilter}
-        handleCategoriesFilter={handleCategoriesFilter}
-        filters={filters}
-        handleIncludeChange={(event) => setIncludes(event.target.value)}
-        includes={includes}
-      />
-      <Layout.Content
-        style={{
-          marginLeft: width < 1200 ? 0 : sidebarWidth,
-        }}
-        id="content"
-      >
-        <Hero />
-        <Search
-          search={search}
-          onChange={handleSearch}
-          sort={sortBy}
-          onSort={handleSort}
-          categories={filters.categories}
-          onRemoveFilters={onRemoveFilters}
+    <div className="home-wrapper">
+      <Layout>
+        <Sidebar
+          categories={categories}
+          selectedCategories={filters.categories}
+          onCategoriesChange={setCategories}
+          selectedMode={filters.mode}
+          onModeChange={setMode}
         />
-        <Resources />
-      </Layout.Content>
-    </Layout>
+        <Content className="home-content">
+          <Hero />
+          <SearchBar selectedOption={filters.sortBy} onSearch={setSearch} onSortChange={setSort} />
+          <SelectedCategories />
+          <Resources />
+        </Content>
+      </Layout>
+    </div>
   );
 };
 
 Home.getInitialProps = async () => {
-  const initialCategories = await fetch('get', '/api/categories');
-  const initialResources = await fetch('get', '/api/resources?sort=newest');
+  // Récupère les catégories
+  const { data } = await fetch('get', '/api/categories');
 
-  return { initialCategories, initialResources };
+  return { categories: data.categories };
 };
 
 export default withAuth(Home);

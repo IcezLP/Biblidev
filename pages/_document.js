@@ -1,5 +1,6 @@
 import React from 'react';
 import Document, { Html, Head, Main, NextScript } from 'next/document';
+import { mediaStyles } from '../lib/media'
 
 class CustomDocument extends Document {
   render() {
@@ -37,6 +38,7 @@ class CustomDocument extends Document {
           <link rel="preconnect" href="https://res.cloudinary.com" />
           <link rel="dns-prefetch" href="https://res.cloudinary.com" />
           <link rel="stylesheet" href="/css/main.css" />
+          <style type="text/css" dangerouslySetInnerHTML={{__html: mediaStyles}} />
         </Head>
         <body>
           <Main />

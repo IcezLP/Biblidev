@@ -1,77 +1,104 @@
-import React from 'react';
-import { Layout, Menu, Icon, Radio } from 'antd';
+import React, { useState } from 'react';
+import { Drawer, Button, Layout, Menu, Affix } from 'antd';
+import { MenuOutlined } from '@ant-design/icons';
 import CustomScroll from 'react-custom-scroll';
-import { DollarOutlined } from '@ant-design/icons';
+import { MediaContextProvider, Media } from '../../../lib/media';
 
-export default ({
-  collapsible,
-  collapsed,
-  width,
-  onCollapse,
-  categories,
-  handleFilter,
-  handleCategoriesFilter,
-  filters,
-  handleIncludeChange,
-  includes,
-}) => (
-  <Layout.Sider
-    id="sidebar"
-    collapsible={collapsible}
-    collapsed={collapsed}
-    collapsedWidth={0}
-    onCollapse={onCollapse}
-    theme="light"
-    width={width}
-    zeroWidthTriggerStyle={{ border: '1px solid #f0f2f5' }}
-    style={{ transition: !collapsible && 'none' }}
-  >
-    <CustomScroll heightRelativeToParent="100%">
-      {/* <Menu mode="inline" theme="light" className="menu" selectedKeys={[filters.price]}>
-        <Menu.ItemGroup key="prices" title="Prix">
-          <Menu.Item key="gratuit" type="price" onClick={handleFilter}>
-            <DollarOutlined style={{ color: '#52c41a', fontSize: '19px' }} />
-            Gratuits
-          </Menu.Item>
-          <Menu.Item key="gratuit-et-payant" type="price" onClick={handleFilter}>
-            <DollarOutlined style={{ color: '#fa8c16', fontSize: '19px' }} />
-            Gratuits ou Payants
-          </Menu.Item>
-          <Menu.Item key="payant" type="price" onClick={handleFilter}>
-            <DollarOutlined style={{ color: '#f5222d', fontSize: '19px' }} />
-            Payants
-          </Menu.Item>
-        </Menu.ItemGroup>
-      </Menu> */}
-      <Menu mode="inline" theme="light" className="menu">
-        <Menu.ItemGroup title="Mode de tri des catégories">
-          <Radio.Group
-            style={{ paddingLeft: 24, paddingRight: 16 }}
-            onChange={handleIncludeChange}
-            value={includes}
-          >
-            <Radio value="in" style={{ whiteSpace: 'unset' }}>
-              Contient au moins 1 séléction
-            </Radio>
-            <Radio value="all" style={{ whiteSpace: 'unset' }}>
-              Contient toute la séléction
-            </Radio>
-          </Radio.Group>
-        </Menu.ItemGroup>
-      </Menu>
-      <Menu mode="inline" theme="light" className="menu" selectedKeys={filters.categories}>
-        <Menu.ItemGroup key="categories" title="Catégories">
-          {categories
-            .sort((a, b) =>
-              a.plural_name.toLowerCase().localeCompare(b.plural_name.toLowerCase(), 'fr'),
-            )
-            .map((category) => (
-              <Menu.Item key={category._id} type="categories" onClick={handleCategoriesFilter}>
-                {category.plural_name}
-              </Menu.Item>
-            ))}
-        </Menu.ItemGroup>
-      </Menu>
-    </CustomScroll>
-  </Layout.Sider>
+const { Sider } = Layout;
+const { ItemGroup, Item } = Menu;
+const { memo } = React;
+
+// Menu de séléction du mode de tri des catégories
+const CategoriesMode = ({ selectedMode, onModeChange }) => (
+  <Menu mode="inline" theme="light" selectedKeys={[selectedMode]}>
+    <ItemGroup title="Mode de tri des catégories">
+      <Item key="in" onClick={onModeChange}>
+        Contient au moins 1 séléction
+      </Item>
+      <Item key="all" onClick={onModeChange}>
+        Contient toute la séléction
+      </Item>
+    </ItemGroup>
+  </Menu>
 );
+
+// Menu de séléction des catégories
+const Categories = ({ categories, selectedCategories, onCategoriesChange }) => (
+  <Menu mode="inline" theme="light" multiple selectedKeys={selectedCategories}>
+    <ItemGroup title="Catégories">
+      {categories.map((category) => (
+        <Item key={category._id} onClick={() => onCategoriesChange(category._id)}>
+          {category.plural_name}
+        </Item>
+      ))}
+    </ItemGroup>
+  </Menu>
+);
+
+const Sidebar = ({
+  categories,
+  selectedCategories,
+  onCategoriesChange,
+  selectedMode,
+  onModeChange,
+}) => {
+  // Visibilité du menu mobile & tablette
+  const [visible, setVisible] = useState(false);
+  // Largeur des menus
+  const menuWidth = 230;
+
+  CategoriesMode.defaultProps = {
+    selectedMode,
+    onModeChange,
+  };
+
+  Categories.defaultProps = {
+    // Tri les catégories par ordre alphabétique (ignore les accents)
+    categories: categories.sort((a, b) =>
+      a.plural_name.toLowerCase().localeCompare(b.plural_name.toLowerCase(), 'fr'),
+    ),
+    selectedCategories,
+    onCategoriesChange,
+  };
+
+  return (
+    <MediaContextProvider>
+      {/* Sidebar desktop */}
+      <Media greaterThanOrEqual="lg">
+        <Affix offsetTop={0}>
+          <Sider className="home-sider" width={menuWidth} theme="light">
+            <CategoriesMode />
+            <Categories />
+          </Sider>
+        </Affix>
+      </Media>
+      {/* Sidebar mobile & tablette */}
+      <Media lessThan="lg">
+        {/* Si la sidebar mobile & tablette est visible on cache le bouton */}
+        {!visible && (
+          <Button
+            className="drawer-handle"
+            onClick={() => setVisible(true)}
+            icon={<MenuOutlined />}
+          />
+        )}
+        <Drawer
+          placement="left"
+          className="home-drawer"
+          visible={visible}
+          closable
+          width={menuWidth}
+          onClose={() => setVisible(false)}
+          bodyStyle={{ padding: 0 }}
+        >
+          <CustomScroll heightRelativeToParent="100%">
+            <CategoriesMode />
+            <Categories />
+          </CustomScroll>
+        </Drawer>
+      </Media>
+    </MediaContextProvider>
+  );
+};
+
+export default memo(Sidebar);

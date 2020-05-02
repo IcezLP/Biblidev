@@ -1,16 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { Card, Avatar, Tag, Typography, Rate, Button } from 'antd';
-import { HeartOutlined, HeartFilled } from '@ant-design/icons';
-import classnames from 'classnames';
+import { HeartFilled, HeartOutlined } from '@ant-design/icons';
 import Highlighter from 'react-highlight-words';
-import fetch from '../../../lib/fetch';
+import classnames from 'classnames';
 import { notify } from '../../../lib/notification';
+import fetch from '../../../lib/fetch';
 
-export default ({ record, user, handleFilter, filters, search }) => {
+const { memo } = React;
+const { Meta } = Card;
+const { CheckableTag } = Tag;
+const { Text } = Typography;
+
+const ResourceCard = ({ record, selectedCategories, onCategoriesChange, searchQuery, user }) => {
   const [resource, setResource] = useState(record);
   const [favorite, setFavorite] = useState(user && user.favorites.includes(resource._id));
   const [average, setAverage] = useState();
-
   const site_url = process.env.SITE_URL.split('://').pop();
 
   useEffect(() => {
@@ -67,20 +71,25 @@ export default ({ record, user, handleFilter, filters, search }) => {
       const index = resource.rates.map((item) => item.user).indexOf(user._id);
 
       return (
-        <Typography.Text disabled style={{ fontSize: 12 }}>
+        <Text disabled style={{ fontSize: 12 }}>
           {/* eslint-disable-next-line */}
           Vous avez noté {resource.rates[index].rate}/5
-        </Typography.Text>
+        </Text>
       );
     }
-    return null;
+
+    return (
+      <Text disabled style={{ fontSize: 12 }}>
+        Vous n'avez pas noté cette ressource
+      </Text>
+    );
   };
 
   return (
-    <Card className="resource" hoverable>
+    <Card hoverable className="resource">
       <a href={`${resource.link}?ref=${site_url}`} target="_blank" rel="noopener noreferrer">
-        <Card.Meta
-          className="resource__meta"
+        <Meta
+          className="resource-meta"
           avatar={
             resource.logo ? (
               <Avatar
@@ -100,10 +109,10 @@ export default ({ record, user, handleFilter, filters, search }) => {
           }
           title={
             <>
-              {search ? (
+              {searchQuery ? (
                 <Highlighter
                   highlightStyle={{ backgroundColor: '#ffc069', padding: 0 }}
-                  searchWords={[search]}
+                  searchWords={[searchQuery]}
                   autoEscape
                   textToHighlight={resource.name.toString()}
                 />
@@ -111,21 +120,21 @@ export default ({ record, user, handleFilter, filters, search }) => {
                 resource.name
               )}
               <br />
-              <Typography.Text type="secondary" className="resource__author">
+              <Text type="secondary" className="resource-author">
                 Posté par&nbsp;
                 {resource.author ? (
-                  <span className="resource__author__username">{resource.author.username}</span>
+                  <span className="author-username">{resource.author.username}</span>
                 ) : (
                   'Anonyme'
                 )}
-              </Typography.Text>
+              </Text>
             </>
           }
           description={
-            search ? (
+            searchQuery ? (
               <Highlighter
                 highlightStyle={{ backgroundColor: '#ffc069', padding: 0 }}
-                searchWords={[search]}
+                searchWords={[searchQuery]}
                 autoEscape
                 textToHighlight={resource.description.toString()}
               />
@@ -135,19 +144,19 @@ export default ({ record, user, handleFilter, filters, search }) => {
           }
         />
       </a>
-      <div className="resource_categories">
+      <div className="resource-categories">
         {resource.categories.map(
           (category) =>
             !(typeof category === 'string') && (
-              <Tag.CheckableTag
+              <CheckableTag
                 key={category._id}
-                className="resource__category"
+                className="resource-category"
                 style={{ cursor: 'pointer' }}
-                checked={filters.categories.includes(category._id)}
-                onChange={() => handleFilter({ key: category._id })}
+                checked={selectedCategories.includes(category._id)}
+                onChange={() => onCategoriesChange(category._id)}
               >
                 {category.name}
-              </Tag.CheckableTag>
+              </CheckableTag>
             ),
         )}
       </div>
@@ -170,7 +179,7 @@ export default ({ record, user, handleFilter, filters, search }) => {
       </div>
       <HasRated />
       <Button
-        className={classnames('resource__favorite', { favorite })}
+        className={classnames('resource-favorite', { favorite })}
         shape="circle-outline"
         type="link"
         onClick={handleFavorite}
@@ -180,3 +189,5 @@ export default ({ record, user, handleFilter, filters, search }) => {
     </Card>
   );
 };
+
+export default memo(ResourceCard);

@@ -29,20 +29,20 @@ router.get('/', async (req, res) => {
   const price = req.query.price ? req.query.price : null;
   const categories = req.query.categories ? req.query.categories.split(';') : null;
   let sort;
-  let includes;
+  let mode;
 
-  switch (req.query.includes) {
+  switch (req.query.mode) {
     case 'in':
-      includes = '$in';
+      mode = '$in';
       break;
     case 'all':
-      includes = '$all';
+      mode = '$all';
       break;
     default:
-      includes = '$in';
+      mode = '$in';
   }
 
-  switch (req.query.sort) {
+  switch (req.query.sortBy) {
     case 'newest':
       sort = { createdAt: -1 };
       break;
@@ -63,7 +63,7 @@ router.get('/', async (req, res) => {
     ? {
         state: 'Validée',
         ...(price && { price }),
-        ...(categories && { categories: { [includes]: categories } }),
+        ...(categories && { categories: { [mode]: categories } }),
         $or: [
           { name: { $regex: req.query.search, $options: 'i' } },
           { description: { $regex: req.query.search, $options: 'i' } },
@@ -72,7 +72,7 @@ router.get('/', async (req, res) => {
     : {
         state: 'Validée',
         ...(price && { price }),
-        ...(categories && { categories: { [includes]: categories } }),
+        ...(categories && { categories: { [mode]: categories } }),
       };
 
   try {

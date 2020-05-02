@@ -2,10 +2,12 @@ import React from 'react';
 import { PageHeader, Typography, Button } from 'antd';
 import Link from 'next/link';
 
-export default () => (
+const { memo } = React;
+const { Paragraph } = Typography;
+
+const Hero = () => (
   <PageHeader
     title="Proposer une ressource"
-    style={{ backgroundColor: 'white', marginBottom: 20 }}
     extra={[
       <Button key="submit" type="primary">
         <Link href="/submit" as="/proposition">
@@ -14,9 +16,11 @@ export default () => (
       </Button>,
     ]}
   >
-    <Typography.Paragraph>
+    <Paragraph>
       Ajoutez en quelques clics une ressource qui vous tient à cœur et partagez la à la communauté !
       Elle sera soumise et validée par nos équipes très rapidement !
-    </Typography.Paragraph>
+    </Paragraph>
   </PageHeader>
 );
+
+export default memo(Hero);
