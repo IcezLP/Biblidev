@@ -77,6 +77,8 @@ const ResourceCard = ({ record, selectedCategories, onCategoriesChange, searchQu
         </Text>
       );
     }
+
+    return null;
   };
 
   return (
