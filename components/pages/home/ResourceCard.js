@@ -77,12 +77,6 @@ const ResourceCard = ({ record, selectedCategories, onCategoriesChange, searchQu
         </Text>
       );
     }
-
-    return (
-      <Text disabled style={{ fontSize: 12 }}>
-        Vous n'avez pas noté cette ressource
-      </Text>
-    );
   };
 
   return (
