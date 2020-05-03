@@ -18,10 +18,6 @@ module.exports = async (req, res, next) => {
         return res.sendStatus(403);
       }
 
-      if (req.params.userId && decoded._id !== req.params.userId) {
-        return res.sendStatus(403);
-      }
-
       // Cherche l'utilisateur
       const user = await User.findById(decoded._id);
 
