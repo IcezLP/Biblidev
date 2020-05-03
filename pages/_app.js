@@ -9,6 +9,7 @@ import { SWRConfig } from 'swr';
 import SEO from '../next-seo.config';
 import Header from '../components/layout/Header';
 import { initGA, logPageView } from '../services/google-analytics';
+import Footer from '../components/layout/Footer';
 
 // NProgress config
 NProgress.configure({ showSpinner: false });
@@ -40,6 +41,7 @@ class CustomApp extends App {
           <DefaultSeo {...SEO} />
           <Header {...pageProps} />
           <Component {...pageProps} />
+          <Footer />
           <BackTop style={{ right: 50 }} />
         </SWRConfig>
       </Layout>
