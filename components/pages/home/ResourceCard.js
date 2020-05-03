@@ -3,6 +3,7 @@ import { Card, Avatar, Tag, Typography, Rate, Button } from 'antd';
 import { HeartFilled, HeartOutlined } from '@ant-design/icons';
 import Highlighter from 'react-highlight-words';
 import classnames from 'classnames';
+import PropTypes from 'prop-types';
 import { notify } from '../../../lib/notification';
 import fetch from '../../../lib/fetch';
 
@@ -184,6 +185,31 @@ const ResourceCard = ({ record, selectedCategories, onCategoriesChange, searchQu
       />
     </Card>
   );
+};
+
+ResourceCard.propTypes = {
+  record: PropTypes.shape({
+    logo: PropTypes.string,
+    link: PropTypes.string.isRequired,
+    rates: PropTypes.array,
+    name: PropTypes.string.isRequired,
+    description: PropTypes.string.isRequired,
+    author: PropTypes.shape({
+      username: PropTypes.string,
+    }),
+  }).isRequired,
+  selectedCategories: PropTypes.arrayOf(PropTypes.object).isRequired,
+  onCategoriesChange: PropTypes.func.isRequired,
+  searchQuery: PropTypes.string.isRequired,
+  user: PropTypes.shape({
+    _id: PropTypes.string,
+    favorites: PropTypes.array,
+    username: PropTypes.string,
+  }),
+};
+
+ResourceCard.defaultProps = {
+  user: null,
 };
 
 export default memo(ResourceCard);
