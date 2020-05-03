@@ -24,16 +24,18 @@
     .resource {
       height: 100%;
       width: 100%;
-      display: -webkit-box;
       display: flex;
 
       .ant-card-body {
         height: 100%;
-        display: -webkit-box;
+        max-width: 100%;
         display: flex;
-        -webkit-box-orient: vertical;
-        -webkit-box-direction: normal;
         flex-direction: column;
+
+        .ant-card-meta-title {
+          white-space: unset;
+          text-overflow: unset;
+        }
       }
 
       .resource-meta {
@@ -49,7 +51,6 @@
 
       .resource-categories {
         margin-top: auto;
-        display: -webkit-box;
         display: flex;
         flex-wrap: wrap-reverse;
 
