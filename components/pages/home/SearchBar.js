@@ -54,11 +54,7 @@ const SearchBar = ({ selectedOption, onSearch, onSortChange }) => (
 
 // Validation des props
 SearchBar.propTypes = {
-  selectedOption: PropTypes.arrayOf({
-    label: PropTypes.string.isRequired,
-    value: PropTypes.string.isRequired,
-    disabled: PropTypes.bool,
-  }).isRequired,
+  selectedOption: PropTypes.string.isRequired,
   onSearch: PropTypes.func.isRequired,
   onSortChange: PropTypes.func.isRequired,
 };
