@@ -1,7 +1,7 @@
 {
   "short_name": "Biblidev",
   "name": "Biblidev",
-  "description": "Une collection de ressources prêtes à être utilisées pour du développement web, web design",
+  "description": "Inspiration, APIs, Outils, SEO, Blogs, Veille, Emplois... Des centaines de ressources prêtes à être utilisées dans le développement web et le web design",
   "start_url": "/",
   "display": "standalone",
   "theme_color": "#17499f",
