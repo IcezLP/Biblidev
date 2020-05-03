@@ -2,6 +2,7 @@ const router = require('express').Router();
 const mongoose = require('mongoose');
 const User = require('../database/models/User');
 const Resource = require('../database/models/Resource');
+const withUser = require('./middlewares/withUser');
 
 /**
  * Récupère les information d'un utilisateur via son id pour maintenir la connexion
@@ -44,7 +45,7 @@ router.get('/:id', async (req, res) => {
  * @route PUT /api/users/favorite/:userId/:resourceId
  * @public
  */
-router.put('/favorite/:userId/:resourceId', async (req, res) => {
+router.put('/favorite/:userId/:resourceId', withUser, async (req, res) => {
   try {
     const user = await User.findById(req.params.userId);
 

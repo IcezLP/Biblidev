@@ -6,6 +6,7 @@ const mongoose = require('mongoose');
 const Resource = require('../database/models/Resource');
 const User = require('../database/models/User');
 const submitFieldsValidation = require('../validation/submit');
+const withUser = require('./middlewares/withUser');
 
 const { hostname: cloud_name, username: api_key, password: api_secret } = new URL(
   process.env.CLOUDINARY_URL,
@@ -184,7 +185,7 @@ router.post('/submit', async (req, res) => {
  * @route PUT /api/resources/rate/:userId/:resourceId
  * @private
  */
-router.put('/rate/:userId/:resourceId', async (req, res) => {
+router.put('/rate/:userId/:resourceId', withUser, async (req, res) => {
   const { userId, resourceId } = req.params;
   const { value } = req.body;
 
