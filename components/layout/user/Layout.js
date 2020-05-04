@@ -1,7 +1,7 @@
 import React from 'react';
-import { Tabs } from 'antd';
+import { Row, Tabs, Col } from 'antd';
 import { useRouter } from 'next/router';
-import Header from './Header';
+import Profile from './Profile';
 
 export default (props) => {
   const router = useRouter();
@@ -19,13 +19,17 @@ export default (props) => {
   };
 
   return (
-    <div style={{ margin: 20 }}>
-      <Header {...props} />
-      <Tabs activeKey={router.route.split('/')[2]} onTabClick={handleRouteChange}>
-        {routes.map(({ name, key }) => (
-          <Tabs.TabPane tab={name} key={key} />
-        ))}
-      </Tabs>
+    <div className="user-wrapper">
+      <Row>
+        <Profile {...props} />
+        <Col xs={24} sm={17} lg={20} className="user-content">
+          <Tabs activeKey={router.route.split('/')[2]} onTabClick={handleRouteChange}>
+            {routes.map(({ name, key }) => (
+              <Tabs.TabPane tab={name} key={key} />
+            ))}
+          </Tabs>
+        </Col>
+      </Row>
     </div>
   );
 };
