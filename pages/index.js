@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Layout, Row, Col, Spin, Result, Tag, Skeleton } from 'antd';
 import { LoadingOutlined, FrownOutlined } from '@ant-design/icons';
 import useSWR from 'swr';
-import LazyLoad from 'react-lazyload';
 import withAuth from '../middlewares/withAuth';
 import fetch from '../lib/fetch';
 import Hero from '../components/pages/home/Hero';
@@ -131,20 +130,13 @@ const Home = ({ user, categories }) => {
       <Row gutter={[12, 12]}>
         {data.data.resources.map((resource) => (
           <Col xs={24} sm={12} md={8} lg={8} xl={6} xxl={4} key={resource._id}>
-            <LazyLoad
-              height="100%"
-              once
-              unmountIfInvisible
-              placeholder={<Skeleton avatar active title paragraph />}
-            >
-              <ResourceCard
-                record={resource}
-                selectedCategories={filters.categories}
-                onCategoriesChange={setCategories}
-                searchQuery={filters.search}
-                user={user}
-              />
-            </LazyLoad>
+            <ResourceCard
+              record={resource}
+              selectedCategories={filters.categories}
+              onCategoriesChange={setCategories}
+              searchQuery={filters.search}
+              user={user}
+            />
           </Col>
         ))}
       </Row>
