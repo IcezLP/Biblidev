@@ -5,10 +5,10 @@
   "homepage": "https://biblidev.fr",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/IcezLP/biblidev.git"
+    "url": "git+https://github.com/JoachimBrasier/biblidev.git"
   },
   "bugs": {
-    "url": "https://github.com/IcezLP/biblidev/issues"
+    "url": "https://github.com/JoachimBrasier/biblidev/issues"
   },
   "scripts": {
     "dev": "concurrently \"nodemon server.js\" \"npm run sass:watch\"",
