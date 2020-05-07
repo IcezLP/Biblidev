@@ -13,23 +13,28 @@ import { initGA, logPageView } from '../services/google-analytics';
 import Footer from '../components/layout/Footer';
 import Unsupported from '../components/Unsupported';
 
-// NProgress config
+// Configuration de NProgress
 NProgress.configure({ showSpinner: false });
 
-// Router events
+// Évènements de changement de routes (url)
 Router.onRouteChangeStart = () => NProgress.start();
 Router.onRouteChangeError = () => NProgress.done();
 Router.onRouteChangeComplete = () => {
   NProgress.done();
+  // Enregistre la page visitée
   logPageView();
 };
 
 class CustomApp extends App {
   componentDidMount() {
+    // Si Google Analytics n'est pas initialisé
     if (!window.GA_INITIALIZED) {
+      // Initialise Google Analytics
       initGA();
       window.GA_INITIALIZED = true;
     }
+
+    // Enregistre la page visitée
     logPageView();
   }
 
