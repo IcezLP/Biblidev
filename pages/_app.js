@@ -44,8 +44,11 @@ class CustomApp extends App {
 
     // Si le navigateur de l'utilisateur n'est pas supporté
     if (isIE) {
+      console.log('Explorer detected');
       return <Unsupported />;
     }
+
+    console.log('Browser OK');
 
     return (
       <Layout id="layout" className={classnames({ layout__admin: user && user.isAdmin })}>
