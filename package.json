@@ -49,6 +49,7 @@
     "prop-types": "^15.7.2",
     "react": "^16.13.1",
     "react-custom-scroll": "^4.2.0",
+    "react-device-detect": "^1.12.1",
     "react-dom": "^16.13.1",
     "react-ga": "^2.7.0",
     "react-highlight-words": "^0.16.0",

@@ -6,10 +6,12 @@ import { DefaultSeo } from 'next-seo';
 import { Layout, BackTop } from 'antd';
 import classnames from 'classnames';
 import { SWRConfig } from 'swr';
+import { isIE } from 'react-device-detect';
 import SEO from '../next-seo.config';
 import Header from '../components/layout/Header';
 import { initGA, logPageView } from '../services/google-analytics';
 import Footer from '../components/layout/Footer';
+import Unsupported from '../components/Unsupported';
 
 // NProgress config
 NProgress.configure({ showSpinner: false });
@@ -34,6 +36,11 @@ class CustomApp extends App {
   render() {
     const { Component, pageProps } = this.props;
     const { user } = pageProps;
+
+    // Si le navigateur de l'utilisateur n'est pas supporté
+    if (isIE) {
+      return <Unsupported />;
+    }
 
     return (
       <Layout id="layout" className={classnames({ layout__admin: user && user.isAdmin })}>
