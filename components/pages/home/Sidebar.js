@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Drawer, Button, Layout, Menu, Affix } from 'antd';
-import { MenuOutlined } from '@ant-design/icons';
+import { FilterOutlined } from '@ant-design/icons';
 import CustomScroll from 'react-custom-scroll';
 import { MediaContextProvider, Media } from '../../../lib/media';
 
@@ -79,7 +79,7 @@ const Sidebar = ({
           <Button
             className="drawer-handle"
             onClick={() => setVisible(true)}
-            icon={<MenuOutlined />}
+            icon={<FilterOutlined />}
           />
         )}
         <Drawer
