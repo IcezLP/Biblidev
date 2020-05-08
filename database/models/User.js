@@ -35,7 +35,6 @@ const UserSchema = new Schema(
       {
         type: Schema.Types.ObjectId,
         ref: 'resources',
-        unique: true,
       },
     ],
     newsletter: {
@@ -49,13 +48,6 @@ const UserSchema = new Schema(
     isAdmin: {
       type: Boolean,
       default: false,
-    },
-    suspended: {
-      amount: {
-        type: Number,
-        default: 0,
-      },
-      until: Date,
     },
   },
   { timestamps: true },
