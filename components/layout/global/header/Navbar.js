@@ -16,7 +16,7 @@ const Navbar = ({ user }) => {
 
   // Lien de connexion
   const LoginLink = (props) => (
-    <Item key="login" {...props}>
+    <Item key="login" {...props} className="navbar-link">
       <Link href="/auth/login" as="/connexion">
         <a>Connexion</a>
       </Link>
@@ -29,13 +29,24 @@ const Navbar = ({ user }) => {
 
     Item.defaultProps = { ...props };
 
-    return routes.map((route) => (
-      <Item key={route.key}>
-        <Link href={route.href} as={route.as}>
-          <a>{route.label}</a>
-        </Link>
-      </Item>
-    ));
+    return (
+      <>
+        {routes.map((route) => (
+          <Item key={route.key} className="navbar-link">
+            <Link href={route.href} as={route.as}>
+              <a>{route.label}</a>
+            </Link>
+          </Item>
+        ))}
+        {user && user.isAdmin ? (
+          <Item key="admin" className="navbar-link">
+            <Link href="/admin">
+              <a>Administration</a>
+            </Link>
+          </Item>
+        ) : null}
+      </>
+    );
   };
 
   return (
@@ -88,15 +99,7 @@ const Navbar = ({ user }) => {
                 <Menu mode="vertical" selectable={false}>
                   <GlobalLinks />
                   <Divider style={{ margin: 0 }} />
-                  {user ? (
-                    <AuthenticatedMenu />
-                  ) : (
-                    <Item key="login">
-                      <Link href="/auth/login" as="/connexion">
-                        <a>Connexion</a>
-                      </Link>
-                    </Item>
-                  )}
+                  {user ? <AuthenticatedMenu /> : <LoginLink />}
                 </Menu>
               }
             >

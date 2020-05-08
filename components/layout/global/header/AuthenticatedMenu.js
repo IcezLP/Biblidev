@@ -27,17 +27,17 @@ const AuthenticatedMenu = (props) => {
   return (
     <>
       {routes.map((route) => (
-        <Item key={route.key}>
+        <Item key={route.key} className="navbar-link">
           <Link href={route.href} as={route.as}>
             <a>{route.label}</a>
           </Link>
         </Item>
       ))}
-      <Menu.Item key="logout" {...props}>
+      <Item key="logout" {...props} className="navbar-link">
         <a href="#" onClick={removeAuthToken}>
           Déconnexion
         </a>
-      </Menu.Item>
+      </Item>
     </>
   );
 };

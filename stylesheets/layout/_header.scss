@@ -1,7 +1,7 @@
 .navbar {
   background-color: #fff !important;
   -webkit-box-shadow: 0 2px 8px #f0f1f2;
-          box-shadow: 0 2px 8px #f0f1f2;
+  box-shadow: 0 2px 8px #f0f1f2;
   z-index: 50;
   height: 64px;
 
@@ -15,8 +15,8 @@
       display: -ms-flexbox;
       display: flex;
       -webkit-box-align: center;
-          -ms-flex-align: center;
-              align-items: center;
+      -ms-flex-align: center;
+      align-items: center;
       cursor: pointer;
       height: 100%;
 
@@ -30,6 +30,18 @@
   .navbar-links {
     float: right;
 
+    .navbar-link {
+      border: none;
+
+      &:hover {
+        border: none;
+      }
+
+      &:active {
+        background-color: unset;
+      }
+    }
+
     .user-dropdown {
       cursor: pointer;
       -webkit-transition: color 0.3s;
@@ -40,8 +52,6 @@
         color: $blue;
       }
     }
-
-    
   }
 }
 
