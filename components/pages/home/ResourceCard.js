@@ -162,7 +162,6 @@ const ResourceCard = ({ record, selectedCategories, onCategoriesChange, searchQu
           allowClear={false}
           allowHalf={false}
           onChange={handleRate}
-          disabled={!user}
           value={average}
           style={{
             color:
