@@ -1,76 +1,52 @@
-#header {
-  background-color: #fff;
-  box-shadow: 0 2px 8px #f0f1f2;
+.navbar {
+  background-color: #fff !important;
+  -webkit-box-shadow: 0 2px 8px #f0f1f2;
+          box-shadow: 0 2px 8px #f0f1f2;
   z-index: 50;
-  // position: fixed;
-  width: 100%;
-  top: 0;
-  padding: 0;
-  height: auto;
+  height: 64px;
 
-  .navbar__admin-menu {
-    height: 34px;
-    width: 100%;
-    left: 0;
-    top: 0;
-    display: -webkit-box;
-    display: flex;
-    -webkit-box-align: center;
-    align-items: center;
-    -webkit-box-pack: justify;
-    justify-content: space-between;
-    background-color: #384859;
-    padding: 0 50px;
-    color: #fff;
+  .navbar-logo {
+    width: 100px;
+    height: 100%;
+    float: left;
 
     a {
-      color: #fff;
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-align: center;
+          -ms-flex-align: center;
+              align-items: center;
+      cursor: pointer;
+      height: 100%;
+
+      svg {
+        width: 100%;
+        height: 100%;
+      }
     }
   }
 
-  .navbar {
-    padding: 0 50px;
-    height: 64px;
+  .navbar-links {
+    float: right;
 
-    .navbar__logo {
-      width: 100px;
-      height: 100%;
-      float: left;
+    .user-dropdown {
+      cursor: pointer;
+      -webkit-transition: color 0.3s;
+      -o-transition: color 0.3s;
+      transition: color 0.3s;
 
-      a {
-        display: -webkit-box;
-        display: flex;
-        -webkit-box-align: center;
-        align-items: center;
-        cursor: pointer;
-        height: 100%;
-
-        svg {
-          width: 100%;
-          height: 100%;
-        }
+      &:hover {
+        color: $blue;
       }
     }
 
-    .navbar__links {
-      border: none;
-      background-color: #fff;
-      line-height: 64px;
-      float: right;
+    
+  }
+}
 
-      .navbar__link {
-        border-bottom: none;
-      }
-
-      .navbar__dropdown {
-        cursor: pointer;
-        -webkit-transition: color 0.3s;
-        transition: color 0.3s;
-
-        &:hover {
-          color: $blue;
-        }
-      }
-    }
+.user-popover {
+  .ant-popover-inner-content {
+    padding: 0 !important;
   }
 }

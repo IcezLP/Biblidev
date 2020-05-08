@@ -8,9 +8,9 @@ import classnames from 'classnames';
 import { SWRConfig } from 'swr';
 import { isIE } from 'react-device-detect';
 import SEO from '../next-seo.config';
-import Header from '../components/layout/Header';
+import Navbar from '../components/layout/global/header/Navbar';
 import { initGA, logPageView } from '../services/google-analytics';
-import Footer from '../components/layout/Footer';
+import Footer from '../components/layout/global/Footer';
 import Unsupported from '../components/Unsupported';
 
 // Configuration de NProgress
@@ -51,7 +51,7 @@ class CustomApp extends App {
       <Layout id="layout" className={classnames({ layout__admin: user && user.isAdmin })}>
         <SWRConfig value={{ refreshInterval: 3000 }}>
           <DefaultSeo {...SEO} />
-          <Header {...pageProps} />
+          <Navbar {...pageProps} />
           <Component {...pageProps} />
           <Footer />
           <BackTop style={{ right: 50 }} />
