@@ -1,26 +1,31 @@
-.admin {
-  .admin__sidebar {
-    height: calc(100vh - 98px);
-    border-right: 1px solid #f0f2f5;
-    z-index: 10;
-    position: fixed;
-    left: 0;
-    top: 98px;
-    max-height: 100vh;
+.admin-wrapper {
+  .admin-sider-wrapper {
+    background-color: #fff;
+    border-right: 1px solid #f0f0f0;
 
-    .menu {
-      border-right: none;
-      max-width: 100%;
-    }
+    .admin-sider {
+      overflow: hidden;
+      border: none;
+      max-height: 100vh;
 
-    .ant-layout-sider-trigger {
-      background-color: #f0f2f5;
+      &:hover {
+        overflow: auto;
+      }
     }
   }
 
-  .admin__content {
-    background-color: #fff;
+  .drawer-handle {
+    position: fixed;
+    top: 110px;
+    left: 0;
+    z-index: 50;
+  }
+
+  .admin-drawer {}
+
+  .admin-content {
     padding: 10px;
-    overflow: hidden;
+    background-color: #fff;
+    min-height: calc(100vh - 134px);
   }
 }

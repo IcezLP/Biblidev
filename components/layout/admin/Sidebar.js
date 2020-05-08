@@ -1,168 +1,210 @@
-import React from 'react';
-import { Layout, Menu, Badge } from 'antd';
+import React, { useState } from 'react';
+import { Layout, Menu, Affix, Drawer, Button } from 'antd';
 import {
+  MenuOutlined,
+  HomeOutlined,
+  PlusOutlined,
+  AppstoreOutlined,
   TeamOutlined,
   TagOutlined,
-  ExceptionOutlined,
-  MailOutlined,
-  HomeOutlined,
-  AppstoreOutlined,
-  ClockCircleOutlined,
-  ExclamationCircleOutlined,
-  PlusOutlined,
-  ImportOutlined,
   ControlOutlined,
-  LoadingOutlined,
   LayoutOutlined,
+  MailOutlined,
+  ExceptionOutlined,
+  ImportOutlined,
+  ClockCircleOutlined,
 } from '@ant-design/icons';
-import Link from 'next/link';
-import useSWR from 'swr';
-import { useRouter } from 'next/router';
 import CustomScroll from 'react-custom-scroll';
-import fetch from '../../../lib/fetch';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import { MediaContextProvider, Media } from '../../../lib/media';
 
-export default ({ collapsed, onCollapse }) => {
+const { memo } = React;
+const { Sider } = Layout;
+const { SubMenu, Item } = Menu;
+
+const routes = [
+  {
+    key: 'admin',
+    href: '/admin',
+    as: null,
+    label: 'Tableau de bord',
+    icon: <HomeOutlined />,
+    disabled: false,
+  },
+  {
+    key: 'users',
+    href: '/admin/users',
+    as: '/admin/utilisateurs',
+    label: 'Utilisateurs',
+    icon: <TeamOutlined />,
+    disabled: true,
+  },
+  {
+    key: 'categories',
+    href: '/admin/categories',
+    as: null,
+    label: 'Catégories',
+    icon: <TagOutlined />,
+    disabled: false,
+  },
+  {
+    key: 'resources',
+    type: 'sub',
+    label: 'Ressources',
+    icon: <AppstoreOutlined />,
+    disabled: false,
+    routes: [
+      {
+        key: 'resources',
+        href: '/admin/resources',
+        as: '/admin/ressources',
+        label: 'Gérer',
+        icon: <ControlOutlined />,
+        disabled: false,
+      },
+      {
+        key: 'resources/add',
+        href: '/admin/resources/add',
+        as: '/admin/ressources/ajout',
+        label: 'Ajouter',
+        icon: <PlusOutlined />,
+        disabled: false,
+      },
+      {
+        key: 'resources/import',
+        href: '/admin/resources/import',
+        as: '/admin/ressources/importation',
+        label: 'Importer',
+        icon: <ImportOutlined />,
+        disabled: false,
+      },
+      {
+        key: 'resources/awaiting',
+        href: '/admin/resources/awaiting',
+        as: '/admin/ressources/validation',
+        label: 'À valider',
+        icon: <ClockCircleOutlined />,
+        disabled: false,
+      },
+    ],
+  },
+  {
+    key: 'templates',
+    href: '/admin/templates',
+    as: null,
+    label: "Templates d'email",
+    icon: <LayoutOutlined />,
+    disabled: true,
+  },
+  {
+    key: 'newsletter',
+    href: '/admin/newsletter',
+    as: null,
+    label: 'Newsletter',
+    icon: <MailOutlined />,
+    disabled: true,
+  },
+  {
+    key: 'logs',
+    href: '/admin/logs',
+    as: null,
+    label: 'Logs',
+    icon: <ExceptionOutlined />,
+    disabled: true,
+  },
+];
+
+const Links = ({ defaultOpenKeys, defaultSelectedKey }) => (
+  <Menu
+    theme="light"
+    mode="inline"
+    selectable={false}
+    style={{ borderColor: 'transparent' }}
+    defaultOpenKeys={[defaultOpenKeys]}
+    defaultSelectedKeys={[defaultSelectedKey]}
+  >
+    {routes.map((route) => {
+      // Si l'élément est un sous-menu
+      if (route.type === 'sub') {
+        return (
+          <SubMenu key={route.key} title={route.label} icon={route.icon}>
+            {route.routes.map(({ key, href, as, label, icon, disabled }) => (
+              <Item key={key} disabled={disabled} style={{ paddingLeft: 48 }}>
+                <Link href={href} as={as}>
+                  <a>
+                    {icon || null}
+                    <span>{label}</span>
+                  </a>
+                </Link>
+              </Item>
+            ))}
+          </SubMenu>
+        );
+      }
+
+      // Affiche l'élément normalement
+      return (
+        <Item key={route.key} disabled={route.disabled} style={{ paddingLeft: 24 }}>
+          <Link href={route.href} as={route.as}>
+            <a>
+              {route.icon ? route.icon : null}
+              <span>{route.label}</span>
+            </a>
+          </Link>
+        </Item>
+      );
+    })}
+  </Menu>
+);
+
+const Sidebar = () => {
   const router = useRouter();
-  const { data } = useSWR('/api/admin/resources?state=awaiting', (url) => fetch('get', url));
-
-  const awaitingResources = () => {
-    if (!data) {
-      return <LoadingOutlined style={{ color: '#f5222d', paddingLeft: '15px' }} />;
-    }
-
-    if (data.status === 'error') {
-      return <ExclamationCircleOutlined style={{ color: '#f5222d' }} />;
-    }
-
-    return data.data.resources.length;
-  };
+  // Visibilité du menu mobile & tablette
+  const [visible, setVisible] = useState(false);
+  // Largeur des menus
+  const menuWidth = 230;
+  // Sous-menu actif
+  const openedKey = router.route.split('/')[2];
+  // Page active
+  const selectedKey = router.route === '/admin' ? 'admin' : router.route.split('/admin/').pop();
 
   return (
-    <Layout.Sider
-      theme="light"
-      // collapsible
-      // collapsed={collapsed}
-      // onCollapse={onCollapse}
-      className="admin__sidebar"
-    >
-      <CustomScroll heightRelativeToParent="100%">
-        <Menu
-          theme="light"
-          mode="inline"
-          className="menu"
-          selectable={false}
-          defaultOpenKeys={[router.route.split('/')[2]]}
-          defaultSelectedKeys={[router.route.split('/admin/').pop()]}
+    <MediaContextProvider>
+      {/* Sidebar desktop */}
+      <Media greaterThanOrEqual="md" className="admin-sider-wrapper">
+        <Affix offsetTop={0}>
+          <Sider theme="light" className="admin-sider" width={menuWidth}>
+            <Links defaultOpenKeys={openedKey} defaultSelectedKey={selectedKey} />
+          </Sider>
+        </Affix>
+      </Media>
+      {/* Sidebar mobile & tablette */}
+      <Media lessThan="md">
+        {/* Si la sidebar mobile & tablette est visible on cache le bouton */}
+        {!visible && (
+          <Button
+            className="drawer-handle"
+            onClick={() => setVisible(true)}
+            icon={<MenuOutlined />}
+          />
+        )}
+        <Drawer
+          placement="left"
+          className="admin-drawer"
+          visible={visible}
+          closable
+          width={menuWidth}
+          onClose={() => setVisible(false)}
+          bodyStyle={{ padding: '50px 0 0 0' }}
         >
-          <Menu.Item key="dashboard">
-            <Link href="/admin">
-              <a>
-                <HomeOutlined />
-                <span>Tableau de contrôle</span>
-              </a>
-            </Link>
-          </Menu.Item>
-          <Menu.Item key="users" disabled>
-            <Link href="/admin/users" as="/admin/utilisateurs">
-              <a>
-                <TeamOutlined />
-                <span>Utilisateurs</span>
-              </a>
-            </Link>
-          </Menu.Item>
-          <Menu.Item key="categories">
-            <Link href="/admin/categories">
-              <a>
-                <TagOutlined />
-                <span>Catégories</span>
-              </a>
-            </Link>
-          </Menu.Item>
-          <Menu.SubMenu
-            key="resources"
-            title={
-              <span>
-                <AppstoreOutlined />
-                <span>Ressources</span>
-              </span>
-            }
-          >
-            {/* {collapsed && (
-              <Menu.Item
-                key="resources/title"
-                style={{
-                  textAlign: 'center',
-                  color: 'rgba(0, 0, 0, 0.65)',
-                  cursor: 'default',
-                  backgroundColor: '#fff',
-                }}
-              >
-                Ressources
-              </Menu.Item>
-            )} */}
-            <Menu.Item key="resources">
-              <Link href="/admin/resources" as="/admin/ressources">
-                <a>
-                  <ControlOutlined />
-                  <span>Gérer</span>
-                </a>
-              </Link>
-            </Menu.Item>
-            <Menu.Item key="resources/add">
-              <Link href="/admin/resources/add" as="/admin/ressources/ajout">
-                <a>
-                  <PlusOutlined />
-                  <span>Ajouter</span>
-                </a>
-              </Link>
-            </Menu.Item>
-            <Menu.Item key="resources/import">
-              <Link href="/admin/resources/import" as="/admin/ressources/importation">
-                <a>
-                  <ImportOutlined />
-                  <span>Importer</span>
-                </a>
-              </Link>
-            </Menu.Item>
-            <Menu.Item key="resources/awaiting">
-              <Link href="/admin/resources/awaiting" as="/admin/ressources/validation">
-                <a>
-                  <Badge count={awaitingResources()} showZero offset={[15, 8]}>
-                    <span>
-                      <ClockCircleOutlined />
-                      <span>À valider</span>
-                    </span>
-                  </Badge>
-                </a>
-              </Link>
-            </Menu.Item>
-          </Menu.SubMenu>
-          <Menu.Item key="templates" disabled>
-            <Link href="/admin/templates">
-              <a>
-                <LayoutOutlined />
-                <span>Templates d'email</span>
-              </a>
-            </Link>
-          </Menu.Item>
-          <Menu.Item key="newsletter" disabled>
-            <Link href="/admin/newsletter">
-              <a>
-                <MailOutlined />
-                <span>Newsletter</span>
-              </a>
-            </Link>
-          </Menu.Item>
-          <Menu.Item key="logs" disabled>
-            <Link href="/admin/logs">
-              <a>
-                <ExceptionOutlined />
-                <span>Logs</span>
-              </a>
-            </Link>
-          </Menu.Item>
-        </Menu>
-      </CustomScroll>
-    </Layout.Sider>
+          <CustomScroll heightRelativeToParent="100%">
+            <Links defaultOpenKeys={openedKey} defaultSelectedKey={selectedKey} />
+          </CustomScroll>
+        </Drawer>
+      </Media>
+    </MediaContextProvider>
   );
 };
+
+export default memo(Sidebar);
