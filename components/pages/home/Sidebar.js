@@ -10,7 +10,12 @@ const { memo } = React;
 
 // Menu de séléction du mode de tri des catégories
 const CategoriesMode = ({ selectedMode, onModeChange }) => (
-  <Menu mode="inline" theme="light" selectedKeys={[selectedMode]}>
+  <Menu
+    mode="inline"
+    theme="light"
+    selectedKeys={[selectedMode]}
+    style={{ borderColor: 'transparent' }}
+  >
     <ItemGroup title="Mode de tri des catégories">
       <Item key="in" onClick={onModeChange}>
         Contient au moins 1 séléction
@@ -24,7 +29,13 @@ const CategoriesMode = ({ selectedMode, onModeChange }) => (
 
 // Menu de séléction des catégories
 const Categories = ({ categories, selectedCategories, onCategoriesChange }) => (
-  <Menu mode="inline" theme="light" multiple selectedKeys={selectedCategories}>
+  <Menu
+    mode="inline"
+    theme="light"
+    multiple
+    selectedKeys={selectedCategories}
+    style={{ borderColor: 'transparent' }}
+  >
     <ItemGroup title="Catégories">
       {categories.map((category) => (
         <Item key={category._id} onClick={() => onCategoriesChange(category._id)}>
@@ -64,7 +75,7 @@ const Sidebar = ({
   return (
     <MediaContextProvider>
       {/* Sidebar desktop */}
-      <Media greaterThanOrEqual="lg">
+      <Media greaterThanOrEqual="lg" className="home-sider-wrapper">
         <Affix offsetTop={0}>
           <Sider className="home-sider" width={menuWidth} theme="light">
             <CategoriesMode />
