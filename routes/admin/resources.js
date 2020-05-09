@@ -170,7 +170,9 @@ router.post('/accept/:id', async (req, res) => {
         const user = await User.findById(resource.author);
 
         if (user && user.notifications) {
-          const date = moment(resource.createdAt).format('DD MMMM YYYY');
+          const date = moment(resource.createdAt)
+            .locale('fr')
+            .format('DD MMMM YYYY');
 
           await sendEmail(
             [user.email],
@@ -254,7 +256,9 @@ router.put('/deny/:id', async (req, res) => {
     resource.remove(async (err) => {
       if (!err) {
         if (user && user.notifications) {
-          const date = moment(resource.createdAt).format('DD MMMM YYYY');
+          const date = moment(resource.createdAt)
+            .locale('fr')
+            .format('DD MMMM YYYY');
 
           await sendEmail(
             [user.email],
