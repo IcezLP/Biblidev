@@ -8,7 +8,7 @@ import { logEvent } from '../../services/google-analytics';
 
 const Verify = ({ status, message }) => {
   if (status === 200) {
-    logEvent('User', 'Verify an email');
+    logEvent('User', "Vérification de l'adresse mail");
   }
 
   return (

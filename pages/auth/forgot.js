@@ -17,7 +17,7 @@ export default withAuth(
           'success',
           "Si l'adresse mail saisie est correcte vous recevrez un email de réinitialisation",
         );
-        logEvent('User', 'Forgot a password');
+        logEvent('User', 'Mot de passe oublié');
       },
       'post',
       '/api/auth/forgot',

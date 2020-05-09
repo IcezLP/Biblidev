@@ -13,7 +13,7 @@ const Reset = ({ token }) => {
   const { values, errors, isLoading, handleChange, handleSubmit } = useForm(
     () => {
       notify('success', 'Votre mot de passe a bien été modifié');
-      logEvent('User', 'Reset a password');
+      logEvent('User', 'Réinitialisation du mot de passe');
     },
     'post',
     `/api/auth/reset/${token}`,

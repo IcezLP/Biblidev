@@ -14,7 +14,7 @@ export default withAuth(
     const { values, errors, isLoading, handleChange, handleSubmit } = useForm(
       () => {
         notify('success', 'Inscription réussie, un email de confirmation vous a été envoyé');
-        logEvent('User', 'Created an account');
+        logEvent('User', 'Inscription');
       },
       'post',
       '/api/auth/register',

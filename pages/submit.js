@@ -16,7 +16,7 @@ const Submit = ({ user, categories }) => {
   const { values, errors, handleChange, handleSubmit, isLoading } = useForm(
     () => {
       notify('success', 'Proposition réussie');
-      logEvent('User', 'Submitted a resource');
+      logEvent('User', 'Proposition de ressource');
     },
     'post',
     '/api/resources/submit',

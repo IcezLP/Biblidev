@@ -16,7 +16,7 @@ export default withAuth(
   () => {
     // Connexion
     const setAuthToken = (data) => {
-      logEvent('User', 'Log in');
+      logEvent('User', 'Connexion');
       // Enregistre le token de connexion
       cookies.set('auth', data.token);
       // Redirige sur la page d'accueil
