@@ -5,6 +5,7 @@ const resourcesRoutes = require('./resources');
 const adminResourcesRoutes = require('./admin/resources');
 const adminUsersRoutes = require('./admin/users');
 const adminCategoriesRoutes = require('./admin/categories');
+const adminAnalyticsRoutes = require('./admin/analytics');
 const withAdmin = require('./middlewares/withAdmin');
 
 module.exports = (server) => {
@@ -19,4 +20,5 @@ module.exports = (server) => {
   server.use('/api/admin/users', adminUsersRoutes);
   server.use('/api/admin/resources', adminResourcesRoutes);
   server.use('/api/admin/categories', adminCategoriesRoutes);
+  server.use('/api/admin/analytics', adminAnalyticsRoutes);
 };

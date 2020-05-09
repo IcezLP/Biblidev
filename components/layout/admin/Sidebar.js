@@ -13,6 +13,9 @@ import {
   ExceptionOutlined,
   ImportOutlined,
   ClockCircleOutlined,
+  BarChartOutlined,
+  GoogleOutlined,
+  SearchOutlined,
 } from '@ant-design/icons';
 import CustomScroll from 'react-custom-scroll';
 import Link from 'next/link';
@@ -31,6 +34,31 @@ const routes = [
     label: 'Tableau de bord',
     icon: <HomeOutlined />,
     disabled: false,
+  },
+  {
+    key: 'google',
+    type: 'sub',
+    label: 'Google',
+    icon: <GoogleOutlined />,
+    disabled: false,
+    routes: [
+      {
+        key: 'google/g-analytics',
+        href: '/admin/google/g-analytics',
+        as: '/admin/google/analytics',
+        label: 'Analytics',
+        icon: <BarChartOutlined />,
+        disabled: false,
+      },
+      {
+        key: 'google/g-search-console',
+        href: '/admin/google/g-search-console',
+        as: '/admin/google/search-console',
+        label: 'Search Console',
+        icon: <SearchOutlined />,
+        disabled: true,
+      },
+    ],
   },
   {
     key: 'users',

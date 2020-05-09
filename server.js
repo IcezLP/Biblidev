@@ -33,6 +33,8 @@ app
       '/admin/ressources/ajout': '/admin/resources/add',
       '/admin/ressources/importation': '/admin/resources/import',
       '/admin/ressources/validation': '/admin/resources/awaiting',
+      '/admin/google/analytics': '/admin/google/g-analytics',
+      '/admin/google/search-console': '/admin/google/g-search-console',
     };
 
     if (!dev) {

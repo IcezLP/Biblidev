@@ -14,6 +14,9 @@ module.exports = withCss({
     NOREPLY_EMAIL: process.env.NOREPLY_EMAIL,
     CLOUDINARY_URL: process.env.CLOUDINARY_URL,
     GOOGLE_ANALYTICS_ID: process.env.GOOGLE_ANALYTICS_ID,
+    GOOGLE_CLIENT_EMAIL: process.env.GOOGLE_CLIENT_EMAIL,
+    GOOGLE_PRIVATE_KEY: process.env.GOOGLE_PRIVATE_KEY,
+    GOOGLE_VIEW_ID: process.env.GOOGLE_VIEW_ID,
   },
   webpack: (config, { isServer }) => {
     // @svgr/webpack config
