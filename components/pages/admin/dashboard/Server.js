@@ -12,9 +12,7 @@ const { Text } = Typography;
 const { Item } = Descriptions;
 
 const Devices = () => {
-  const { data } = useSWR(`/api/admin/dashboard/server`, (url) => fetch('get', url), {
-    refreshInterval: 0,
-  });
+  const { data } = useSWR(`/api/admin/dashboard/server`, (url) => fetch('get', url));
 
   const Stats = () => {
     // Pendant le chargement de la requête
