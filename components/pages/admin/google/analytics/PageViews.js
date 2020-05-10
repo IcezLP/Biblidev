@@ -160,7 +160,7 @@ const PageViews = ({ start, end }) => {
           <br />
           <Text type="secondary">
             {/* eslint-disable-next-line */}
-            {sum} aux total
+            {sum} au total
           </Text>
         </>
       );
