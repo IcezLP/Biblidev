@@ -1,9 +1,11 @@
 import React from 'react';
-import { Table } from 'antd';
+import { Table, Card, Typography, Spin, Result } from 'antd';
+import { LoadingOutlined, CloseCircleOutlined, InfoCircleOutlined } from '@ant-design/icons';
 import useSWR from 'swr';
 import fetch from '../../../../../lib/fetch';
 
 const { memo } = React;
+const { Text } = Typography;
 
 const PageViews = ({ start, end }) => {
   const { data } = useSWR(
@@ -11,14 +13,6 @@ const PageViews = ({ start, end }) => {
     (url) => fetch('get', url),
     { refreshInterval: 0 },
   );
-
-  const dataSource = () => {
-    if (!data || (data && data.status === 'error')) {
-      return [];
-    }
-
-    return data.data;
-  };
 
   const columns = [
     {
@@ -103,24 +97,86 @@ const PageViews = ({ start, end }) => {
     },
   ];
 
+  const Stats = () => {
+    // Pendant le chargement de la requête
+    if (!data) {
+      return (
+        <div style={{ width: '100%', textAlign: 'center', marginTop: 20 }}>
+          <Spin indicator={<LoadingOutlined style={{ fontSize: 24 }} spin />} />
+        </div>
+      );
+    }
+
+    // Si une erreur est survenue
+    if (data.status === 'error') {
+      return (
+        <Result
+          status="error"
+          icon={<CloseCircleOutlined style={{ fontSize: 32 }} />}
+          subTitle="Une erreur est survenue, veuillez réessayez"
+        />
+      );
+    }
+
+    // Si le tableau est vide
+    if (data.data.length === 0) {
+      return (
+        <Result
+          icon={<InfoCircleOutlined style={{ fontSize: 32 }} />}
+          subTitle="Aucune donnée à afficher"
+        />
+      );
+    }
+
+    return (
+      <Table
+        bordered
+        dataSource={data.data}
+        rowKey={(record) => record.id}
+        pagination={false}
+        columns={columns}
+        loading={!data}
+        size="small"
+        scroll={{ x: 600 }}
+        locale={{
+          cancelSort: 'Annuler le tri',
+          triggerAsc: 'Trier par ordre croissant',
+          triggerDesc: 'Trier par ordre décroissant',
+          emptyText: 'Aucune donnée',
+          filterReset: 'Réinitialiser',
+        }}
+      />
+    );
+  };
+
+  const CardTitle = () => {
+    // Calcule le nombre total d'utilisateurs
+    const sum = data && data.status !== 'error' && data.data ? data.data.length : 0;
+
+    if (data && data.data) {
+      return (
+        <>
+          <Text strong>Pages</Text>
+          <br />
+          <Text type="secondary">
+            {/* eslint-disable-next-line */}
+            {sum} aux total
+          </Text>
+        </>
+      );
+    }
+
+    return <Text strong>Pages</Text>;
+  };
+
   return (
-    <Table
-      bordered
-      dataSource={dataSource()}
-      rowKey={(record) => record.id}
-      pagination={false}
-      columns={columns}
-      loading={!data}
-      size="small"
-      scroll={{ x: 600 }}
-      locale={{
-        cancelSort: 'Annuler le tri',
-        triggerAsc: 'Trier par ordre croissant',
-        triggerDesc: 'Trier par ordre décroissant',
-        emptyText: 'Aucune donnée',
-        filterReset: 'Réinitialiser',
-      }}
-    />
+    <Card
+      bodyStyle={{ padding: 0, minHeight: 250 }}
+      title={<CardTitle />}
+      headStyle={{ fontSize: 14 }}
+    >
+      <Stats />
+    </Card>
   );
 };
 
