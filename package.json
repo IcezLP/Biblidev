@@ -28,6 +28,7 @@
     "babel-plugin-import": "^1.13.0",
     "bcryptjs": "^2.4.3",
     "bizcharts": "^4.0.2",
+    "bytes": "^3.1.0",
     "classnames": "^2.2.6",
     "cloudinary": "^1.21.0",
     "compression": "^1.7.4",
