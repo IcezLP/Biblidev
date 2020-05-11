@@ -31,10 +31,10 @@
     float: right;
 
     .navbar-link {
-      border: none;
+      border-bottom: 2px solid transparent;
 
       &:hover {
-        border: none;
+        border-bottom: 2px solid transparent;
       }
 
       &:active {
