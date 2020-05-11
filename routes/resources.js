@@ -82,6 +82,40 @@ router.get('/', async (req, res) => {
       .populate('categories')
       .populate('author', '-_id username slug');
 
+    // Tri par la note moyenne la plus haute
+    if (req.query.sortBy === 'best') {
+      resources.sort((a, b) => {
+        // Récupère le total des notes
+        const sumOfA = a.rates.reduce((c, d) => c + (d.rate || 0), 0);
+        const sumOfB = b.rates.reduce((e, f) => e + (f.rate || 0), 0);
+
+        // Récupère la moyenne des notes
+        const avgOfA = sumOfA / a.rates.length || 0;
+        const avgOfB = sumOfB / b.rates.length || 0;
+
+        if (Number(avgOfA) > Number(avgOfB)) return -1;
+        if (Number(avgOfA) < Number(avgOfB)) return 1;
+        return 0;
+      });
+    }
+
+    // Tri par la note moyenne la plus basse
+    if (req.query.sortBy === 'worst') {
+      resources.sort((a, b) => {
+        // Récupère le total des notes
+        const sumOfA = a.rates.reduce((c, d) => c + (d.rate || 0), 0);
+        const sumOfB = b.rates.reduce((e, f) => e + (f.rate || 0), 0);
+
+        // Récupère la moyenne des notes
+        const avgOfA = sumOfA / a.rates.length || 0;
+        const avgOfB = sumOfB / b.rates.length || 0;
+
+        if (Number(avgOfA) < Number(avgOfB)) return -1;
+        if (Number(avgOfA) > Number(avgOfB)) return 1;
+        return 0;
+      });
+    }
+
     return res.status(200).json({
       status: 'success',
       data: { resources },

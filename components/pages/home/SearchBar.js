@@ -18,12 +18,10 @@ const sortOptions = [
   {
     label: 'Note moyenne la plus haute',
     value: 'best',
-    disabled: true,
   },
   {
     label: 'Note moyenne la plus basse',
     value: 'worst',
-    disabled: true,
   },
   {
     label: 'Plus récents en premier',
