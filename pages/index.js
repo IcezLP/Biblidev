@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Layout, Row, Col, Spin, Result, Tag, Skeleton } from 'antd';
+import React, { useState } from 'react';
+import { Layout, Row, Col, Spin, Result, Tag, List } from 'antd';
 import { LoadingOutlined, FrownOutlined } from '@ant-design/icons';
 import useSWR from 'swr';
 import withAuth from '../middlewares/withAuth';
@@ -10,6 +10,7 @@ import Sidebar from '../components/pages/home/Sidebar';
 import ResourceCard from '../components/pages/home/ResourceCard';
 
 const { Content } = Layout;
+const { Item } = List;
 
 const Home = ({ user, categories }) => {
   const [filters, setFilters] = useState({
@@ -127,19 +128,21 @@ const Home = ({ user, categories }) => {
 
     // Affiche les ressources
     return (
-      <Row gutter={[12, 12]}>
-        {data.data.resources.map((resource) => (
-          <Col xs={24} sm={12} md={8} lg={8} xl={6} xxl={4} key={resource._id}>
+      <List
+        grid={{ gutter: [12, 12], xs: 1, sm: 2, md: 3, lg: 3, xl: 4, xxl: 6 }}
+        dataSource={data.data.resources}
+        renderItem={(item) => (
+          <Item style={{ height: '100%', margin: 0 }}>
             <ResourceCard
-              record={resource}
+              record={item}
               selectedCategories={filters.categories}
               onCategoriesChange={setCategories}
               searchQuery={filters.search}
               user={user}
             />
-          </Col>
-        ))}
-      </Row>
+          </Item>
+        )}
+      />
     );
   };
 
