@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Card, Avatar, Tag, Typography, Rate, Button } from 'antd';
+import { Card, Avatar, Tag, Typography, Rate, Button, Skeleton } from 'antd';
 import { HeartFilled, HeartOutlined } from '@ant-design/icons';
 import Highlighter from 'react-highlight-words';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
+import VisibilitySensor from 'react-visibility-sensor';
 import { notify } from '../../../lib/notification';
 import fetch from '../../../lib/fetch';
 
@@ -83,106 +84,117 @@ const ResourceCard = ({ record, selectedCategories, onCategoriesChange, searchQu
   };
 
   return (
-    <Card hoverable className="resource">
-      <a href={`${resource.link}?ref=${site_url}`} target="_blank" rel="noopener noreferrer">
-        <Meta
-          className="resource-meta"
-          avatar={
-            resource.logo ? (
-              <Avatar
-                size={32}
-                src={`https://res.cloudinary.com/biblidev/image/upload/${resource.logo}`}
+    <VisibilitySensor partialVisibility>
+      {({ isVisible }) =>
+        isVisible ? (
+          <Card hoverable className="resource">
+            <a href={`${resource.link}?ref=${site_url}`} target="_blank" rel="noopener noreferrer">
+              <Meta
+                className="resource-meta"
+                avatar={
+                  resource.logo ? (
+                    <Avatar
+                      size={32}
+                      src={`https://res.cloudinary.com/biblidev/image/upload/${resource.logo}`}
+                    />
+                  ) : (
+                    <Avatar
+                      size={32}
+                      style={{
+                        backgroundColor: 'red',
+                      }}
+                    >
+                      {resource.name.charAt(0)}
+                    </Avatar>
+                  )
+                }
+                title={
+                  <>
+                    {searchQuery ? (
+                      <Highlighter
+                        highlightStyle={{ backgroundColor: '#ffc069', padding: 0 }}
+                        searchWords={[searchQuery]}
+                        autoEscape
+                        textToHighlight={resource.name.toString()}
+                      />
+                    ) : (
+                      resource.name
+                    )}
+                    <br />
+                    <Text type="secondary" className="resource-author">
+                      Posté par&nbsp;
+                      {resource.author ? (
+                        <span className="author-username">{resource.author.username}</span>
+                      ) : (
+                        'Anonyme'
+                      )}
+                    </Text>
+                  </>
+                }
+                description={
+                  searchQuery ? (
+                    <Highlighter
+                      highlightStyle={{ backgroundColor: '#ffc069', padding: 0 }}
+                      searchWords={[searchQuery]}
+                      autoEscape
+                      textToHighlight={resource.description.toString()}
+                    />
+                  ) : (
+                    resource.description
+                  )
+                }
               />
-            ) : (
-              <Avatar
-                size={32}
-                style={{
-                  backgroundColor: 'red',
-                }}
-              >
-                {resource.name.charAt(0)}
-              </Avatar>
-            )
-          }
-          title={
-            <>
-              {searchQuery ? (
-                <Highlighter
-                  highlightStyle={{ backgroundColor: '#ffc069', padding: 0 }}
-                  searchWords={[searchQuery]}
-                  autoEscape
-                  textToHighlight={resource.name.toString()}
-                />
-              ) : (
-                resource.name
+            </a>
+            <div className="resource-categories">
+              {resource.categories.map(
+                (category) =>
+                  !(typeof category === 'string') && (
+                    <CheckableTag
+                      key={category._id}
+                      className="resource-category"
+                      style={{ cursor: 'pointer' }}
+                      checked={selectedCategories.includes(category._id)}
+                      onChange={() => onCategoriesChange(category._id)}
+                    >
+                      {category.name}
+                    </CheckableTag>
+                  ),
               )}
-              <br />
-              <Text type="secondary" className="resource-author">
-                Posté par&nbsp;
-                {resource.author ? (
-                  <span className="author-username">{resource.author.username}</span>
-                ) : (
-                  'Anonyme'
-                )}
-              </Text>
-            </>
-          }
-          description={
-            searchQuery ? (
-              <Highlighter
-                highlightStyle={{ backgroundColor: '#ffc069', padding: 0 }}
-                searchWords={[searchQuery]}
-                autoEscape
-                textToHighlight={resource.description.toString()}
+            </div>
+            <div style={{ marginTop: 10 }}>
+              <Rate
+                allowClear={false}
+                allowHalf={false}
+                onChange={handleRate}
+                value={average}
+                style={{
+                  color:
+                    user &&
+                    resource.rates.some((item) => item.user.toString() === user._id.toString())
+                      ? '#1890ff'
+                      : null,
+                }}
               />
-            ) : (
-              resource.description
-            )
-          }
-        />
-      </a>
-      <div className="resource-categories">
-        {resource.categories.map(
-          (category) =>
-            !(typeof category === 'string') && (
-              <CheckableTag
-                key={category._id}
-                className="resource-category"
-                style={{ cursor: 'pointer' }}
-                checked={selectedCategories.includes(category._id)}
-                onChange={() => onCategoriesChange(category._id)}
-              >
-                {category.name}
-              </CheckableTag>
-            ),
-        )}
-      </div>
-      <div style={{ marginTop: 10 }}>
-        <Rate
-          allowClear={false}
-          allowHalf={false}
-          onChange={handleRate}
-          value={average}
-          style={{
-            color:
-              user && resource.rates.some((item) => item.user.toString() === user._id.toString())
-                ? '#1890ff'
-                : null,
-          }}
-        />
-        {/* eslint-disable-next-line */}
-        <span className="ant-rate-text">({resource.rates.length})</span>
-      </div>
-      <HasRated />
-      <Button
-        className={classnames('resource-favorite', { favorite })}
-        shape="circle-outline"
-        type="link"
-        onClick={handleFavorite}
-        icon={favorite ? <HeartFilled /> : <HeartOutlined />}
-        size="large"
-      />
-    </Card>
+              {/* eslint-disable-next-line */}
+              <span className="ant-rate-text">({resource.rates.length})</span>
+            </div>
+            <HasRated />
+            <Button
+              className={classnames('resource-favorite', { favorite })}
+              shape="circle-outline"
+              type="link"
+              onClick={handleFavorite}
+              icon={favorite ? <HeartFilled /> : <HeartOutlined />}
+              size="large"
+            />
+          </Card>
+        ) : (
+          <Card>
+            <Skeleton avatar paragraph={{ rows: 4 }} />
+          </Card>
+        )
+      }
+    </VisibilitySensor>
   );
 };
 

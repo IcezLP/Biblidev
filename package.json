@@ -57,6 +57,7 @@
     "react-ga": "^2.7.0",
     "react-highlight-words": "^0.16.0",
     "react-moment": "^0.9.7",
+    "react-visibility-sensor": "^5.1.1",
     "sass": "^1.26.3",
     "swr": "^0.2.0",
     "systeminformation": "^4.25.1",
