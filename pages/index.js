@@ -132,7 +132,7 @@ const Home = ({ user, categories }) => {
         grid={{ gutter: [12, 12], xs: 1, sm: 2, md: 3, lg: 3, xl: 4, xxl: 6 }}
         dataSource={data.data.resources}
         renderItem={(item) => (
-          <Item style={{ height: '100%', margin: 0 }}>
+          <Item key={item._id} style={{ height: '100%', margin: 0 }}>
             <ResourceCard
               record={item}
               selectedCategories={filters.categories}
