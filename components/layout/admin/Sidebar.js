@@ -16,6 +16,7 @@ import {
   BarChartOutlined,
   GoogleOutlined,
   SearchOutlined,
+  CloudUploadOutlined,
 } from '@ant-design/icons';
 import CustomScroll from 'react-custom-scroll';
 import Link from 'next/link';
@@ -59,6 +60,14 @@ const routes = [
         disabled: true,
       },
     ],
+  },
+  {
+    key: 'cloudinary',
+    href: '/admin/cloudinary',
+    as: null,
+    label: 'Cloudinary',
+    icon: <CloudUploadOutlined />,
+    disabled: true,
   },
   {
     key: 'users',
