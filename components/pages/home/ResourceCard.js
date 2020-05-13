@@ -101,7 +101,7 @@ const ResourceCard = ({ record, selectedCategories, onCategoriesChange, searchQu
                     <Avatar
                       size={32}
                       style={{
-                        backgroundColor: 'red',
+                        backgroundColor: '#ff9c6e',
                       }}
                     >
                       {resource.name.charAt(0)}
