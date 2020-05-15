@@ -2,7 +2,7 @@ export default {
   title: 'Bibliothèque communautaire de ressources',
   titleTemplate: `${process.env.SITE_NAME} | %s`,
   description:
-    'Inspiration, APIs, Outils, SEO, Blogs, Veille, Emplois... Des centaines de ressources prêtes à être utilisées dans le développement web et le web design',
+    'Inspiration, API, Outils, SEO, Frameworks, Veille, Emplois... Des centaines de ressources prêtes à être utilisées dans le développement web et le web design',
   openGraph: {
     type: 'website',
     locale: 'fr_FR',
