@@ -10,7 +10,7 @@ export default {
     site_name: process.env.SITE_NAME,
     images: [
       {
-        url: `${process.env.SITE_URL}/images/logo_block.svg`,
+        url: `${process.env.SITE_URL}/images/logo_block.png`,
         width: 800,
         height: 600,
         alt: process.env.SITE_NAME,
