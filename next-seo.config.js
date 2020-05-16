@@ -11,8 +11,8 @@ export default {
     images: [
       {
         url: `${process.env.SITE_URL}/images/logo_block.png`,
-        width: 800,
-        height: 600,
+        width: 745,
+        height: 494,
         alt: process.env.SITE_NAME,
       },
     ],
