@@ -1,7 +1,7 @@
 require('dotenv').config();
-const withCss = require('@zeit/next-css');
+const withLess = require('@zeit/next-less');
 
-module.exports = withCss({
+module.exports = withLess({
   env: {
     SERVER_PORT: process.env.SERVER_PORT,
     MONGO_URI: process.env.MONGO_URI,
@@ -18,6 +18,11 @@ module.exports = withCss({
     GOOGLE_PRIVATE_KEY: process.env.GOOGLE_PRIVATE_KEY,
     GOOGLE_VIEW_ID: process.env.GOOGLE_VIEW_ID,
   },
+  lessLoaderOptions: {
+    lessOptions: {
+      javascriptEnabled: true,
+    },
+  },
   webpack: (config, { isServer }) => {
     // @svgr/webpack config
     config.module.rules.push({
@@ -30,7 +35,7 @@ module.exports = withCss({
 
     // Antd config
     if (isServer) {
-      const antStyles = /antd\/.*?\/style\/css.*?/;
+      const antStyles = /antd\/.*?\/style.*?/;
       const origExternals = [...config.externals];
       config.externals = [
         (context, request, callback) => {
