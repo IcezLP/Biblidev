@@ -45,6 +45,7 @@ const Devices = () => {
       );
     }
 
+    console.log(data.data);
     const { versions, time, osInfo, mem, fsSize, expressUptime } = data.data;
     const { total, used } = mem;
     const { platform, release, kernel, distro, arch } = osInfo;
@@ -90,7 +91,7 @@ const Devices = () => {
           <br />
           Git : {git || <Text type="secondary">Non installé</Text>}
           <br />
-          MongoDB : Hébergé sur MLab
+          MongoDB : Hébergé sur MongoDB Atlas
           <br />
           NGINX : {nginx || <Text type="secondary">Non installé</Text>}
           <br />
