@@ -37,7 +37,7 @@ class CustomDocument extends Document {
           <link rel="apple-touch-icon" sizes="152x152" href="/images/favicons/apple-touch-icon-152x152.png" />
           <link rel="preconnect" href="https://res.cloudinary.com" />
           <link rel="dns-prefetch" href="https://res.cloudinary.com" />
-          <link rel="stylesheet" href="/css/main.css" />
+          <link rel="stylesheet" href={`${process.env.SITE_URL}/css/main.css`} />
           <style type="text/css" dangerouslySetInnerHTML={{__html: mediaStyles}} />
         </Head>
         <body>
