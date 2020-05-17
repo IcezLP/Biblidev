@@ -45,7 +45,6 @@ const Devices = () => {
       );
     }
 
-    console.log(data.data);
     const { versions, time, osInfo, mem, fsSize, expressUptime } = data.data;
     const { total, used } = mem;
     const { platform, release, kernel, distro, arch } = osInfo;
