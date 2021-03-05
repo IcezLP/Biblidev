@@ -63,7 +63,7 @@
     "react-visibility-sensor": "^5.1.1",
     "sass": "^1.26.3",
     "swr": "^0.2.0",
-    "systeminformation": "^4.25.1",
+    "systeminformation": "^5.3.4",
     "validator": "^13.0.0",
     "winston": "^3.2.1",
     "xlsx": "^0.15.6"
